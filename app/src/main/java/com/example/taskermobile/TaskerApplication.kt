@@ -43,16 +43,12 @@ class TaskerApplication: Application() {
 
                 single { AuthInterceptor(get()) }
 
-                // Provide a singleton instance of AuthAuthenticator
                 single { AuthAuthenticator(get()) }
 
-                // Provide a singleton instance of OkHttpClient
                 single { provideOkHttpClient(get(), get()) }
 
-                // Provide a singleton instance of Retrofit.Builder with a configured base URL
                 single { provideRetrofitBuilder() }
 
-                // Provide a singleton instance of AuthApiService
                 single { provideAuthAPIService(get()) }
 
                 viewModel { AuthViewModel(get()) }

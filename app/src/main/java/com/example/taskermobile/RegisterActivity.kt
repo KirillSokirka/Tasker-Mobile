@@ -8,42 +8,37 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.taskermobile.model.LoginModel
+import com.example.taskermobile.model.RegisterModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.AuthViewModel
-import com.example.taskermobile.viewmodels.TokenViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
 
     private val viewModel: AuthViewModel by viewModel()
-    private val tokenViewModel: TokenViewModel by viewModel()
 
     private lateinit var loadingIndicator: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_register)
         loadingIndicator = findViewById(R.id.loadingIndicator)
 
-        val editTextEmail: EditText = findViewById(R.id.editTextEmail)
-        val editTextPassword: EditText = findViewById(R.id.editTextPassword)
-        val buttonLogin: Button = findViewById(R.id.buttonLogin)
+        val emailText: EditText = findViewById(R.id.email)
+        val usernameText: EditText = findViewById(R.id.username)
+        val passwordText: EditText = findViewById(R.id.passsword)
+
         val buttonRegister: Button = findViewById(R.id.buttonRegister)
 
         buttonRegister.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+            val email = emailText.text.toString().trim()
+            val username = usernameText.text.toString().trim()
+            val password = passwordText.text.toString().trim()
+            viewModel.register(RegisterModel(email, username, password))
         }
 
-        buttonLogin.setOnClickListener {
-            val email = editTextEmail.text.toString().trim()
-            val password = editTextPassword.text.toString().trim()
-            viewModel.login(LoginModel(email, password))
-        }
-
-        viewModel.loginResponse.observe(this) { apiResponse ->
+        viewModel.registerResponse.observe(this) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
@@ -51,8 +46,7 @@ class LoginActivity : AppCompatActivity() {
 
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-                    tokenViewModel.saveToken(apiResponse.data.token)
-                    val intent = Intent(this, MainActivity::class.java)
+                    val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -60,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
                     Toast.makeText(
-                        this@LoginActivity,
+                        this@RegisterActivity,
                         "Network error: ${apiResponse.errorMessage}",
                         Toast.LENGTH_LONG
                     ).show()
@@ -69,3 +63,4 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
+

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.taskermobile.model.JwtResponse
 import com.example.taskermobile.model.LoginModel
+import com.example.taskermobile.model.RegisterModel
 import com.example.taskermobile.service.AuthApiService
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.apiRequestFlow
@@ -15,16 +16,26 @@ class AuthViewModel(
     private val authApiService: AuthApiService
 ) : BaseViewModel() {
 
-    // LiveData to post the results of the login operation
     private val _loginResponse = MutableLiveData<ApiResponse<JwtResponse>>()
     val loginResponse: LiveData<ApiResponse<JwtResponse>> = _loginResponse
 
-    // Function to perform login using Flow
+    private val _registerResponse = MutableLiveData<ApiResponse<String>>()
+    val registerResponse: LiveData<ApiResponse<String>> = _registerResponse
+
     fun login(auth: LoginModel) {
         viewModelScope.launch {
             apiRequestFlow { authApiService.login(auth) }
                 .collect { apiResponse ->
                     _loginResponse.value = apiResponse
+                }
+        }
+    }
+
+    fun register(auth: RegisterModel) {
+        viewModelScope.launch {
+            apiRequestFlow { authApiService.register(auth) }
+                .collect { apiResponse ->
+                    _registerResponse.value = apiResponse
                 }
         }
     }

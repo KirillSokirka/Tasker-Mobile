@@ -2,6 +2,7 @@ package com.example.taskermobile.service
 
 import com.example.taskermobile.model.JwtResponse
 import com.example.taskermobile.model.LoginModel
+import com.example.taskermobile.model.RegisterModel
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -13,6 +14,11 @@ interface AuthApiService {
     suspend fun login(
         @Body auth: LoginModel,
     ): Response<JwtResponse>
+
+    @POST("auth/register")
+    suspend fun register(
+        @Body auth: RegisterModel,
+    ): Response<String>
 
     @GET("auth/refresh")
     suspend fun refreshToken(
