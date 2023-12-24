@@ -31,7 +31,7 @@ class TokenManager(private val context: Context) {
     }
 
     suspend fun saveToken(tokenValue: TokenValue) {
-        val tokenString = gson.toJson(tokenValue) // Serialize the TokenValue object into a String
+        val tokenString = gson.toJson(tokenValue)
         context.dataStore.edit { preferences ->
             preferences[TOKEN_KEY] = tokenString
         }
