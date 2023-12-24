@@ -8,12 +8,16 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.taskermobile.model.ErrorResponse
 import com.example.taskermobile.service.AuthApiService
 import com.example.taskermobile.service.ProjectApiService
+import com.example.taskermobile.service.ReleaseApiService
+import com.example.taskermobile.service.TaskApiService
 import com.example.taskermobile.utils.AuthAuthenticator
 import com.example.taskermobile.utils.AuthInterceptor
 import com.example.taskermobile.utils.ErrorResponseDeserializer
 import com.example.taskermobile.utils.TokenManager
 import com.example.taskermobile.viewmodels.AuthViewModel
+import com.example.taskermobile.viewmodels.BacklogPageViewModel
 import com.example.taskermobile.viewmodels.ProjectsPageViewModel
+import com.example.taskermobile.viewmodels.ReleasesPageViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -53,13 +57,21 @@ class TaskerApplication: Application() {
 
                 single { provideAuthAPIService(get()) }
 
+                single { provideReleaseApiService(get()) }
+
                 single { provideProjectApiService(get()) }
+
+                single { provideTaskApiService(get()) }
 
                 viewModel { AuthViewModel(get()) }
 
                 viewModel { TokenViewModel(get()) }
 
                 viewModel { ProjectsPageViewModel(get()) }
+
+                viewModel { ReleasesPageViewModel(get()) }
+
+                viewModel { BacklogPageViewModel(get()) }
             }))
         }
     }
@@ -97,3 +109,13 @@ fun provideProjectApiService(retrofit: Retrofit.Builder): ProjectApiService =
     retrofit
         .build()
         .create(ProjectApiService::class.java)
+
+fun provideReleaseApiService(retrofit: Retrofit.Builder): ReleaseApiService =
+    retrofit
+        .build()
+        .create(ReleaseApiService::class.java)
+
+fun provideTaskApiService(retrofit: Retrofit.Builder): TaskApiService =
+    retrofit
+        .build()
+        .create(TaskApiService::class.java)

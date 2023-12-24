@@ -8,7 +8,6 @@ import com.example.taskermobile.service.ProjectApiService
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.apiRequestFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 
 class ProjectsPageViewModel(

@@ -36,6 +36,10 @@ class MainActivity : ComponentActivity() {
 
                         // Call a composable function to display a button
                         MyButton()
+
+                        MyReleasesButton()
+                        
+                        BacklogButton(projectId = "c9efa3be-730e-4fac-a6ef-34fb97b9c972")
                     }
                 }
             }
@@ -63,5 +67,36 @@ fun MyButton() {
         modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
         Text("Navigate to Second Activity")
+    }
+}
+
+@Composable
+fun MyReleasesButton() {
+    val context = LocalContext.current
+
+    Button(
+        onClick = {
+            val intent = Intent(context, ReleasesPageActivity::class.java)
+            context.startActivity(intent)
+        },
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
+    ) {
+        Text("Navigate to releases Activity")
+    }
+}
+
+@Composable
+fun BacklogButton(projectId: String) {
+    val context = LocalContext.current
+
+    Button(
+        onClick = {
+            val intent = Intent(context, BacklogPageActivity::class.java)
+            intent.putExtra("projectId", projectId)
+            context.startActivity(intent)
+        },
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
+    ) {
+        Text("Navigate to backlog")
     }
 }
