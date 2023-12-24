@@ -9,11 +9,11 @@ class AuthInterceptor(
     private val tokenManager: TokenManager
 ): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = runBlocking {
+        val tokenSettings = runBlocking {
             tokenManager.getToken().first()
         }
         val request = chain.request().newBuilder()
-        request.addHeader("Authorization", "Bearer $token")
+        request.addHeader("Authorization", "Bearer ${tokenSettings?.token}")
         return chain.proceed(request.build())
     }
 }

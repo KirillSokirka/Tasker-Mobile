@@ -7,11 +7,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.taskermobile.model.ErrorResponse
 import com.example.taskermobile.service.AuthApiService
+import com.example.taskermobile.service.ProjectApiService
 import com.example.taskermobile.utils.AuthAuthenticator
 import com.example.taskermobile.utils.AuthInterceptor
 import com.example.taskermobile.utils.ErrorResponseDeserializer
 import com.example.taskermobile.utils.TokenManager
 import com.example.taskermobile.viewmodels.AuthViewModel
+import com.example.taskermobile.viewmodels.ProjectsPageViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -51,9 +53,13 @@ class TaskerApplication: Application() {
 
                 single { provideAuthAPIService(get()) }
 
+                single { provideProjectApiService(get()) }
+
                 viewModel { AuthViewModel(get()) }
 
                 viewModel { TokenViewModel(get()) }
+
+                viewModel { ProjectsPageViewModel(get()) }
             }))
         }
     }
@@ -84,3 +90,8 @@ fun provideAuthAPIService(retrofit: Retrofit.Builder): AuthApiService =
     retrofit
         .build()
         .create(AuthApiService::class.java)
+
+fun provideProjectApiService(retrofit: Retrofit.Builder): ProjectApiService =
+    retrofit
+        .build()
+        .create(ProjectApiService::class.java)
