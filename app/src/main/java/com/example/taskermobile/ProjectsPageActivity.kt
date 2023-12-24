@@ -26,7 +26,7 @@ class ProjectsPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.project_preview)
+        setContentView(R.layout.projects)
         loadingIndicator = findViewById(R.id.loadingIndicator)
 
         viewModel.getAll()

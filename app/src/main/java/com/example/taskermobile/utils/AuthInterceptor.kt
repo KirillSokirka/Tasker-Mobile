@@ -1,6 +1,8 @@
 package com.example.taskermobile.utils
 
+import android.util.Log
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -10,10 +12,18 @@ class AuthInterceptor(
 ): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val tokenSettings = runBlocking {
-            tokenManager.getToken().first()
+            tokenManager.getToken().firstOrNull()
         }
+
         val request = chain.request().newBuilder()
-        request.addHeader("Authorization", "Bearer ${tokenSettings?.token}")
+
+        if (tokenSettings != null) {
+            Log.d("AuthInterceptor", "Token is: ${tokenSettings.token}")
+            request.addHeader("Authorization", "Bearer ${tokenSettings.token}")
+        } else {
+            Log.d("AuthInterceptor", "Token is null")
+        }
+
         return chain.proceed(request.build())
     }
 }

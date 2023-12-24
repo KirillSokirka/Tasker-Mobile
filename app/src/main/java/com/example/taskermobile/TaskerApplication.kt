@@ -49,7 +49,7 @@ class TaskerApplication: Application() {
 
                 single { provideOkHttpClient(get(), get()) }
 
-                single { provideRetrofitBuilder() }
+                single { provideRetrofitBuilder(get()) }
 
                 single { provideAuthAPIService(get()) }
 
@@ -71,19 +71,21 @@ fun provideOkHttpClient(
     authInterceptor: AuthInterceptor,
     authAuthenticator: AuthAuthenticator
 ): OkHttpClient {
-    val loggingInterceptor = HttpLoggingInterceptor()
-    loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+    val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.HEADERS
+    }
 
     return OkHttpClient.Builder()
         .addInterceptor(authInterceptor)
-        .addInterceptor(loggingInterceptor)
         .authenticator(authAuthenticator)
+        .addInterceptor(loggingInterceptor)
         .build()
 }
 
-fun provideRetrofitBuilder(): Retrofit.Builder =
+fun provideRetrofitBuilder(httpClient: OkHttpClient): Retrofit.Builder =
     Retrofit.Builder()
         .baseUrl("http://77.47.130.226:8188/")
+        .client(httpClient)
         .addConverterFactory(GsonConverterFactory.create())
 
 fun provideAuthAPIService(retrofit: Retrofit.Builder): AuthApiService =

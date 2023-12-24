@@ -13,5 +13,5 @@ import retrofit2.http.POST
 
 interface ProjectApiService {
     @GET("api/projects")
-    suspend fun GetAll(): Call<List<ProjectPreviewModel>>
+    suspend fun getAll(): Response<List<ProjectPreviewModel>>
 }
