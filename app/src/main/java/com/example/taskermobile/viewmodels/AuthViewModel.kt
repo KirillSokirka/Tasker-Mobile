@@ -19,8 +19,8 @@ class AuthViewModel(
     private val _loginResponse = MutableLiveData<ApiResponse<JwtResponse>>()
     val loginResponse: LiveData<ApiResponse<JwtResponse>> = _loginResponse
 
-    private val _registerResponse = MutableLiveData<ApiResponse<String>>()
-    val registerResponse: LiveData<ApiResponse<String>> = _registerResponse
+    private val _registerResponse = MutableLiveData<ApiResponse<Unit>>()
+    val registerResponse: LiveData<ApiResponse<Unit>> = _registerResponse
 
     fun login(auth: LoginModel) {
         viewModelScope.launch {

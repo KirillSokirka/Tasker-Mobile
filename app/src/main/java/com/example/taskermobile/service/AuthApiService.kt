@@ -19,7 +19,7 @@ interface AuthApiService {
     @POST("auth/register")
     suspend fun register(
         @Body auth: RegisterModel,
-    ): Response<String>
+    ): Response<Unit>
 
     @POST("token/refresh-token")
     suspend fun refreshToken(
