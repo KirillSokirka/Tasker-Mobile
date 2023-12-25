@@ -3,6 +3,8 @@ package com.example.taskermobile.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.taskermobile.model.ChangePasswordModel
+import com.example.taskermobile.model.JwtResponse
 import com.example.taskermobile.model.RegisterModel
 import com.example.taskermobile.service.UserApiService
 import com.example.taskermobile.utils.ApiResponse
@@ -15,6 +17,9 @@ class UserViewModel( private val userApiService: UserApiService
     private val _deleteResponse = MutableLiveData<ApiResponse<String>>()
     val deleteResponse: LiveData<ApiResponse<String>> = _deleteResponse
 
+    private val _changePasswordResponse = MutableLiveData<ApiResponse<JwtResponse>>()
+    val changePasswordResponse: LiveData<ApiResponse<JwtResponse>> = _changePasswordResponse
+
     fun delete(id: String) {
         viewModelScope.launch {
             apiRequestFlow { userApiService.delete(id) }
@@ -23,4 +28,14 @@ class UserViewModel( private val userApiService: UserApiService
                 }
         }
     }
+
+    fun changePassword(changePasswordModel: ChangePasswordModel) {
+        viewModelScope.launch {
+            apiRequestFlow { userApiService.changePassword(changePasswordModel) }
+                .collect { apiResponse ->
+                    _changePasswordResponse.value = apiResponse
+                }
+        }
+    }
+
 }

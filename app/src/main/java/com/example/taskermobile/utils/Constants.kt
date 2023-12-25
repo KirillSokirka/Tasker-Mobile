@@ -13,29 +13,27 @@ import retrofit2.Response
 fun<T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T>> = flow {
     emit(ApiResponse.Loading)
 
-    withTimeoutOrNull(20000L) {
+    try {
         val response = call()
 
-        try {
-            if (response.code() == 204 || (response.code() == 200 && response.body() == null)) {
-                emit(ApiResponse.Success(null))
-            } else if (response.isSuccessful) {
-                response.body()?.let { data ->
-                    emit(ApiResponse.Success(data))
-                } ?: emit(ApiResponse.Failure("No data to show", 204))
-            } else {
-                response.errorBody()?.let { error ->
-                    error.use { responseBody ->
-                        val gson = GsonBuilder()
-                            .registerTypeAdapter(ErrorResponse::class.java, ErrorResponseDeserializer())
-                            .create()
-                        val parsedError: ErrorResponse = gson.fromJson(responseBody.charStream(), ErrorResponse::class.java)
-                        emit(ApiResponse.Failure(parsedError.message, 500))
-                    }
+        if (response.code() == 204 || (response.code() == 200 && response.body() == null)) {
+            emit(ApiResponse.Success(null))
+        } else if (response.isSuccessful) {
+            response.body()?.let { data ->
+                emit(ApiResponse.Success(data))
+            } ?: emit(ApiResponse.Failure("No data to show", 204))
+        } else {
+            response.errorBody()?.let { error ->
+                error.use { responseBody ->
+                    val gson = GsonBuilder()
+                        .registerTypeAdapter(ErrorResponse::class.java, ErrorResponseDeserializer())
+                        .create()
+                    val parsedError: ErrorResponse = gson.fromJson(responseBody.charStream(), ErrorResponse::class.java)
+                    emit(ApiResponse.Failure(parsedError.message, 500))
                 }
             }
-        } catch (e: Exception) {
-            emit(ApiResponse.Failure(e.message ?: e.toString(), 400))
         }
-    } ?: emit(ApiResponse.Failure("Timeout! Please try again.", 408))
+    } catch (e: Exception) {
+        emit(ApiResponse.Failure(e.message ?: e.toString(), 400))
+    }
 }.flowOn(Dispatchers.IO)
