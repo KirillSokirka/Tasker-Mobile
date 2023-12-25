@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
 
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-                    tokenViewModel.saveToken(apiResponse.data.token)
+                    tokenViewModel.saveToken(apiResponse.data!!.token)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()

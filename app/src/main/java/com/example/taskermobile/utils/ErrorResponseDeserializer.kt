@@ -10,7 +10,7 @@ class ErrorResponseDeserializer : JsonDeserializer<ErrorResponse> {
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): ErrorResponse {
         val jsonObject = json.asJsonObject
 
-        val errorsJsonElement = jsonObject.get("errors") ?: jsonObject.get("")
+        val errorsJsonElement = jsonObject.get("errors") ?: jsonObject.get("error") ?: jsonObject.get("")
 
         if (errorsJsonElement?.isJsonObject == true) {
             val errorsObject = errorsJsonElement.asJsonObject
@@ -26,6 +26,10 @@ class ErrorResponseDeserializer : JsonDeserializer<ErrorResponse> {
             val messagesArray = errorsJsonElement.asJsonArray
             val messages = messagesArray.joinToString(separator = "\n") { it.asString }
             return ErrorResponse(code = null, message = messages)
+        }
+
+        else if (errorsJsonElement != null) {
+            return ErrorResponse(code = null, message = errorsJsonElement.asString)
         }
 
         return ErrorResponse(code = null, message = "An unknown error occurred")

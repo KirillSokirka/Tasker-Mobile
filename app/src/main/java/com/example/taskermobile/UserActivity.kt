@@ -2,16 +2,18 @@ package com.example.taskermobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.taskermobile.service.UserApiService
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
+import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserActivity() : AppCompatActivity() {
@@ -37,7 +39,11 @@ class UserActivity() : AppCompatActivity() {
         val deleteButton: Button = findViewById(R.id.deleteAccount)
 
         deleteButton.setOnClickListener {
-            userViewModel.delete()
+            getIdFromToken(tokenViewModel.token.value?.token.toString())?.let { it1 ->
+                userViewModel.delete(
+                    it1
+                )
+            }
         }
 
         userViewModel.deleteResponse.observe(this) { apiResponse ->
@@ -48,9 +54,8 @@ class UserActivity() : AppCompatActivity() {
 
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-
                     tokenViewModel.deleteToken()
-                    val intent = Intent(this, MainActivity::class.java)
+                    val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -67,5 +72,20 @@ class UserActivity() : AppCompatActivity() {
         }
     }
 
+    private fun getIdFromToken(token: String): String? {
+        try {
+            val split = token.split(".")
+            if (split.size < 2) return null // Not a valid JWT
 
+            val payload = split[1]
+            val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
+            val decodedString = String(decodedBytes, Charsets.UTF_8)
+
+            val jsonObject = JSONObject(decodedString)
+            return jsonObject.optString("nameid")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
 }
