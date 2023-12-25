@@ -18,6 +18,7 @@ import com.example.taskermobile.viewmodels.AuthViewModel
 import com.example.taskermobile.viewmodels.BacklogPageViewModel
 import com.example.taskermobile.viewmodels.ProjectsPageViewModel
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
+import com.example.taskermobile.viewmodels.SharedViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -45,11 +46,12 @@ class TaskerApplication: Application() {
                         .create()
                 }
 
+
                 single { provideTokenManager(androidContext()) }
 
                 single { AuthInterceptor(get()) }
 
-                single { AuthAuthenticator(get()) }
+                single { AuthAuthenticator(get(), get()) }
 
                 single { provideOkHttpClient(get(), get()) }
 
@@ -72,6 +74,8 @@ class TaskerApplication: Application() {
                 viewModel { ReleasesPageViewModel(get()) }
 
                 viewModel { BacklogPageViewModel(get()) }
+
+                viewModel { SharedViewModel() }
             }))
         }
     }

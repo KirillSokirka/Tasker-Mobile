@@ -2,6 +2,7 @@ package com.example.taskermobile.service
 
 import com.example.taskermobile.model.JwtResponse
 import com.example.taskermobile.model.LoginModel
+import com.example.taskermobile.model.RefreshTokenModel
 import com.example.taskermobile.model.RegisterModel
 import retrofit2.Response
 import retrofit2.http.Body
@@ -20,8 +21,8 @@ interface AuthApiService {
         @Body auth: RegisterModel,
     ): Response<String>
 
-    @GET("auth/refresh")
+    @POST("token/refresh-token")
     suspend fun refreshToken(
-        @Header("Authorization") token: String,
+        @Body refreshTokenModel: RefreshTokenModel
     ): Response<JwtResponse>
 }

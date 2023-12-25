@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.taskermobile.utils.TokenManager
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 
 class SplashActivity  : AppCompatActivity() {
@@ -16,7 +17,9 @@ class SplashActivity  : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            val token = tokenManager.getToken().firstOrNull()
+            val token = runBlocking {
+                tokenManager.getToken().firstOrNull()
+            }
 
             if (token == null) {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
