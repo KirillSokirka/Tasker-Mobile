@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity() {
                         MyReleasesButton()
                         
                         BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883")
+                        ProjectUpdateButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883")
                         UserButton()
                     }
                 }
@@ -104,6 +105,21 @@ fun BacklogButton(projectId: String) {
         modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
         Text("Navigate to backlog")
+    }
+}
+@Composable
+fun ProjectUpdateButton(projectId: String) {
+    val context = LocalContext.current
+
+    Button(
+        onClick = {
+            val intent = Intent(context, ProjectUpdateActivity::class.java)
+            intent.putExtra("projectId", projectId)
+            context.startActivity(intent)
+        },
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
+    ) {
+        Text("Navigate to update project")
     }
 }
 
