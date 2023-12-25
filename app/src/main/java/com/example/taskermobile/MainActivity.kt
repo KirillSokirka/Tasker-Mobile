@@ -40,11 +40,11 @@ class MainActivity : ComponentActivity() {
                         Greeting("Android")
 
                         // Call a composable function to display a button
-                        MyButton()
+                        ProjectsButton()
 
                         MyReleasesButton()
                         
-                        BacklogButton(projectId = "c9efa3be-730e-4fac-a6ef-34fb97b9c972")
+                        BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883")
                         UserButton()
                     }
                 }
@@ -62,7 +62,7 @@ fun Greeting(name: String, modifier: androidx.compose.ui.Modifier = androidx.com
 }
 
 @Composable
-fun MyButton() {
+fun ProjectsButton() {
     val context = LocalContext.current
 
     Button(
@@ -72,7 +72,7 @@ fun MyButton() {
         },
         modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
-        Text("Navigate to Second Activity")
+        Text("Navigate to Project List Activity")
     }
 }
 

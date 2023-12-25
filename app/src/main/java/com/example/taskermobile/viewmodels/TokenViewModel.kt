@@ -15,15 +15,20 @@ class TokenViewModel (
 
     val token = MutableLiveData<TokenValue?>()
 
+    val isLoading = MutableLiveData<Boolean>()
+
     init {
+        isLoading.value = true // Start with loading state
         viewModelScope.launch(Dispatchers.IO) {
-            tokenManager.getToken().collect {
+            tokenManager.getToken().collect { tokenValue ->
                 withContext(Dispatchers.Main) {
-                    token.value = it
+                    token.value = tokenValue
+                    isLoading.value = false // Loading complete
                 }
             }
         }
     }
+
 
     fun saveToken(token: TokenValue) {
         viewModelScope.launch(Dispatchers.IO) {

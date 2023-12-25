@@ -85,7 +85,7 @@ class AuthAuthenticator(private val tokenManager: TokenManager,
             val decodedString = String(decodedBytes, Charsets.UTF_8)
 
             val jsonObject = JSONObject(decodedString)
-            return jsonObject.optString("sub")
+            return jsonObject.optString("email")
         } catch (e: Exception) {
             e.printStackTrace()
             return null

@@ -7,8 +7,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.taskermobile.model.ChangePasswordModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.TokenViewModel
@@ -28,6 +30,7 @@ class UserActivity() : AppCompatActivity() {
         setContentView(R.layout.user_activity)
         loadingIndicator = findViewById(R.id.loadingIndicator)
 
+
         val logOutButton: Button = findViewById(R.id.logOut)
 
         logOutButton.setOnClickListener {
@@ -36,28 +39,37 @@ class UserActivity() : AppCompatActivity() {
             startActivity(intent)
         }
 
+
         val deleteButton: Button = findViewById(R.id.deleteAccount)
+        val changePasswordButton: Button = findViewById(R.id.changePassword)
+//        val userNameLable: TextView = findViewById(R.id.userName)
+
+        tokenViewModel.isLoading.observe(this, Observer { isLoading ->
+            deleteButton.isEnabled = !isLoading
+            changePasswordButton.isEnabled = !isLoading
+        })
+
 
         deleteButton.setOnClickListener {
-            getIdFromToken(tokenViewModel.token.value?.token.toString())?.let { it1 ->
-                userViewModel.delete(
-                    it1
-                )
-            }
+            val idFromJwt = getIdFromToken(tokenViewModel.token.value?.token.toString())!!
+            userViewModel.delete(
+                idFromJwt
+            )
         }
 
-        val changePasswordButton: Button = findViewById(R.id.changePassword)
+
+
+
 
         changePasswordButton.setOnClickListener {
-            getEmailFromToken(tokenViewModel.token.value?.token.toString())?.let { it1 ->
-                userViewModel.changePassword(
-                    ChangePasswordModel(
-                        it1,
-                        findViewById<EditText>(R.id.oldPassword).text.toString(),
-                        findViewById<EditText>(R.id.newPassword).text.toString()
-                    )
+            val emailFromJwt = getEmailFromToken(tokenViewModel.token.value?.token.toString())!!
+            userViewModel.changePassword(
+                ChangePasswordModel(
+                    emailFromJwt,
+                    findViewById<EditText>(R.id.oldPassword).text.toString(),
+                    findViewById<EditText>(R.id.newPassword).text.toString()
                 )
-            }
+            )
         }
 
         userViewModel.changePasswordResponse.observe(this) { apiResponse ->
@@ -114,14 +126,14 @@ class UserActivity() : AppCompatActivity() {
     private fun getIdFromToken(token: String): String? {
         try {
             val split = token.split(".")
-            if (split.size < 2) return null // Not a valid JWT
+            if (split.size < 2) return null
 
             val payload = split[1]
             val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
             val decodedString = String(decodedBytes, Charsets.UTF_8)
 
             val jsonObject = JSONObject(decodedString)
-            return jsonObject.optString("nameid")
+            return jsonObject.optString("jti")
         } catch (e: Exception) {
             e.printStackTrace()
             return null
@@ -131,14 +143,31 @@ class UserActivity() : AppCompatActivity() {
     private fun getEmailFromToken(token: String): String? {
         try {
             val split = token.split(".")
-            if (split.size < 2) return null // Not a valid JWT
+            if (split.size < 2) return null
 
             val payload = split[1]
             val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
             val decodedString = String(decodedBytes, Charsets.UTF_8)
 
             val jsonObject = JSONObject(decodedString)
-            return jsonObject.optString("sub")
+            return jsonObject.optString("email")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
+
+    private fun getUsernameFromToken(token: String): String? {
+        try {
+            val split = token.split(".")
+            if (split.size < 2) return null
+
+            val payload = split[1]
+            val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
+            val decodedString = String(decodedBytes, Charsets.UTF_8)
+
+            val jsonObject = JSONObject(decodedString)
+            return jsonObject.optString("unique_name")
         } catch (e: Exception) {
             e.printStackTrace()
             return null
