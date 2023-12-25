@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity() {
                         MyReleasesButton()
                         
                         BacklogButton(projectId = "c9efa3be-730e-4fac-a6ef-34fb97b9c972")
+                        UserButton()
                     }
                 }
             }
@@ -103,5 +104,19 @@ fun BacklogButton(projectId: String) {
         modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
         Text("Navigate to backlog")
+    }
+}
+
+@Composable
+fun UserButton() {
+    val context = LocalContext.current
+    Button(
+        onClick = {
+            val intent = Intent(context, UserActivity::class.java)
+            context.startActivity(intent)
+        },
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
+    ) {
+        Text("Navigate to user")
     }
 }

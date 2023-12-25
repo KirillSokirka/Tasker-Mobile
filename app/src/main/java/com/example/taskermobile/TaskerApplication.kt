@@ -10,6 +10,7 @@ import com.example.taskermobile.service.AuthApiService
 import com.example.taskermobile.service.ProjectApiService
 import com.example.taskermobile.service.ReleaseApiService
 import com.example.taskermobile.service.TaskApiService
+import com.example.taskermobile.service.UserApiService
 import com.example.taskermobile.utils.AuthAuthenticator
 import com.example.taskermobile.utils.AuthInterceptor
 import com.example.taskermobile.utils.ErrorResponseDeserializer
@@ -20,6 +21,7 @@ import com.example.taskermobile.viewmodels.ProjectsPageViewModel
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
 import com.example.taskermobile.viewmodels.SharedViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
+import com.example.taskermobile.viewmodels.UserViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -65,6 +67,8 @@ class TaskerApplication: Application() {
 
                 single { provideTaskApiService(get()) }
 
+                single {provideUserApiServer(get())}
+
                 viewModel { AuthViewModel(get()) }
 
                 viewModel { TokenViewModel(get()) }
@@ -76,6 +80,8 @@ class TaskerApplication: Application() {
                 viewModel { BacklogPageViewModel(get()) }
 
                 viewModel { SharedViewModel() }
+
+                viewModel { UserViewModel(get()) }
             }))
         }
     }
@@ -123,3 +129,8 @@ fun provideTaskApiService(retrofit: Retrofit.Builder): TaskApiService =
     retrofit
         .build()
         .create(TaskApiService::class.java)
+
+fun provideUserApiServer(retrofit: Retrofit.Builder): UserApiService =
+    retrofit
+        .build()
+        .create(UserApiService::class.java)
