@@ -9,10 +9,10 @@ class SharedViewModel : BaseViewModel() {
     val navigateToLogin: LiveData<Boolean> = _navigateToLogin
 
     fun requireLogin() {
-        _navigateToLogin.value = true
+        _navigateToLogin.postValue(true)
     }
 
     fun resetNavigationFlag() {
-        _navigateToLogin.value = false
+        _navigateToLogin.postValue(false)
     }
 }

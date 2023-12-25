@@ -2,7 +2,9 @@ package com.example.taskermobile.utils
 
 import android.util.Base64
 import com.example.taskermobile.model.JwtResponse
+import com.example.taskermobile.model.RefreshJwtResponse
 import com.example.taskermobile.model.RefreshTokenModel
+import com.example.taskermobile.model.TokenValue
 import com.example.taskermobile.service.AuthApiService
 import com.example.taskermobile.viewmodels.SharedViewModel
 import kotlinx.coroutines.flow.firstOrNull
@@ -42,11 +44,12 @@ class AuthAuthenticator(private val tokenManager: TokenManager,
             }
 
             return if (refreshResponse.isSuccessful && refreshResponse.body() != null) {
-                val newToken = refreshResponse.body()!!.token
-                runBlocking { tokenManager.saveToken(newToken) }
+
+                val refreshToken = refreshResponse.body()
+                runBlocking { tokenManager.saveToken(TokenValue(refreshToken!!.token, refreshToken.refreshToken)) }
 
                 response.request.newBuilder()
-                    .header("Authorization", "Bearer $newToken")
+                    .header("Authorization", "Bearer ${refreshToken!!.token}")
                     .build()
             } else {
                 sharedViewModel.requireLogin()
@@ -57,7 +60,7 @@ class AuthAuthenticator(private val tokenManager: TokenManager,
         return null
     }
 
-    private suspend fun getNewToken(refreshToken: RefreshTokenModel?): retrofit2.Response<JwtResponse> {
+    private suspend fun getNewToken(refreshToken: RefreshTokenModel?): retrofit2.Response<RefreshJwtResponse> {
         val loggingInterceptor = HttpLoggingInterceptor()
 
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -65,7 +68,7 @@ class AuthAuthenticator(private val tokenManager: TokenManager,
         val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://77.47.130.226:8188/token/refresh-token")
+            .baseUrl("http://77.47.130.226:8188/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
