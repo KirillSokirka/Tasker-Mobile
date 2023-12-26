@@ -107,7 +107,7 @@ suspend fun getNewToken(refreshToken: RefreshTokenModel?): retrofit2.Response<Re
     val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://localhost:5185/")
+        .baseUrl("http://77.47.130.226:8188/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
