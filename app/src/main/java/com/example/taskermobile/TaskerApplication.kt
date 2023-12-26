@@ -73,8 +73,6 @@ val myModule = module {
     viewModel { UserViewModel(get()) }
 }
 
-
-
 fun provideTokenManager(context: Context): TokenManager = TokenManager(context)
 
 fun provideOkHttpClient(

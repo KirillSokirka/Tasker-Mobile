@@ -16,24 +16,24 @@ interface AuthStateListener {
 object AuthEventListenerImplementation : AuthStateListener {
 
     // You need to set this context from an Activity or Application
-    lateinit var context: Context
+    var context: Context? = null
 
     override fun onTokenExpired() {
         // This will be called when the token has expired.
-        if (context is Activity) {
+        if (context != null && context is Activity) {
             (context as Activity).runOnUiThread {
                 Toast.makeText(context, "Session expired. Please log in again.", Toast.LENGTH_LONG).show()
-                navigateToLoginScreen(context)
+                navigateToLoginScreen(context!!)
             }
         }
     }
 
     override fun onRefreshTokenFailed() {
         // This will be called when the refresh token attempt fails.
-        if (context is Activity) {
+        if (context != null && context is Activity) {
             (context as Activity).runOnUiThread {
                 Toast.makeText(context, "Could not refresh session. Please log in again.", Toast.LENGTH_LONG).show()
-                navigateToLoginScreen(context)
+                navigateToLoginScreen(context!!)
             }
         }
     }
