@@ -1,6 +1,9 @@
 package com.example.taskermobile.utils
 
 import android.util.Base64
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.example.taskermobile.model.ErrorResponse
 import com.example.taskermobile.model.token.RefreshJwtResponse
 import com.example.taskermobile.model.token.RefreshTokenModel
@@ -114,3 +117,11 @@ suspend fun getNewToken(refreshToken: RefreshTokenModel?): retrofit2.Response<Re
     return service.refreshToken(refreshToken!!)
 }
 
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<in T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(t: T) {
+            observer.onChanged(t)
+            removeObserver(this)
+        }
+    })
+}

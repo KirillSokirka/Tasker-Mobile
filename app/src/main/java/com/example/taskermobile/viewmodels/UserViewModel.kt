@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskermobile.model.auth.ChangePasswordModel
 import com.example.taskermobile.model.token.JwtResponse
 import com.example.taskermobile.model.user.UserModel
+import com.example.taskermobile.model.user.UserUpdateModel
 import com.example.taskermobile.service.UserApiService
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.apiRequestFlow
@@ -20,8 +21,41 @@ class UserViewModel( private val userApiService: UserApiService
     private val _changePasswordResponse = MutableLiveData<ApiResponse<JwtResponse>>()
     val changePasswordResponse: LiveData<ApiResponse<JwtResponse>> = _changePasswordResponse
 
-    private val _usersResponse = MutableLiveData<ApiResponse<UserModel>>()
-    val userResponse: LiveData<ApiResponse<UserModel>> = _usersResponse
+    private val _usersResponse = MutableLiveData<ApiResponse<List<UserModel>>>()
+    val userResponse: LiveData<ApiResponse<List<UserModel>>> = _usersResponse
+
+    private val _usersUpdateResponse = MutableLiveData<ApiResponse<UserModel>>()
+    val userUpdateResponse: LiveData<ApiResponse<UserModel>> = _usersUpdateResponse
+
+    private val _usersGetResponse = MutableLiveData<ApiResponse<UserModel>>()
+    val userGetResponse: LiveData<ApiResponse<UserModel>> = _usersGetResponse
+
+    fun getAll() {
+        viewModelScope.launch {
+            apiRequestFlow { userApiService.getAll() }
+                .collect { apiResponse ->
+                    _usersResponse.value = apiResponse
+                }
+        }
+    }
+
+    fun get(id: String) {
+        viewModelScope.launch {
+            apiRequestFlow { userApiService.get(id) }
+                .collect { apiResponse ->
+                    _usersGetResponse.value = apiResponse
+                }
+        }
+    }
+
+    fun updateUserProjects(user: UserUpdateModel) {
+        viewModelScope.launch {
+            apiRequestFlow { userApiService.update(user) }
+            .collect { apiResponse ->
+                _usersUpdateResponse.value = apiResponse
+            }
+        }
+    }
 
     fun delete(id: String) {
         viewModelScope.launch {
@@ -40,14 +74,4 @@ class UserViewModel( private val userApiService: UserApiService
                 }
         }
     }
-
-    fun getAll() {
-        viewModelScope.launch {
-            apiRequestFlow { userApiService.getAll() }
-                .collect { apiResponse ->
-                    _usersResponse.value = apiResponse
-                }
-        }
-    }
-
 }

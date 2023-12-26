@@ -11,16 +11,22 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.taskermobile.LoginActivity
+import com.example.taskermobile.MainActivity
 import com.example.taskermobile.R
 import com.example.taskermobile.activities.kanbanboard.KanbanBoardDetailActivity
 import com.example.taskermobile.activities.release.ReleasesPageActivity
 import com.example.taskermobile.activities.users.UserManagementActivity
 import com.example.taskermobile.utils.ApiResponse
+import com.example.taskermobile.utils.getIdFromToken
 import com.example.taskermobile.viewmodels.ProjectsViewModel
+import com.example.taskermobile.viewmodels.TokenViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProjectDetailActivity : AppCompatActivity() {
+
     private val viewModel: ProjectsViewModel by viewModel()
+    private val tokenModel: TokenViewModel by viewModel()
 
     private lateinit var loadingIndicator: ProgressBar
 
@@ -44,7 +50,13 @@ class ProjectDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        viewModel.getById(projectId)
+        tokenModel.token.observe(this) { tokenValue ->
+            if (tokenValue != null) {
+                viewModel.getById(projectId)
+            } else {
+                loadingIndicator.visibility = View.VISIBLE
+            }
+        }
 
         val releasesButton : Button = findViewById(R.id.releasesInfo)
         val manageUsersButton: Button = findViewById(R.id.manageUsersButton)
@@ -58,6 +70,18 @@ class ProjectDetailActivity : AppCompatActivity() {
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
                     apiResponse.data?.let { project ->
+
+                        val token = tokenModel.token.value
+
+                            val userId = getIdFromToken(token!!.token)
+
+                            val users = (project.assignedUsers ?: emptyList()) + (project.adminProjects ?: emptyList())
+
+                            if (!users.contains(userId)) {
+                                startActivity(Intent(this@ProjectDetailActivity, MainActivity::class.java))
+                            }
+
+
                         title.setText(project.title)
 
                         releasesButton.setOnClickListener{
@@ -101,6 +125,8 @@ class ProjectDetailActivity : AppCompatActivity() {
                             val users = (project.assignedUsers ?: emptyList()) + (project.adminProjects ?: emptyList())
 
                             intent.putStringArrayListExtra("USER_LIST", ArrayList(users))
+                            intent.putStringArrayListExtra("ADMIN_USERS", ArrayList(project.adminProjects ?: emptyList()))
+                            intent.putExtra("PROJECT_ID", projectId)
 
                             startActivity(intent)
                         }

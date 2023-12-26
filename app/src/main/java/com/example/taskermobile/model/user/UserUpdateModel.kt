@@ -1,9 +1,7 @@
 package com.example.taskermobile.model.user
 
-data class UserModel(
-    val id: String,
-    val title: String,
-    val isAdmin: Boolean = false,
+data class UserUpdateModel(
+    val username: String,
     var assignedProjects: List<String>?,
     var underControlProjects: List<String>?
 )

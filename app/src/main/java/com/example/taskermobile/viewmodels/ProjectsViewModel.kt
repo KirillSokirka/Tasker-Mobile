@@ -28,6 +28,13 @@ class ProjectsViewModel(
     private val _projectGetByIdResponse = MutableLiveData<ApiResponse<ProjectModel>>()
     val projectGetByIdResponse: LiveData<ApiResponse<ProjectModel>> = _projectGetByIdResponse
 
+    fun getById(projectId: String){
+        viewModelScope.launch {
+            apiRequestFlow { projectApiService.getById(projectId) }
+                .collect { apiResponse -> _projectGetByIdResponse.value = apiResponse }
+        }
+    }
+
     fun getAll() {
         viewModelScope.launch {
             apiRequestFlow { projectApiService.getAll() }
@@ -49,11 +56,6 @@ class ProjectsViewModel(
         }
     }
 
-    fun getById(projectId: String){
-        viewModelScope.launch {
-            apiRequestFlow { projectApiService.getById(projectId) }
-                .collect { apiResponse -> _projectGetByIdResponse.value = apiResponse }
-        }
-    }
+
 
 }
