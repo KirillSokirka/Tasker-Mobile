@@ -47,3 +47,16 @@ app/build.gradle.kts
 *.bin
 *.lock
 *.lock
+.idea/misc.xml
+.idea/gradle.xml
+.gradle/file-system.probe
+.gradle/buildOutputCleanup/outputFiles.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/8.2/fileHashes/resourceHashesCache.bin
+.gradle/8.2/fileHashes/fileHashes.lock
+.gradle/8.2/fileHashes/fileHashes.bin
+.gradle/8.2/executionHistory/executionHistory.lock
+.gradle/8.2/executionHistory/executionHistory.bin
+.gradle/8.2/checksums/sha1-checksums.bin
+.gradle/8.2/checksums/md5-checksums.bin
+.gradle/8.2/checksums/checksums.lock
