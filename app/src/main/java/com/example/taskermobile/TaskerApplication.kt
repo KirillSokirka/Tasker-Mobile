@@ -12,14 +12,16 @@ import com.example.taskermobile.service.ReleaseApiService
 import com.example.taskermobile.service.TaskApiService
 import com.example.taskermobile.service.UserApiService
 import com.example.taskermobile.utils.AuthAuthenticator
+import com.example.taskermobile.utils.AuthEventListenerImplementation
 import com.example.taskermobile.utils.AuthInterceptor
+import com.example.taskermobile.utils.AuthStateListener
 import com.example.taskermobile.utils.ErrorResponseDeserializer
 import com.example.taskermobile.utils.TokenManager
+import com.example.taskermobile.utils.TokenRefresher
 import com.example.taskermobile.viewmodels.AuthViewModel
 import com.example.taskermobile.viewmodels.BacklogPageViewModel
 import com.example.taskermobile.viewmodels.ProjectsPageViewModel
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
-import com.example.taskermobile.viewmodels.SharedViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
 import com.google.gson.GsonBuilder
@@ -28,6 +30,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -41,51 +44,38 @@ class TaskerApplication: Application() {
         startKoin {
             androidLogger()
             androidContext(this@TaskerApplication)
-            modules(listOf(module {
-                single {
-                    GsonBuilder()
-                        .registerTypeAdapter(ErrorResponse::class.java, ErrorResponseDeserializer())
-                        .create()
-                }
-
-
-                single { provideTokenManager(androidContext()) }
-
-                single { AuthInterceptor(get()) }
-
-                single { AuthAuthenticator(get(), get()) }
-
-                single { provideOkHttpClient(get(), get()) }
-
-                single { provideRetrofitBuilder(get()) }
-
-                single { provideAuthAPIService(get()) }
-
-                single { provideReleaseApiService(get()) }
-
-                single { provideProjectApiService(get()) }
-
-                single { provideTaskApiService(get()) }
-
-                single {provideUserApiServer(get())}
-
-                viewModel { AuthViewModel(get()) }
-
-                viewModel { TokenViewModel(get()) }
-
-                viewModel { ProjectsPageViewModel(get()) }
-
-                viewModel { ReleasesPageViewModel(get()) }
-
-                viewModel { BacklogPageViewModel(get()) }
-
-                viewModel { SharedViewModel() }
-
-                viewModel { UserViewModel(get()) }
-            }))
+            modules(listOf(myModule))
         }
     }
 }
+
+val myModule = module {
+    single {
+        GsonBuilder()
+            .registerTypeAdapter(ErrorResponse::class.java, ErrorResponseDeserializer())
+            .create()
+    }
+    single { provideTokenManager(androidContext()) }
+    single { AuthInterceptor(get()) }
+    single { AuthAuthenticator(get(), get()) }
+    single { provideOkHttpClient(get(), get()) }
+    single { provideRetrofitBuilder(get()) }
+    single { provideAuthAPIService(get()) }
+    single { provideReleaseApiService(get()) }
+    single { provideProjectApiService(get()) }
+    single { provideTaskApiService(get()) }
+    single {provideUserApiServer(get())}
+    single<AuthStateListener> { AuthEventListenerImplementation }
+
+    viewModel { AuthViewModel(get()) }
+    viewModel { TokenViewModel(get()) }
+    viewModel { ProjectsPageViewModel(get()) }
+    viewModel { ReleasesPageViewModel(get()) }
+    viewModel { BacklogPageViewModel(get()) }
+    viewModel { UserViewModel(get()) }
+}
+
+
 
 fun provideTokenManager(context: Context): TokenManager = TokenManager(context)
 

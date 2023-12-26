@@ -44,3 +44,6 @@ app/build.gradle.kts
 .gradle/8.2/fileHashes/resourceHashesCache.bin
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
 .gradle/buildOutputCleanup/outputFiles.bin
+*.bin
+*.lock
+*.lock

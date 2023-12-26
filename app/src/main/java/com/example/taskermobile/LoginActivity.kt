@@ -10,19 +10,24 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.taskermobile.model.LoginModel
 import com.example.taskermobile.utils.ApiResponse
+import com.example.taskermobile.utils.AuthEventListenerImplementation
+import com.example.taskermobile.utils.AuthStateListener
 import com.example.taskermobile.viewmodels.AuthViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
 
     private val viewModel: AuthViewModel by viewModel()
     private val tokenViewModel: TokenViewModel by viewModel()
+    private val authStateListener: AuthStateListener by inject()
 
     private lateinit var loadingIndicator: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AuthEventListenerImplementation.context = this
 
         setContentView(R.layout.activity_login)
         loadingIndicator = findViewById(R.id.loadingIndicator)
@@ -66,6 +71,13 @@ class LoginActivity : AppCompatActivity() {
                     ).show()
                 }
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (AuthEventListenerImplementation.context == this) {
+            AuthEventListenerImplementation.context = applicationContext
         }
     }
 }

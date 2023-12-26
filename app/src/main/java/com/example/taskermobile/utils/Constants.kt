@@ -1,14 +1,21 @@
 package com.example.taskermobile.utils
-import com.example.taskermobile.model.ErrorResponse
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 
+import android.util.Base64
+import com.example.taskermobile.model.ErrorResponse
+import com.example.taskermobile.model.RefreshJwtResponse
+import com.example.taskermobile.model.RefreshTokenModel
+import com.example.taskermobile.service.AuthApiService
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withTimeoutOrNull
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONObject
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 fun<T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T & Any>> = flow {
     emit(ApiResponse.Loading)
@@ -37,3 +44,38 @@ fun<T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T & Any
         emit(ApiResponse.Failure(e.message ?: e.toString(), 400))
     }
 }.flowOn(Dispatchers.IO)
+
+fun getEmailFromToken(token: String): String? {
+    try {
+        val split = token.split(".")
+        if (split.size < 2) return null // Not a valid JWT
+
+        val payload = split[1]
+        val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
+        val decodedString = String(decodedBytes, Charsets.UTF_8)
+
+        val jsonObject = JSONObject(decodedString)
+        return jsonObject.optString("email")
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return null
+    }
+}
+
+suspend fun getNewToken(refreshToken: RefreshTokenModel?): retrofit2.Response<RefreshJwtResponse> {
+    val loggingInterceptor = HttpLoggingInterceptor()
+
+    loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+
+    val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
+
+    val retrofit = Retrofit.Builder()
+        .baseUrl("http://77.47.130.226:8188/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(okHttpClient)
+        .build()
+
+    val service = retrofit.create(AuthApiService::class.java)
+
+    return service.refreshToken(refreshToken!!)
+}

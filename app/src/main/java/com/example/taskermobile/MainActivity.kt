@@ -13,14 +13,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import com.example.taskermobile.ui.theme.TaskerMobileTheme
-import com.example.taskermobile.viewmodels.SharedViewModel
+import com.example.taskermobile.utils.AuthStateListener
+import com.example.taskermobile.utils.TokenManager
+import com.example.taskermobile.utils.TokenRefresher
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-    private val sharedModel: SharedViewModel by viewModel()
+
+    private val tokenManager: TokenManager by inject()
+    private val authStateListener: AuthStateListener by inject()
+
+    private lateinit var tokenRefresher: TokenRefresher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
 
         setContent {
@@ -50,7 +58,15 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+
+            tokenRefresher = TokenRefresher(tokenManager, authStateListener)
+            tokenRefresher.startTokenRefresh()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        tokenRefresher.stopTokenRefresh()
     }
 }
 
