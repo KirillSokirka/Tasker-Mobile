@@ -1,25 +1,16 @@
 package com.example.taskermobile
 
 import BacklogRecyclerViewAdapter
-import ProjectPreviewRecyclerViewAdapter
-import ReleasePreviewRecyclerViewAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.taskermobile.service.ProjectApiService
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.BacklogPageViewModel
-import com.example.taskermobile.viewmodels.ProjectsPageViewModel
-import com.example.taskermobile.viewmodels.ReleasesPageViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class BacklogPageActivity : AppCompatActivity() {

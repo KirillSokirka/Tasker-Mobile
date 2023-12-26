@@ -12,12 +12,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
+import com.example.taskermobile.activities.project.ProjectUpdateActivity
+import com.example.taskermobile.activities.project.ProjectsPageActivity
+import com.example.taskermobile.activities.release.ReleasesPageActivity
 import com.example.taskermobile.ui.theme.TaskerMobileTheme
-import com.example.taskermobile.utils.AuthStateListener
+import com.example.taskermobile.utils.eventlisteners.AuthStateListener
 import com.example.taskermobile.utils.TokenManager
 import com.example.taskermobile.utils.TokenRefresher
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -44,16 +46,14 @@ class MainActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // Call your composable function to display text
                         Greeting("Android")
 
-                        // Call a composable function to display a button
                         ProjectsButton()
 
                         MyReleasesButton()
                         
                         BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883")
-                        ProjectUpdateButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883")
+
                         UserButton()
                     }
                 }

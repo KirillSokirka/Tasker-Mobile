@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.taskermobile.model.RegisterModel
+import com.example.taskermobile.model.auth.RegisterModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

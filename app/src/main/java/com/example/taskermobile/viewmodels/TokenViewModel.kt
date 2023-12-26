@@ -3,7 +3,7 @@ package com.example.taskermobile.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.taskermobile.model.TokenValue
+import com.example.taskermobile.model.token.TokenValue
 import com.example.taskermobile.utils.TokenManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

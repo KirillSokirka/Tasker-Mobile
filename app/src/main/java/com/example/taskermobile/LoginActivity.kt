@@ -8,10 +8,10 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.taskermobile.model.LoginModel
+import com.example.taskermobile.model.auth.LoginModel
 import com.example.taskermobile.utils.ApiResponse
-import com.example.taskermobile.utils.AuthEventListenerImplementation
-import com.example.taskermobile.utils.AuthStateListener
+import com.example.taskermobile.utils.eventlisteners.AuthEventListenerImplementation
+import com.example.taskermobile.utils.eventlisteners.AuthStateListener
 import com.example.taskermobile.viewmodels.AuthViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import org.koin.android.ext.android.inject

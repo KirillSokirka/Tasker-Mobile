@@ -2,20 +2,19 @@ package com.example.taskermobile
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Base64
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.example.taskermobile.model.ChangePasswordModel
+import com.example.taskermobile.model.auth.ChangePasswordModel
 import com.example.taskermobile.utils.ApiResponse
+import com.example.taskermobile.utils.getEmailFromToken
+import com.example.taskermobile.utils.getIdFromToken
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
-import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserActivity() : AppCompatActivity() {
@@ -56,10 +55,6 @@ class UserActivity() : AppCompatActivity() {
                 idFromJwt
             )
         }
-
-
-
-
 
         changePasswordButton.setOnClickListener {
             val emailFromJwt = getEmailFromToken(tokenViewModel.token.value?.token.toString())!!
@@ -120,57 +115,6 @@ class UserActivity() : AppCompatActivity() {
                     ).show()
                 }
             }
-        }
-    }
-
-    private fun getIdFromToken(token: String): String? {
-        try {
-            val split = token.split(".")
-            if (split.size < 2) return null
-
-            val payload = split[1]
-            val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
-            val decodedString = String(decodedBytes, Charsets.UTF_8)
-
-            val jsonObject = JSONObject(decodedString)
-            return jsonObject.optString("jti")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return null
-        }
-    }
-
-    private fun getEmailFromToken(token: String): String? {
-        try {
-            val split = token.split(".")
-            if (split.size < 2) return null
-
-            val payload = split[1]
-            val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
-            val decodedString = String(decodedBytes, Charsets.UTF_8)
-
-            val jsonObject = JSONObject(decodedString)
-            return jsonObject.optString("email")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return null
-        }
-    }
-
-    private fun getUsernameFromToken(token: String): String? {
-        try {
-            val split = token.split(".")
-            if (split.size < 2) return null
-
-            val payload = split[1]
-            val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
-            val decodedString = String(decodedBytes, Charsets.UTF_8)
-
-            val jsonObject = JSONObject(decodedString)
-            return jsonObject.optString("unique_name")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return null
         }
     }
 }

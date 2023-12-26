@@ -3,9 +3,9 @@ package com.example.taskermobile.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.taskermobile.model.JwtResponse
-import com.example.taskermobile.model.LoginModel
-import com.example.taskermobile.model.RegisterModel
+import com.example.taskermobile.model.token.JwtResponse
+import com.example.taskermobile.model.auth.LoginModel
+import com.example.taskermobile.model.auth.RegisterModel
 import com.example.taskermobile.service.AuthApiService
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.apiRequestFlow

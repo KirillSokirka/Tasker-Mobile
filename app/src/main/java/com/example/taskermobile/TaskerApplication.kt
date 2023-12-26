@@ -12,15 +12,14 @@ import com.example.taskermobile.service.ReleaseApiService
 import com.example.taskermobile.service.TaskApiService
 import com.example.taskermobile.service.UserApiService
 import com.example.taskermobile.utils.AuthAuthenticator
-import com.example.taskermobile.utils.AuthEventListenerImplementation
+import com.example.taskermobile.utils.eventlisteners.AuthEventListenerImplementation
 import com.example.taskermobile.utils.AuthInterceptor
-import com.example.taskermobile.utils.AuthStateListener
+import com.example.taskermobile.utils.eventlisteners.AuthStateListener
 import com.example.taskermobile.utils.ErrorResponseDeserializer
 import com.example.taskermobile.utils.TokenManager
-import com.example.taskermobile.utils.TokenRefresher
 import com.example.taskermobile.viewmodels.AuthViewModel
 import com.example.taskermobile.viewmodels.BacklogPageViewModel
-import com.example.taskermobile.viewmodels.ProjectsPageViewModel
+import com.example.taskermobile.viewmodels.ProjectsViewModel
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
@@ -30,7 +29,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -69,7 +67,7 @@ val myModule = module {
 
     viewModel { AuthViewModel(get()) }
     viewModel { TokenViewModel(get()) }
-    viewModel { ProjectsPageViewModel(get()) }
+    viewModel { ProjectsViewModel(get()) }
     viewModel { ReleasesPageViewModel(get()) }
     viewModel { BacklogPageViewModel(get()) }
     viewModel { UserViewModel(get()) }
@@ -96,7 +94,7 @@ fun provideOkHttpClient(
 
 fun provideRetrofitBuilder(httpClient: OkHttpClient): Retrofit.Builder =
     Retrofit.Builder()
-        .baseUrl("http://77.47.130.226:8188/")
+        .baseUrl("http://10.0.2.2:5185/")
         .client(httpClient)
         .addConverterFactory(GsonConverterFactory.create())
 

@@ -1,7 +1,8 @@
 package com.example.taskermobile.utils
 
-import com.example.taskermobile.model.RefreshTokenModel
-import com.example.taskermobile.model.TokenValue
+import com.example.taskermobile.model.token.RefreshTokenModel
+import com.example.taskermobile.model.token.TokenValue
+import com.example.taskermobile.utils.eventlisteners.AuthStateListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,7 +24,7 @@ class TokenRefresher(
         refreshTokenJob = CoroutineScope(Dispatchers.IO).launch {
             while (isActive) {
                 try {
-                    delay(5 * 60 * 1000)
+                    delay(20 * 60 * 1000)
 
                     val tokenSettings = tokenManager.getToken().firstOrNull()
                     if (tokenSettings != null) {

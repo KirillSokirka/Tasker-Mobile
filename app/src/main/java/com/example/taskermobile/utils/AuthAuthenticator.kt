@@ -1,7 +1,8 @@
 package com.example.taskermobile.utils
 
-import com.example.taskermobile.model.RefreshTokenModel
-import com.example.taskermobile.model.TokenValue
+import com.example.taskermobile.model.token.RefreshTokenModel
+import com.example.taskermobile.model.token.TokenValue
+import com.example.taskermobile.utils.eventlisteners.AuthStateListener
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -10,7 +11,8 @@ import okhttp3.Response
 import okhttp3.Route
 
 class AuthAuthenticator(private val tokenManager: TokenManager,
-                        private val authStateListener: AuthStateListener) : Authenticator {
+                        private val authStateListener: AuthStateListener
+) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
         if (response.code == 401) {
@@ -35,8 +37,10 @@ class AuthAuthenticator(private val tokenManager: TokenManager,
             return if (refreshResponse.isSuccessful && refreshResponse.body() != null) {
 
                 val refreshToken = refreshResponse.body()
-                runBlocking { tokenManager.saveToken(TokenValue(refreshToken!!.token,
-                    refreshToken.refreshToken)) }
+                runBlocking { tokenManager.saveToken(
+                    TokenValue(refreshToken!!.token,
+                    refreshToken.refreshToken)
+                ) }
 
                 response.request.newBuilder()
                     .header("Authorization", "Bearer ${refreshToken!!.token}")
