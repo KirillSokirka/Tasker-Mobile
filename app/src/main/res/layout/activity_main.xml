@@ -27,6 +27,7 @@
         app:labelVisibilityMode="labeled"
         app:itemTextColor="@color/textColor"
         android:background="@color/navColor"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemIconTint="@color/textColor"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
