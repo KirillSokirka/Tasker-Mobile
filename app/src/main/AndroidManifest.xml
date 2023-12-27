@@ -34,7 +34,7 @@
             android:name=".activities.project.ProjectsPageActivity"
             android:exported="false"             />
         <activity
-            android:name=".activities.project.ProjectCreateActivity"
+            android:name=".activities.project.ProjectCreateFragment"
             android:exported="false"             />
         <activity
             android:name=".activities.project.ProjectUpdateActivity"
@@ -56,7 +56,7 @@
             android:name=".BacklogPageActivity"
             android:exported="false"             />
         <activity
-            android:name=".UserActivity"
+            android:name=".activities.users.UserActivity"
             android:exported="false"             />
 
         <activity

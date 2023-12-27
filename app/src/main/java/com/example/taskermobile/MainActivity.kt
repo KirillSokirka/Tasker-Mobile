@@ -2,8 +2,9 @@ package com.example.taskermobile
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.view.ViewGroup
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +25,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import com.example.taskermobile.activities.project.ProjectUpdateActivity
-import com.example.taskermobile.activities.project.ProjectsPageActivity
+import com.example.taskermobile.activities.project.ProjectsPageFragment
 import com.example.taskermobile.activities.release.ReleasesPageActivity
+import com.example.taskermobile.activities.users.UserActivity
 import com.example.taskermobile.ui.theme.TaskerMobileTheme
 import com.example.taskermobile.ui.theme.TextColor
 import com.example.taskermobile.utils.eventlisteners.AuthStateListener
@@ -34,7 +39,7 @@ import com.example.taskermobile.utils.TokenManager
 import com.example.taskermobile.utils.TokenRefresher
 import org.koin.android.ext.android.inject
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val tokenManager: TokenManager by inject()
     private val authStateListener: AuthStateListener by inject()
@@ -44,8 +49,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         setContent {
             TaskerMobileTheme {
                 Surface(
@@ -53,28 +56,51 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Scaffold(
-                        bottomBar = { BottomNavigationBar() }
+                        bottomBar = { BottomNavigationBar { selectedTab -> navigateToTab(selectedTab) } }
                     ) { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
+                            AndroidView(
+                                factory = { context ->
+                                    FragmentContainerView(context).apply {
+                                        id = R.id.fragment_container
+                                        layoutParams = ViewGroup.LayoutParams(
+                                            ViewGroup.LayoutParams.MATCH_PARENT,
+                                            ViewGroup.LayoutParams.MATCH_PARENT
+                                        )
+                                    }
+                                },
+                                modifier = Modifier.fillMaxSize()
+                            )
                         }
                     }
                 }
             }
-
-
-            tokenRefresher = TokenRefresher(tokenManager, authStateListener)
-            tokenRefresher.startTokenRefresh()
         }
+
+        tokenRefresher = TokenRefresher(tokenManager, authStateListener)
+        tokenRefresher.startTokenRefresh()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         tokenRefresher.stopTokenRefresh()
     }
+
+    private fun navigateToTab(selectedTab: String) {
+        when (selectedTab) {
+            "projects" -> loadFragment(ProjectsPageFragment())
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+    }
 }
 
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar(onTabSelected: (String) -> Unit) {
     val context = LocalContext.current
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.surface,
@@ -87,7 +113,7 @@ fun BottomNavigationBar() {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ProjectsButton(modifier = Modifier.weight(1f))
+            ProjectsButton(onTabSelected)
             ReleasesButton(modifier = Modifier.weight(1f))
             BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883", modifier = Modifier.weight(1f))
             UserButton(modifier = Modifier.weight(1f))
@@ -95,19 +121,14 @@ fun BottomNavigationBar() {
     }
 }
 
-
-
 @Composable
-fun ProjectsButton(modifier: Modifier = Modifier) {
+fun ProjectsButton(onTabSelected: (String) -> Unit) {
     val context = LocalContext.current
     val projectImage = painterResource(id = R.drawable.project)
     Box(
         modifier = Modifier
             .width(60.dp)
-            .clickable {
-                val intent = Intent(context, ProjectsPageActivity::class.java)
-                context.startActivity(intent)
-            },
+            .clickable { onTabSelected("projects") },
         contentAlignment = Alignment.Center
     ) {
         Column(

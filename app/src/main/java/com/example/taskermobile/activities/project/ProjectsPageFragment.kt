@@ -3,11 +3,15 @@ package com.example.taskermobile.activities.project
 import android.content.Intent
 import com.example.taskermobile.viewadapters.ProjectAdapter
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
@@ -17,27 +21,32 @@ import com.example.taskermobile.viewmodels.ProjectsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ProjectsPageActivity : AppCompatActivity() {
+class ProjectsPageFragment : Fragment() {
 
-    private val viewModel: ProjectsViewModel by viewModel()
+    private val viewModel: ProjectsViewModel by viewModel() // Ensure your ViewModel is correctly scoped to the Fragment
     private lateinit var loadingIndicator: ProgressBar
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.projects_list, container, false)
+    }
 
-        setContentView(R.layout.projects_list)
-        loadingIndicator = findViewById(R.id.loadingIndicator)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        loadingIndicator = view.findViewById(R.id.loadingIndicator)
         viewModel.getAll()
 
-        val createProject: Button = findViewById(R.id.buttonCreate)
-
-        createProject.setOnClickListener {
-            startActivity(Intent(this@ProjectsPageActivity,
-                ProjectCreateActivity::class.java))
+        val createProjectButton: Button = view.findViewById(R.id.buttonCreate)
+        createProjectButton.setOnClickListener {
+            val intent = Intent(requireActivity(), ProjectCreateFragment::class.java)
+            startActivity(intent)
         }
 
-        viewModel.projectsResponse.observe(this) { apiResponse ->
+        viewModel.projectsResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
@@ -45,15 +54,17 @@ class ProjectsPageActivity : AppCompatActivity() {
 
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-                    val recyclerView: RecyclerView = findViewById(R.id.recyclerview)
-                    recyclerView.layoutManager = LinearLayoutManager(this)
+                    val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview)
+                    recyclerView.layoutManager = LinearLayoutManager(context)
                     recyclerView.adapter = ProjectAdapter(apiResponse.data, object :
-                        OnItemClickListener  {
+                        OnItemClickListener {
                         override fun onItemClick(id: String) {
-                            val intent =
-                                Intent(this@ProjectsPageActivity, ProjectDetailActivity::class.java)
+                            val intent = Intent(requireActivity(), ProjectDetailActivity::class.java)
                             intent.putExtra("PROJECT_ID", id)
                             startActivity(intent)
+
+                            val bundle = bundleOf("PROJECT_ID" to id)
+                            findNavController().navigate(R.id.projectsPageFragment, bundle)
                         }
                     })
                 }
@@ -61,7 +72,7 @@ class ProjectsPageActivity : AppCompatActivity() {
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
                     Toast.makeText(
-                        this@ProjectsPageActivity,
+                        requireContext(),
                         "Network error: ${apiResponse.errorMessage}",
                         Toast.LENGTH_LONG
                     ).show()
@@ -70,3 +81,4 @@ class ProjectsPageActivity : AppCompatActivity() {
         }
     }
 }
+

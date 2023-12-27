@@ -1,4 +1,4 @@
-package com.example.taskermobile
+package com.example.taskermobile.activities.users
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,8 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.example.taskermobile.LoginActivity
+import com.example.taskermobile.R
 import com.example.taskermobile.model.auth.ChangePasswordModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getEmailFromToken
