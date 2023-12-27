@@ -1,53 +1,88 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/userPage"
+    android:background="@color/backgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/userName"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:padding="30dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/oldPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="old password"
-        android:inputType="textPassword"
-        android:minHeight="48dp" />
+        <TextView
+            android:id="@+id/userName"
+            style="@style/CustomTextView"
+            android:background="@null"
+            android:text="" />
 
-    <EditText
-        android:id="@+id/newPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="new password"
-        android:inputType="textPassword"
-        android:minHeight="48dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/changePassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Change" />
+            <Button
+                android:id="@+id/deleteAccount"
+                style="@style/CustomLoginButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Delete Account" />
 
-    <Button
-        android:id="@+id/deleteAccount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="deleet account" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-    <Button
-        android:id="@+id/logOut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Log out" />
+            <Button
+                android:id="@+id/logOut"
+                style="@style/CustomLoginButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Log Out" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/CustomTextView"
+            android:layout_marginTop="80dp"
+            android:background="@null"
+            android:text="Change password" />
+
+        <EditText
+            android:id="@+id/oldPassword"
+            style="@style/CustomEditText"
+            android:hint="Old password"
+            android:inputType="textPassword"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/newPassword"
+            style="@style/CustomEditText"
+            android:hint="New password"
+            android:inputType="textPassword"
+            android:minHeight="48dp" />
+
+        <Button
+            android:id="@+id/changePassword"
+            style="@style/CustomLoginButton"
+            android:layout_gravity="center_horizontal"
+            android:text="Change" />
+    </LinearLayout>
+
+
+    <View
+    android:id="@+id/overlayView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AAffffff"
+    android:visibility="gone" />
 
     <ProgressBar
-        android:id="@+id/loadingIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:visibility="gone" />
-</LinearLayout>
+    android:id="@+id/loadingIndicator"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="gone" />
+</FrameLayout>
