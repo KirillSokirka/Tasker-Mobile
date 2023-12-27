@@ -119,7 +119,7 @@ fun BottomNavigationBar(onTabSelected: (String) -> Unit) {
         ) {
             ProjectsButton(onTabSelected)
             ReleasesButton(onTabSelected)
-            BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883", modifier = Modifier.weight(1f))
+            BacklogButton(onTabSelected)
             UserButton(onTabSelected)
         }
     }
