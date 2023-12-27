@@ -19,7 +19,6 @@ import com.example.taskermobile.model.user.UserModel
 import com.example.taskermobile.model.user.UserUpdateModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getIdFromToken
-import com.example.taskermobile.utils.observeOnce
 import com.example.taskermobile.viewadapters.UserAdapter
 import com.example.taskermobile.viewmodels.ProjectsViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
@@ -74,6 +73,8 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
                     viewModel.updateUserProjects(UserUpdateModel(userName,
                         listOf(projectId!!),
                         null))
+
+                    observeUserUpdateResponse(projectId!!)
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
@@ -100,85 +101,6 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
                 }
             }
         }
-    }
-
-    override fun onUserLongClick(userModel: UserModel, view: View, projectId: String) {
-        val popup = PopupMenu(this, view)
-        popup.menuInflater.inflate(R.menu.user_options_menu, popup.menu)
-
-        popup.menu.findItem(R.id.remove_from_assign).isVisible = true
-        popup.menu.findItem(R.id.remove_from_admin).isVisible = userModel.isAdmin
-        popup.menu.findItem(R.id.promote_to_admin).isVisible = !userModel.isAdmin
-
-        popup.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.remove_from_assign -> {
-                    if (userModel.underControlProjects?.contains(projectId) == true &&
-                        userModel.assignedProjects?.contains(projectId) == true) {
-                        viewModel.updateUserProjects(UserUpdateModel(userModel.title, listOf(projectId), listOf(projectId)))
-                    }
-                    if (userModel.underControlProjects?.contains(projectId) == true) {
-                        viewModel.updateUserProjects(UserUpdateModel(userModel.title, null, listOf(projectId)))
-                    } else if (userModel.assignedProjects?.contains(projectId) == true) {
-                        viewModel.updateUserProjects(UserUpdateModel(userModel.title, listOf(projectId), null))
-                    } else {
-                        viewModel.updateUserProjects(UserUpdateModel(userModel.title, null, null))
-                    }
-                }
-                R.id.remove_from_admin -> {
-                    userModel.underControlProjects = userModel.underControlProjects?.filter { it == projectId }
-                    viewModel.updateUserProjects(UserUpdateModel(userModel.title, null, userModel.underControlProjects))
-                }
-                R.id.promote_to_admin -> {
-                    viewModel.updateUserProjects(UserUpdateModel(userModel.title, null, listOf(projectId)))
-                }
-            }
-
-            observeUserUpdateResponse(userModel.id, projectId)
-            true
-        }
-
-        popup.show()
-    }
-
-    private fun observeUserUpdateResponse(userId: String, projectId: String) {
-        viewModel.userUpdateResponse.observeOnce(this) { apiResponse ->
-            when (apiResponse) {
-                is ApiResponse.Success -> {
-                    val updatedUser = apiResponse.data
-                    if (updatedUser != null) {
-                        if (isUserRemovedFromProject(updatedUser, projectId)) {
-                            navigateToMainActivity()
-                        } else {
-                            fetchAllData()
-                        }
-                    }
-                }
-                is ApiResponse.Failure -> {
-                    Toast.makeText(this,
-                        "Failed to update user: ${apiResponse.errorMessage}",
-                        Toast.LENGTH_LONG).show()
-                }
-                is ApiResponse.Loading -> {
-                }
-            }
-        }
-    }
-
-    private fun isUserRemovedFromProject(user: UserModel, projectId: String): Boolean {
-        if (user.id != currentUser) {
-            return false;
-        }
-
-        val isNotAssigned = user.assignedProjects?.none { it == projectId } ?: true
-        val isNotAdmin = user.underControlProjects?.none { it == projectId } ?: true
-
-        return isNotAssigned && isNotAdmin
-    }
-
-    private fun navigateToMainActivity() {
-        startActivity(Intent(this@UserManagementActivity, MainActivity::class.java))
-        finish()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -216,5 +138,85 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
                 }
             }
         }
+    }
+
+    override fun onUserLongClick(userModel: UserModel, view: View, projectId: String) {
+        val popup = PopupMenu(this, view)
+        popup.menuInflater.inflate(R.menu.user_options_menu, popup.menu)
+
+        popup.menu.findItem(R.id.remove_from_assign).isVisible = true
+        popup.menu.findItem(R.id.remove_from_admin).isVisible = userModel.isAdmin
+        popup.menu.findItem(R.id.promote_to_admin).isVisible = !userModel.isAdmin
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.remove_from_assign -> {
+                    if (userModel.underControlProjects?.contains(projectId) == true &&
+                        userModel.assignedProjects?.contains(projectId) == true) {
+                        viewModel.updateUserProjects(UserUpdateModel(userModel.title, listOf(projectId), listOf(projectId)))
+                    }
+                    if (userModel.underControlProjects?.contains(projectId) == true) {
+                        viewModel.updateUserProjects(UserUpdateModel(userModel.title, null, listOf(projectId)))
+                    } else if (userModel.assignedProjects?.contains(projectId) == true) {
+                        viewModel.updateUserProjects(UserUpdateModel(userModel.title, listOf(projectId), null))
+                    } else {
+                        viewModel.updateUserProjects(UserUpdateModel(userModel.title, null, null))
+                    }
+                }
+                R.id.remove_from_admin -> {
+                    viewModel.updateUserProjects(UserUpdateModel(userModel.title, null, listOf(projectId)))
+                }
+                R.id.promote_to_admin -> {
+                    viewModel.updateUserProjects(UserUpdateModel(userModel.title, null, listOf(projectId)))
+                }
+            }
+
+            observeUserUpdateResponse(projectId)
+            true
+        }
+
+        popup.show()
+    }
+
+    private fun observeUserUpdateResponse(projectId: String) {
+        viewModel.userUpdateResponse.observe(this) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success -> {
+                    val updatedUser = apiResponse.data
+                    if (updatedUser != null) {
+                        if (isUserRemovedFromProject(updatedUser, projectId)) {
+                            navigateToMainActivity()
+                        } else {
+                            finish();
+                            intent.putExtra("PROJECT_ID", projectId)
+                            startActivity(intent);
+                        }
+                    }
+                }
+                is ApiResponse.Failure -> {
+                    Toast.makeText(this,
+                        "Failed to update user: ${apiResponse.errorMessage}",
+                        Toast.LENGTH_LONG).show()
+                }
+                is ApiResponse.Loading -> {
+                }
+            }
+        }
+    }
+
+    private fun isUserRemovedFromProject(user: UserModel, projectId: String): Boolean {
+        if (user.id != currentUser) {
+            return false;
+        }
+
+        val isNotAssigned = user.assignedProjects?.none { it == projectId } ?: true
+        val isNotAdmin = user.underControlProjects?.none { it == projectId } ?: true
+
+        return isNotAssigned && isNotAdmin
+    }
+
+    private fun navigateToMainActivity() {
+        startActivity(Intent(this@UserManagementActivity, MainActivity::class.java))
+        finish()
     }
 }

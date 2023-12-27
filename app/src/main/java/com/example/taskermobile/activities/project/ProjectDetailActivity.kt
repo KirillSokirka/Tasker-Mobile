@@ -16,6 +16,7 @@ import com.example.taskermobile.MainActivity
 import com.example.taskermobile.R
 import com.example.taskermobile.activities.kanbanboard.KanbanBoardDetailActivity
 import com.example.taskermobile.activities.release.ReleasesPageActivity
+import com.example.taskermobile.activities.users.UserListActivity
 import com.example.taskermobile.activities.users.UserManagementActivity
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getIdFromToken
@@ -120,14 +121,14 @@ class ProjectDetailActivity : AppCompatActivity() {
                         }
 
                         manageUsersButton.setOnClickListener {
-                            val intent = Intent(this, UserManagementActivity::class.java)
+                            val destinationClass = if (project.adminProjects?.contains(userId) == true) {
+                                UserManagementActivity::class.java
+                            } else {
+                                UserListActivity::class.java
+                            }
 
-                            val users = (project.assignedUsers ?: emptyList()) + (project.adminProjects ?: emptyList())
-
-                            intent.putStringArrayListExtra("USER_LIST", ArrayList(users))
-                            intent.putStringArrayListExtra("ADMIN_USERS", ArrayList(project.adminProjects ?: emptyList()))
+                            val intent = Intent(this@ProjectDetailActivity, destinationClass)
                             intent.putExtra("PROJECT_ID", projectId)
-
                             startActivity(intent)
                         }
                     }

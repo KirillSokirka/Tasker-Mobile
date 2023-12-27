@@ -116,12 +116,3 @@ suspend fun getNewToken(refreshToken: RefreshTokenModel?): retrofit2.Response<Re
 
     return service.refreshToken(refreshToken!!)
 }
-
-fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<in T>) {
-    observe(lifecycleOwner, object : Observer<T> {
-        override fun onChanged(t: T) {
-            observer.onChanged(t)
-            removeObserver(this)
-        }
-    })
-}
