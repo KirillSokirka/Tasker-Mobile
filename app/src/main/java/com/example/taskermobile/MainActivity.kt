@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             "projects" -> loadFragment(ProjectsPageFragment())
             "user" -> loadFragment(UserFragment())
             "backlog" -> loadFragment(BacklogPageFragment())
-            "user" -> loadFragment(UserFragment())
+            "release" -> loadFragment(ReleasesPageFragment())
         }
     }
 
@@ -194,10 +194,7 @@ fun ReleasesButton(onTabSelected: (String) -> Unit) {
     Box(
         modifier = Modifier
             .width(65.dp)
-            .clickable {
-                val intent = Intent(context, ReleasesPageActivity::class.java)
-                context.startActivity(intent)
-            },
+            .clickable { onTabSelected("user") },
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -223,17 +220,13 @@ fun ReleasesButton(onTabSelected: (String) -> Unit) {
 
 
 @Composable
-fun BacklogButton(projectId: String, modifier: Modifier = Modifier) {
+fun BacklogButton(onTabSelected: (String) -> Unit) {
     val context = LocalContext.current
     val backlogImage = painterResource(id = R.drawable.backlog)
     Box(
         modifier = Modifier
             .width(50.dp)
-            .clickable {
-                val intent = Intent(context, BacklogPageActivity::class.java)
-                intent.putExtra("projectId", projectId)
-                context.startActivity(intent)
-            },
+            .clickable { onTabSelected("backlog") },
         contentAlignment = Alignment.Center
     ) {
         Column(
