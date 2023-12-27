@@ -1,5 +1,7 @@
 package com.example.taskermobile.activities.release
 
+import SharedPreferencesService
+import android.content.Intent
 import com.example.taskermobile.viewadapters.ReleaseAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,16 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
+import com.example.taskermobile.RegisterActivity
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
+import org.koin.android.ext.android.inject
 
 class ReleasesPageFragment : Fragment() {
-
+    private val sharedPreferencesService: SharedPreferencesService by inject()
     private val viewModel: ReleasesPageViewModel by viewModels()
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var recyclerView: RecyclerView
@@ -29,16 +35,19 @@ class ReleasesPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var projectId = sharedPreferencesService.retrieveData("lastProjectActive")
+        if ( projectId == null ) {
+//            findNavController().navigate(R.id.,
+//                bundleOf("PROJECT_ID" to id))
+        }
+
         super.onViewCreated(view, savedInstanceState)
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         recyclerView = view.findViewById(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val projectId = arguments?.getString("PROJECT_ID")
-            ?: throw IllegalArgumentException("Project ID required")
-
-        viewModel.getAll(projectId)
+        viewModel.getAll(projectId!!)
 
         viewModel.releasesResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {

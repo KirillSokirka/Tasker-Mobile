@@ -1,6 +1,7 @@
 package com.example.taskermobile.activities.backlogpage
 
 import BacklogRecyclerViewAdapter
+import SharedPreferencesService
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.BacklogPageViewModel
+import org.koin.android.ext.android.inject
 
 
 class BacklogPageFragment : Fragment() {
-
+    private val sharedPreferencesService: SharedPreferencesService by inject()
     private val viewModel: BacklogPageViewModel by viewModels()
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var recyclerView: RecyclerView
@@ -31,22 +33,19 @@ class BacklogPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var projectId = sharedPreferencesService.retrieveData("lastProjectActive")
+        if ( projectId == null ) {
+//            findNavController().navigate(R.id.,
+//                bundleOf("PROJECT_ID" to id))
+        }
+
         super.onViewCreated(view, savedInstanceState)
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         recyclerView = view.findViewById(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val projectId = arguments?.getString("projectId") ?: run {
-            Toast.makeText(
-                requireContext(),
-                "Network error: projectId is null in the BacklogPageFragment",
-                Toast.LENGTH_LONG
-            ).show()
-            return
-        }
-
-        viewModel.getAll(projectId)
+        viewModel.getAll(projectId!!)
 
         viewModel.tasksResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
