@@ -28,20 +28,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.taskermobile.activities.backlogpage.BacklogPageFragment
 import com.example.taskermobile.activities.project.ProjectsPageFragment
 import com.example.taskermobile.activities.release.ReleasesPageFragment
 import com.example.taskermobile.activities.users.UserFragment
-import com.example.taskermobile.ui.theme.TaskerMobileTheme
 import com.example.taskermobile.ui.theme.TextColor
 import com.example.taskermobile.utils.TokenManager
 import com.example.taskermobile.utils.TokenRefresher
 import com.example.taskermobile.utils.eventlisteners.AuthStateListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
@@ -63,7 +61,34 @@ class MainActivity : AppCompatActivity() {
         tokenRefresher = TokenRefresher(tokenManager, authStateListener)
         tokenRefresher.startTokenRefresh()
 
-        
+        val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_projects -> {
+                    loadFragment(ProjectsPageFragment())
+                    true
+                }
+                R.id.navigation_releases -> {
+                    loadFragment(ReleasesPageFragment())
+                    true
+                }
+                R.id.navigation_backlog -> {
+                    loadFragment(BacklogPageFragment())
+                    true
+                }
+                R.id.navigation_user -> {
+                    loadFragment(UserFragment())
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // Optionally set the initial fragment
+        if (savedInstanceState == null) {
+            bottomNavView.selectedItemId = R.id.navigation_projects // Choose the appropriate menu item ID
+        }
+
     }
 
      override fun onDestroy() {
