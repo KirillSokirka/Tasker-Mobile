@@ -28,6 +28,7 @@ class UserFragment : Fragment() {
     private val userViewModel: UserViewModel by viewModel()
 
     private lateinit var loadingIndicator: ProgressBar
+    private lateinit var overlayView: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +41,7 @@ class UserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
+        overlayView = view.findViewById(R.id.overlayView)
 
         tokenViewModel.token.observe(viewLifecycleOwner, Observer { tokenValue ->
             tokenValue?.let {
@@ -96,12 +98,10 @@ class UserFragment : Fragment() {
 
     private fun handleApiResponse(apiResponse: ApiResponse<Any>) {
         when (apiResponse) {
-            is ApiResponse.Loading -> {
-                loadingIndicator.visibility = View.VISIBLE
-            }
+            is ApiResponse.Loading -> showLoading()
 
             is ApiResponse.Success -> {
-                loadingIndicator.visibility = View.GONE
+                hideLoading()
                 tokenViewModel.deleteToken()
                 val intent = Intent(activity, LoginActivity::class.java)
                 startActivity(intent)
@@ -109,7 +109,7 @@ class UserFragment : Fragment() {
             }
 
             is ApiResponse.Failure -> {
-                loadingIndicator.visibility = View.GONE
+                hideLoading()
                 Toast.makeText(
                     requireContext(),
                     "Error: ${apiResponse.errorMessage}",
@@ -117,5 +117,15 @@ class UserFragment : Fragment() {
                 ).show()
             }
         }
+    }
+
+    private fun showLoading() {
+        loadingIndicator.visibility = View.VISIBLE
+        overlayView.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loadingIndicator.visibility = View.GONE
+        overlayView.visibility = View.GONE
     }
 }
