@@ -250,22 +250,5 @@ fun BacklogButton(onTabSelected: (String) -> Unit) {
     }
 }
 
-@Composable
-fun ProjectUpdateButton(projectId: String, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-
-    Button(
-        onClick = {
-            val intent = Intent(context, ProjectUpdateActivity::class.java)
-            intent.putExtra("projectId", projectId)
-            context.startActivity(intent)
-        },
-        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
-    ) {
-        Text("Navigate to update project")
-    }
-}
-
-
 
 
