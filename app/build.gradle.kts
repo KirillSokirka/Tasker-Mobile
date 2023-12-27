@@ -68,6 +68,9 @@ dependencies {
     implementation("androidx.navigation:navigation-dynamic-features-fragment:2.7.6")
     implementation("androidx.navigation:navigation-compose:2.7.6")
 
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.3.5")
+
 
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
