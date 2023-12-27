@@ -107,7 +107,7 @@ class ProjectDetailActivity : AppCompatActivity() {
                                 if (position == 0) {
                                     spinner.setSelection(0)
                                 } else {
-                                    val selectedBoardId = project.kanbanBoards?.get(position)?.id
+                                    val selectedBoardId = project.kanbanBoards?.get(position-1)?.id
 
                                     val intent = Intent(this@ProjectDetailActivity, KanbanBoardDetailActivity::class.java)
                                     intent.putExtra("KANBAN_BOARD_ID", selectedBoardId)

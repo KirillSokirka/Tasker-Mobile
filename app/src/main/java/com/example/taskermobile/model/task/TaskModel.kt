@@ -14,7 +14,7 @@ data class TaskModel(
     val taskStatusId: String?,
     val releasedId: String?,
     val priority: TaskPriority = TaskPriority.NONE,
-    val creationDate: LocalDateTime = LocalDateTime.now(),
+    val creationDate: String,
     val assignee: UserModel?
 )
 

@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.taskermobile.model.ErrorResponse
 import com.example.taskermobile.service.AuthApiService
+import com.example.taskermobile.service.KanbanBoardApiService
 import com.example.taskermobile.service.ProjectApiService
 import com.example.taskermobile.service.ReleaseApiService
 import com.example.taskermobile.service.TaskApiService
@@ -19,6 +20,7 @@ import com.example.taskermobile.utils.ErrorResponseDeserializer
 import com.example.taskermobile.utils.TokenManager
 import com.example.taskermobile.viewmodels.AuthViewModel
 import com.example.taskermobile.viewmodels.BacklogPageViewModel
+import com.example.taskermobile.viewmodels.KanbanBoardViewModel
 import com.example.taskermobile.viewmodels.ProjectsViewModel
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
@@ -59,6 +61,7 @@ val myModule = module {
     single { provideOkHttpClient(get(), get()) }
     single { provideRetrofitBuilder(get()) }
     single { provideAuthAPIService(get()) }
+    single { provideKanbanBoardAPIService(get()) }
     single { provideReleaseApiService(get()) }
     single { provideProjectApiService(get()) }
     single { provideTaskApiService(get()) }
@@ -71,6 +74,7 @@ val myModule = module {
     viewModel { ReleasesPageViewModel(get()) }
     viewModel { BacklogPageViewModel(get()) }
     viewModel { UserViewModel(get()) }
+    viewModel { KanbanBoardViewModel(get()) }
 }
 
 fun provideTokenManager(context: Context): TokenManager = TokenManager(context)
@@ -120,3 +124,8 @@ fun provideUserApiServer(retrofit: Retrofit.Builder): UserApiService =
     retrofit
         .build()
         .create(UserApiService::class.java)
+
+fun provideKanbanBoardAPIService(retrofit: Retrofit.Builder): KanbanBoardApiService =
+    retrofit
+        .build()
+        .create(KanbanBoardApiService::class.java)
