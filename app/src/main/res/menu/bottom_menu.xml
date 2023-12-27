@@ -1,18 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_projects"
+        android:id="@+id/projectsPageFragment"
         android:icon="@drawable/project"
         android:title="Project" />
     <item
-        android:id="@+id/navigation_releases"
+        android:id="@+id/releasesPageFragment"
         android:icon="@drawable/release"
         android:title="Releases" />
     <item
-        android:id="@+id/navigation_backlog"
+        android:id="@+id/backlogPageFragment"
         android:icon="@drawable/backlog"
         android:title="Backlog" />
     <item
-        android:id="@+id/navigation_user"
+        android:id="@+id/userFragment"
         android:icon="@drawable/user"
         android:title="User" />
 </menu>

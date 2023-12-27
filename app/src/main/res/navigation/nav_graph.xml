@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_projectsPageFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
+        <action
+            android:id="@+id/action_projectsPageFragment_to_projectCreateFragment"
+            app:destination="@id/projectCreateFragment" />
     </fragment>
     <fragment
         android:id="@+id/projectDetailFragment"
@@ -22,4 +25,25 @@
             android:id="@+id/action_projectDetailFragment_to_projectsPageFragment"
             app:destination="@id/projectsPageFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/projectCreateFragment"
+        android:name="com.example.taskermobile.activities.project.ProjectCreateFragment"
+        android:label="ProjectCreateFragment" >
+        <action
+            android:id="@+id/action_projectCreateFragment_to_projectDetailFragment"
+            app:destination="@id/projectDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/backlogPageFragment"
+        android:name="com.example.taskermobile.activities.backlogpage.BacklogPageFragment"
+        android:label="BacklogPageFragment" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.example.taskermobile.activities.users.UserFragment"
+        android:label="UserFragment" />
+    <fragment
+        android:id="@+id/releasesPageFragment"
+        android:name="com.example.taskermobile.activities.release.ReleasesPageFragment"
+        android:label="ReleasesPageFragment" />
 </navigation>

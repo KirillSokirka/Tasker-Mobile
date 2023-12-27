@@ -30,7 +30,6 @@ class ProjectsPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.projects_list, container, false)
     }
 
@@ -40,12 +39,11 @@ class ProjectsPageFragment : Fragment() {
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         viewModel.getAll()
 
-//        val createProjectButton: Button = view.findViewById(R.id.buttonCreate)
+        val createProjectButton: Button = view.findViewById(R.id.buttonCreate)
 
-//        createProjectButton.setOnClickListener {
-//            val intent = Intent(requireActivity(), ProjectCreateFragment::class.java)
-//            startActivity(intent)
-//        }
+        createProjectButton.setOnClickListener {
+            findNavController().navigate(R.id.action_projectsPageFragment_to_projectCreateFragment)
+        }
 
         viewModel.projectsResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
@@ -60,9 +58,8 @@ class ProjectsPageFragment : Fragment() {
                     recyclerView.adapter = ProjectAdapter(apiResponse.data, object :
                         OnItemClickListener {
                         override fun onItemClick(id: String) {
-                            val bundle = bundleOf("PROJECT_ID" to id)
                             findNavController().navigate(R.id.action_projectsPageFragment_to_projectDetailFragment,
-                                bundle)
+                                bundleOf("PROJECT_ID" to id))
                         }
                     })
                 }

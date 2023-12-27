@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.R
@@ -18,8 +20,9 @@ import com.example.taskermobile.viewmodels.TokenViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProjectCreateFragment : Fragment() {
-    private val tokenViewModel: TokenViewModel by viewModel()
-    private val viewModel: ProjectsViewModel by viewModel()
+
+    private val tokenViewModel: TokenViewModel by viewModel<TokenViewModel>()
+    private val viewModel: ProjectsViewModel by viewModel<ProjectsViewModel>()
 
     private lateinit var loadingIndicator: ProgressBar
 
@@ -35,7 +38,8 @@ class ProjectCreateFragment : Fragment() {
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         val projectName : EditText = view.findViewById(R.id.projectName)
-        val createButton : EditText = view.findViewById(R.id.createProjectButton)
+        
+        val createButton : Button = view.findViewById(R.id.createProjectButton)
 
         tokenViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             createButton.isEnabled = !isLoading
@@ -51,7 +55,8 @@ class ProjectCreateFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                val userId = getIdFromToken(tokenViewModel.token.value?.token.toString()) ?: return@setOnClickListener
+                val userId = getIdFromToken(tokenViewModel.token.value?.token.toString())
+                    ?: return@setOnClickListener
                 viewModel.create(ProjectCreateModel(name, userId))
             }
         }
@@ -64,7 +69,8 @@ class ProjectCreateFragment : Fragment() {
 
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-
+                    findNavController().navigate(R.id.action_projectCreateFragment_to_projectDetailFragment,
+                        bundleOf("PROJECT_ID" to apiResponse.data!!.id))
                 }
 
                 is ApiResponse.Failure -> {

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.example.taskermobile.activities.backlogpage.BacklogPageFragment
 import com.example.taskermobile.activities.project.ProjectsPageFragment
 import com.example.taskermobile.activities.release.ReleasesPageFragment
@@ -56,204 +57,18 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragment) as NavHostFragment
-
         navigationController = navHostFragment.navController
+
         tokenRefresher = TokenRefresher(tokenManager, authStateListener)
         tokenRefresher.startTokenRefresh()
 
         val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_projects -> {
-                    loadFragment(ProjectsPageFragment())
-                    true
-                }
-                R.id.navigation_releases -> {
-                    loadFragment(ReleasesPageFragment())
-                    true
-                }
-                R.id.navigation_backlog -> {
-                    loadFragment(BacklogPageFragment())
-                    true
-                }
-                R.id.navigation_user -> {
-                    loadFragment(UserFragment())
-                    true
-                }
-                else -> false
-            }
-        }
 
-        // Optionally set the initial fragment
-        if (savedInstanceState == null) {
-            bottomNavView.selectedItemId = R.id.navigation_projects // Choose the appropriate menu item ID
-        }
-
+        NavigationUI.setupWithNavController(bottomNavView, navigationController)
     }
 
      override fun onDestroy() {
         super.onDestroy()
         tokenRefresher.stopTokenRefresh()
     }
-
-    private fun navigateToTab(selectedTab: String) {
-        when (selectedTab) {
-            "projects" -> loadFragment(ProjectsPageFragment())
-            "user" -> loadFragment(UserFragment())
-            "backlog" -> loadFragment(BacklogPageFragment())
-            "release" -> loadFragment(ReleasesPageFragment())
-        }
-    }
-
-    private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment, fragment)
-            .commit()
-    }
 }
-
-@Composable
-fun BottomNavigationBar(onTabSelected: (String) -> Unit) {
-    BottomAppBar(
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(65.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ProjectsButton(onTabSelected)
-            if (SharedPreferencesService(LocalContext.current).retrieveData("lastProjectActive") != null) {
-                ReleasesButton(onTabSelected)
-                BacklogButton(onTabSelected)
-            }
-            UserButton(onTabSelected)
-        }
-    }
-}
-
-@Composable
-fun ProjectsButton(onTabSelected: (String) -> Unit) {
-    val projectImage = painterResource(id = R.drawable.project)
-    Box(
-        modifier = Modifier
-            .width(60.dp)
-            .clickable { onTabSelected("projects") },
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Image(
-                painter = projectImage,
-                contentDescription = "Projects",
-                modifier = Modifier
-                    .height(35.dp)
-            )
-            Text(
-                "Projects",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    color = TextColor
-                )
-            )
-        }
-    }
-}
-@Composable
-fun UserButton(onTabSelected: (String) -> Unit) {
-    val userImage = painterResource(id = R.drawable.user)
-    Box(
-        modifier = Modifier
-            .width(40.dp)
-            .clickable { onTabSelected("user") },
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Image(
-                painter = userImage,
-                contentDescription = "User",
-                modifier = Modifier.height(35.dp)
-            )
-            Text(
-                "User",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    color = TextColor
-                )
-            )
-        }
-    }
-}
-
-
-@Composable
-fun ReleasesButton(onTabSelected: (String) -> Unit) {
-    val releaseImage = painterResource(id = R.drawable.release)
-    Box(
-        modifier = Modifier
-            .width(65.dp)
-            .clickable { onTabSelected("user") },
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Image(
-                painter = releaseImage,
-                contentDescription = "Releases",
-                modifier = Modifier
-                    .height(35.dp)
-            )
-            Text(
-                "Releases",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    color = TextColor
-                )
-            )
-        }
-    }
-}
-
-
-@Composable
-fun BacklogButton(onTabSelected: (String) -> Unit) {
-    val backlogImage = painterResource(id = R.drawable.backlog)
-    Box(
-        modifier = Modifier
-            .width(50.dp)
-            .clickable { onTabSelected("backlog") },
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Image(
-                painter = backlogImage,
-                contentDescription = "Backlog",
-                modifier = Modifier
-                    .height(35.dp)
-            )
-            Text(
-                "Backlog",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    color = TextColor
-                )
-            )
-        }
-    }
-}
-
-
-
