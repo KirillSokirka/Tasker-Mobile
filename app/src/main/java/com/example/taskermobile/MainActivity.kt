@@ -1,5 +1,6 @@
 package com.example.taskermobile
 
+import SharedPreferencesService
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ import com.example.taskermobile.utils.eventlisteners.AuthStateListener
 import com.example.taskermobile.utils.TokenManager
 import com.example.taskermobile.utils.TokenRefresher
 import org.koin.android.ext.android.inject
+import org.koin.core.context.GlobalContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,23 +62,10 @@ class MainActivity : AppCompatActivity() {
                         bottomBar = { BottomNavigationBar { selectedTab -> navigateToTab(selectedTab) } }
                     ) { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
-                            AndroidView(
-                                factory = { context ->
-                                    FragmentContainerView(context).apply {
-                                        id = R.id.fragment_container
-                                        layoutParams = ViewGroup.LayoutParams(
-                                            ViewGroup.LayoutParams.MATCH_PARENT,
-                                            ViewGroup.LayoutParams.MATCH_PARENT
-                                        )
-                                    }
-                                },
-                                modifier = Modifier.fillMaxSize()
-                            )
                         }
                     }
                 }
             }
-        }
 
         tokenRefresher = TokenRefresher(tokenManager, authStateListener)
         tokenRefresher.startTokenRefresh()
@@ -104,8 +93,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun BottomNavigationBar(onTabSelected: (String) -> Unit) {
-    val context = LocalContext.current
+fun BottomNavigationBar() {
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface
@@ -117,10 +105,12 @@ fun BottomNavigationBar(onTabSelected: (String) -> Unit) {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ProjectsButton(onTabSelected)
-            ReleasesButton(onTabSelected)
-            BacklogButton(onTabSelected)
-            UserButton(onTabSelected)
+            ProjectsButton(modifier = Modifier.weight(1f))
+            if (SharedPreferencesService(LocalContext.current).retrieveData("lastProjectActive") != null) {
+                ReleasesButton(modifier = Modifier.weight(1f))
+                BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883", modifier = Modifier.weight(1f))
+            }
+            UserButton(modifier = Modifier.weight(1f))
         }
     }
 }
