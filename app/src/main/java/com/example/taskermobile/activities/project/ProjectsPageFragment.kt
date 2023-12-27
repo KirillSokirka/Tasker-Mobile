@@ -20,10 +20,9 @@ import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 import com.example.taskermobile.viewmodels.ProjectsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class ProjectsPageFragment : Fragment() {
 
-    private val viewModel: ProjectsViewModel by viewModel() // Ensure your ViewModel is correctly scoped to the Fragment
+    private val viewModel: ProjectsViewModel by viewModel()
     private lateinit var loadingIndicator: ProgressBar
 
     override fun onCreateView(
@@ -40,11 +39,12 @@ class ProjectsPageFragment : Fragment() {
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         viewModel.getAll()
 
-        val createProjectButton: Button = view.findViewById(R.id.buttonCreate)
-        createProjectButton.setOnClickListener {
-            val intent = Intent(requireActivity(), ProjectCreateFragment::class.java)
-            startActivity(intent)
-        }
+//        val createProjectButton: Button = view.findViewById(R.id.buttonCreate)
+
+//        createProjectButton.setOnClickListener {
+//            val intent = Intent(requireActivity(), ProjectCreateFragment::class.java)
+//            startActivity(intent)
+//        }
 
         viewModel.projectsResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
@@ -60,7 +60,8 @@ class ProjectsPageFragment : Fragment() {
                         OnItemClickListener {
                         override fun onItemClick(id: String) {
                             val bundle = bundleOf("PROJECT_ID" to id)
-                            findNavController().navigate(R.id.projectsPageFragment, bundle)
+                            findNavController().navigate(R.id.action_projectsPageFragment_to_projectDetailFragment,
+                                bundle)
                         }
                     })
                 }

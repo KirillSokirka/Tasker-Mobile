@@ -29,7 +29,6 @@ class TokenViewModel (
         }
     }
 
-
     fun saveToken(token: TokenValue) {
         viewModelScope.launch(Dispatchers.IO) {
             tokenManager.saveToken(token)

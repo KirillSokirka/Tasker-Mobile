@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.taskermobile.activities.backlogpage.BacklogPageFragment
 import com.example.taskermobile.activities.project.ProjectsPageFragment
 import com.example.taskermobile.activities.release.ReleasesPageFragment
@@ -48,36 +50,20 @@ class MainActivity : AppCompatActivity() {
     private val authStateListener: AuthStateListener by inject()
 
     private lateinit var tokenRefresher: TokenRefresher
+    private lateinit var navigationController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        setContent {
-            TaskerMobileTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Scaffold(
-                        bottomBar = { BottomNavigationBar { selectedTab -> navigateToTab(selectedTab) } }
-                    ) { innerPadding ->
-                        Box(modifier = Modifier.padding(innerPadding)) {
-                            AndroidView(
-                                modifier = Modifier.fillMaxSize(),
-                                factory = { context ->
-                                    FragmentContainerView(context).apply {
-                                        id = R.id.fragment_container
-                                    }
-                                }
-                            )
-                        }
-                    }
-                }
-            }
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment) as NavHostFragment
 
-            tokenRefresher = TokenRefresher(tokenManager, authStateListener)
-            tokenRefresher.startTokenRefresh()
-        }
+        navigationController = navHostFragment.navController
+        tokenRefresher = TokenRefresher(tokenManager, authStateListener)
+        tokenRefresher.startTokenRefresh()
+
+        
     }
 
      override fun onDestroy() {
@@ -96,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
+            .replace(R.id.fragment, fragment)
             .commit()
     }
 }

@@ -23,25 +23,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false"             />
-
-        <activity android:name=".activities.users.UserManagementActivity"
-            android:exported="false" />
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.TaskerMobile">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-    </application>
 
+        <activity android:name=".RegisterActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"/>
+    </application>
 </manifest>
