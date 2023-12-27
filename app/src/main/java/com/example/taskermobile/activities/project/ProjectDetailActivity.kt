@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.taskermobile.LoginActivity
 import com.example.taskermobile.MainActivity
 import com.example.taskermobile.R
-import com.example.taskermobile.activities.kanbanboard.KanbanBoardDetailActivity
+//import com.example.taskermobile.activities.kanbanboard.KanbanBoardDetailActivity
 import com.example.taskermobile.activities.release.ReleasesPageActivity
-import com.example.taskermobile.activities.users.UserListActivity
+import com.example.taskermobile.activities.users.UserListFragment
 import com.example.taskermobile.activities.users.UserManagementActivity
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getIdFromToken
@@ -109,9 +109,9 @@ class ProjectDetailActivity : AppCompatActivity() {
                                 } else {
                                     val selectedBoardId = project.kanbanBoards?.get(position-1)?.id
 
-                                    val intent = Intent(this@ProjectDetailActivity, KanbanBoardDetailActivity::class.java)
-                                    intent.putExtra("KANBAN_BOARD_ID", selectedBoardId)
-                                    startActivity(intent)
+//                                    val intent = Intent(this@ProjectDetailActivity, KanbanBoardDetailActivity::class.java)
+//                                    intent.putExtra("KANBAN_BOARD_ID", selectedBoardId)
+//                                    startActivity(intent)
                                 }
                             }
 
@@ -124,7 +124,7 @@ class ProjectDetailActivity : AppCompatActivity() {
                             val destinationClass = if (project.adminProjects?.contains(userId) == true) {
                                 UserManagementActivity::class.java
                             } else {
-                                UserListActivity::class.java
+                                UserListFragment::class.java
                             }
 
                             val intent = Intent(this@ProjectDetailActivity, destinationClass)
