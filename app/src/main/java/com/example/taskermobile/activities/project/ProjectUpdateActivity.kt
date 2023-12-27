@@ -1,59 +1,70 @@
 
 package com.example.taskermobile.activities.project
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.taskermobile.R
-import com.example.taskermobile.activities.release.ReleasesPageActivity
-import com.example.taskermobile.model.project.ProjectModel
 import com.example.taskermobile.model.project.ProjectUpdateModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.ProjectsViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.navigation.fragment.findNavController
 
-class ProjectUpdateActivity: AppCompatActivity() {
-    private val viewModel: ProjectsViewModel by viewModel()
+class ProjectUpdateActivity: Fragment() {
+    private val viewModel: ProjectsViewModel by viewModels()
 
     private lateinit var loadingIndicator: ProgressBar
-    private lateinit var projectTitle: String
+    private lateinit var projectTitleHolder: EditText
+    private lateinit var changeProjectNameButton: Button
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-        val projectId = intent.getStringExtra("PROJECT_ID").toString()
 
-        setContentView(R.layout.project_update)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.project_update, container, false)
+    }
 
-        loadingIndicator = findViewById(R.id.loadingIndicator)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val projectTitleHolder: EditText = findViewById(R.id.projectName)
+        val projectId = arguments?.getString("PROJECT_ID") ?: throw IllegalArgumentException("Project ID required")
 
+        loadingIndicator = view.findViewById(R.id.loadingIndicator)
+        projectTitleHolder = view.findViewById(R.id.projectName)
+        changeProjectNameButton = view.findViewById(R.id.update)
+
+        setupObservers(projectId)
+    }
+
+    private fun setupObservers(projectId: String) {
         viewModel.getById(projectId)
 
-        viewModel.projectGetByIdResponse.observe(this) { apiResponse ->
+        viewModel.projectGetByIdResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
                 }
-
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
                     apiResponse.data?.let { project ->
                         projectTitleHolder.setText(project.title)
-                        projectTitle = project.title.toString()
+                        setupClickListeners(projectId, project.title)
                     }
                 }
-
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
                     Toast.makeText(
-                        this@ProjectUpdateActivity,
+                        requireContext(),
                         "Network error: ${apiResponse.errorMessage}",
                         Toast.LENGTH_LONG
                     ).show()
@@ -61,14 +72,37 @@ class ProjectUpdateActivity: AppCompatActivity() {
             }
         }
 
-        val changeProjectNameButton: Button = findViewById(R.id.update)
+        viewModel.projectUpdateResponse.observe(viewLifecycleOwner) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Loading -> {
+                    loadingIndicator.visibility = View.VISIBLE
+                }
 
+                is ApiResponse.Success -> {
+                    loadingIndicator.visibility = View.GONE
+                    val bundle = bundleOf("PROJECT_ID" to projectId)
+                    findNavController().navigate(R.id.projectsPageFragment, bundle)
+                }
+
+                is ApiResponse.Failure -> {
+                    loadingIndicator.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        "Network error: ${apiResponse.errorMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun setupClickListeners(projectId: String, title: String?) {
         changeProjectNameButton.setOnClickListener {
             val name: String = projectTitleHolder.text.toString().trim()
 
-            if (projectTitle.isEmpty() || projectTitle == name || name.isEmpty()) {
+            if (title?.isEmpty() == true || title == name || name.isEmpty()) {
                 Toast.makeText(
-                    this@ProjectUpdateActivity,
+                    requireContext(),
                     "The new project title should not be empty and repeat old one",
                     Toast.LENGTH_LONG
                 ).show()
@@ -80,32 +114,6 @@ class ProjectUpdateActivity: AppCompatActivity() {
                     )
                 )
             }
-        }
-
-        viewModel.projectUpdateResponse.observe(this) { apiResponse ->
-            when (apiResponse) {
-                is ApiResponse.Loading -> {
-                    loadingIndicator.visibility = View.VISIBLE
-                }
-
-                is ApiResponse.Success -> {
-                    loadingIndicator.visibility = View.GONE
-                    val intent = Intent(this@ProjectUpdateActivity, ProjectDetailActivity::class.java)
-                    intent.putExtra("PROJECT_ID", projectId)
-                    startActivity(intent)
-                    finish()
-                }
-
-                is ApiResponse.Failure -> {
-                    loadingIndicator.visibility = View.GONE
-                    Toast.makeText(
-                        this@ProjectUpdateActivity,
-                        "Network error: ${apiResponse.errorMessage}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-
         }
     }
 }

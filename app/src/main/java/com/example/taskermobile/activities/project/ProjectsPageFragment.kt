@@ -59,10 +59,6 @@ class ProjectsPageFragment : Fragment() {
                     recyclerView.adapter = ProjectAdapter(apiResponse.data, object :
                         OnItemClickListener {
                         override fun onItemClick(id: String) {
-                            val intent = Intent(requireActivity(), ProjectDetailActivity::class.java)
-                            intent.putExtra("PROJECT_ID", id)
-                            startActivity(intent)
-
                             val bundle = bundleOf("PROJECT_ID" to id)
                             findNavController().navigate(R.id.projectsPageFragment, bundle)
                         }

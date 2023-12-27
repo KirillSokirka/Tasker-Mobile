@@ -28,9 +28,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import com.example.taskermobile.activities.backlogpage.BacklogPageFragment
 import com.example.taskermobile.activities.project.ProjectUpdateActivity
 import com.example.taskermobile.activities.project.ProjectsPageFragment
-import com.example.taskermobile.activities.release.ReleasesPageActivity
+import com.example.taskermobile.activities.release.ReleasesPageFragment
 import com.example.taskermobile.activities.users.UserFragment
 import com.example.taskermobile.ui.theme.TaskerMobileTheme
 import com.example.taskermobile.ui.theme.TextColor
@@ -90,6 +91,8 @@ class MainActivity : AppCompatActivity() {
         when (selectedTab) {
             "projects" -> loadFragment(ProjectsPageFragment())
             "user" -> loadFragment(UserFragment())
+            "backlog" -> loadFragment(BacklogPageFragment())
+            "user" -> loadFragment(UserFragment())
         }
     }
 
@@ -115,7 +118,7 @@ fun BottomNavigationBar(onTabSelected: (String) -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             ProjectsButton(onTabSelected)
-            ReleasesButton(modifier = Modifier.weight(1f))
+            ReleasesButton(onTabSelected)
             BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883", modifier = Modifier.weight(1f))
             UserButton(onTabSelected)
         }
@@ -184,7 +187,7 @@ fun UserButton(onTabSelected: (String) -> Unit) {
 
 
 @Composable
-fun ReleasesButton(modifier: Modifier = Modifier) {
+fun ReleasesButton(onTabSelected: (String) -> Unit) {
     val context = LocalContext.current
     val releaseImage = painterResource(id = R.drawable.release)
 
