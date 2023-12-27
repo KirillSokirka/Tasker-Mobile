@@ -64,7 +64,7 @@ class ProjectCreateFragment : Fragment() {
 
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-                    findNavController().navigate(R.id.action_projectCreateFragment_to_projectsPageFragment)
+
                 }
 
                 is ApiResponse.Failure -> {

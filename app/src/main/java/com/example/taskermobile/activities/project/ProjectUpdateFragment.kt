@@ -18,14 +18,12 @@ import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.ProjectsViewModel
 import androidx.navigation.fragment.findNavController
 
-class ProjectUpdateActivity: Fragment() {
+class ProjectUpdateFragment: Fragment() {
     private val viewModel: ProjectsViewModel by viewModels()
 
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var projectTitleHolder: EditText
     private lateinit var changeProjectNameButton: Button
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

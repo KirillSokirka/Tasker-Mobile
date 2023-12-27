@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/backlogPageFragment">
+
+    <fragment
+        android:id="@+id/backlogPageFragment"
+        android:name="com.example.taskermobile.activities.backlogpage.BacklogPageFragment"
+        android:label="BacklogPageFragment" >
+        <action
+            android:id="@+id/action_backlogPageFragment_to_projectDetailFragment"
+            app:destination="@id/projectDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/kanbanBoardDetailFragment"
+        android:name="com.example.taskermobile.activities.kanbanboard.KanbanBoardDetailFragment"
+        android:label="KanbanBoardDetailFragment" >
+        <action
+            android:id="@+id/action_kanbanBoardDetailFragment_to_projectDetailFragment"
+            app:destination="@id/projectDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/projectUpdateFragment"
+        android:name="com.example.taskermobile.activities.project.ProjectUpdateFragment"
+        android:label="ProjectUpdateFragment" >
+        <action
+            android:id="@+id/action_projectUpdateFragment_to_projectDetailFragment"
+            app:destination="@id/projectDetailFragment" />
+        <action
+            android:id="@+id/action_projectUpdateFragment_to_userListFragment"
+            app:destination="@id/userListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/projectCreateFragment"
+        android:name="com.example.taskermobile.activities.project.ProjectCreateFragment"
+        android:label="ProjectCreateFragment" >
+        <action
+            android:id="@+id/action_projectCreateFragment_to_projectDetailFragment"
+            app:destination="@id/projectDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/projectsPageFragment"
+        android:name="com.example.taskermobile.activities.project.ProjectsPageFragment"
+        android:label="ProjectsPageFragment" >
+        <action
+            android:id="@+id/action_projectsPageFragment_to_projectDetailFragment"
+            app:destination="@id/projectDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/projectDetailFragment"
+        android:name="com.example.taskermobile.activities.project.ProjectDetailFragment"
+        android:label="ProjectDetailFragment" >
+        <action
+            android:id="@+id/action_projectDetailFragment_to_backlogPageFragment"
+            app:destination="@id/backlogPageFragment" />
+        <action
+            android:id="@+id/action_projectDetailFragment_to_projectUpdateFragment"
+            app:destination="@id/projectUpdateFragment" />
+        <action
+            android:id="@+id/action_projectDetailFragment_to_projectCreateFragment"
+            app:destination="@id/projectCreateFragment" />
+        <action
+            android:id="@+id/action_projectDetailFragment_to_projectsPageFragment"
+            app:destination="@id/projectsPageFragment" />
+        <action
+            android:id="@+id/action_projectDetailFragment_to_kanbanBoardDetailFragment"
+            app:destination="@id/kanbanBoardDetailFragment" />
+        <argument
+            android:name="PROJECT_ID"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_projectDetailFragment_to_releasesPageFragment"
+            app:destination="@id/releasesPageFragment" />
+        <action
+            android:id="@+id/action_projectDetailFragment_self"
+            app:destination="@id/projectDetailFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.taskermobile.MainActivity"
+        android:label="MainActivity" />
+    <fragment
+        android:id="@+id/userListFragment"
+        android:name="com.example.taskermobile.activities.users.UserListFragment"
+        android:label="UserListFragment" >
+        <action
+            android:id="@+id/action_userListFragment_to_projectDetailFragment"
+            app:destination="@id/projectDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/releasesPageFragment"
+        android:name="com.example.taskermobile.activities.release.ReleasesPageFragment"
+        android:label="ReleasesPageFragment" >
+        <action
+            android:id="@+id/action_releasesPageFragment_to_projectDetailFragment"
+            app:destination="@id/projectDetailFragment" />
+    </fragment>
+</navigation>

@@ -1,5 +1,6 @@
 package com.example.taskermobile.activities.project
 
+import SharedPreferencesService
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,11 +23,14 @@ import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getIdFromToken
 import com.example.taskermobile.viewmodels.ProjectsViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
+import org.koin.android.ext.android.inject
 
 class ProjectDetailFragment : Fragment() {
 
     private val viewModel: ProjectsViewModel by viewModels()
     private val tokenModel: TokenViewModel by viewModels()
+
+    private val sharedPreferences: SharedPreferencesService by inject()
 
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var title: TextView
@@ -53,6 +57,8 @@ class ProjectDetailFragment : Fragment() {
         releasesButton = view.findViewById(R.id.releasesInfo)
         manageUsersButton = view.findViewById(R.id.manageUsersButton)
         spinner = view.findViewById(R.id.kanbanBoardsSpinner)
+
+        sharedPreferences.saveData("lastProjectActive", projectId)
 
         setupObservers(projectId)
     }
@@ -105,7 +111,7 @@ class ProjectDetailFragment : Fragment() {
                                 } else {
                                     val selectedBoardId = project.kanbanBoards?.get(position-1)?.id
 
-                                    findNavController().navigate(R.id.kanbanBoardDetail, Bundle().apply {
+                                    findNavController().navigate(R.id.action_projectDetailFragment_to_kanbanBoardDetailFragment, Bundle().apply {
                                         putString("PROJECT_ID", selectedBoardId)
                                     })
                                 }
@@ -137,16 +143,16 @@ class ProjectDetailFragment : Fragment() {
         }
 
         releasesButton.setOnClickListener{
-            findNavController().navigate(R.id.releasesPageFragment, Bundle().apply {
+            findNavController().navigate(R.id.action_projectDetailFragment_to_releasesPageFragment, Bundle().apply {
                 putString("PROJECT_ID", project.id)
             })
         }
 
         manageUsersButton.setOnClickListener {
             val destinationId = if (project.adminProjects?.contains(userId) == true) {
-                R.id.userManagementFragment
+                R.id.action_projectUpdateFragment_to_userListFragment
             } else {
-                R.id.userListFragment
+                R.id.action_projectUpdateFragment_to_userListFragment
             }
 
             findNavController().navigate(destinationId, Bundle().apply {

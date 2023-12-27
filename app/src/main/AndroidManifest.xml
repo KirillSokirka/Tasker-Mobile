@@ -30,34 +30,8 @@
             android:name=".LoginActivity"
             android:exported="false"             />
 
-        <activity
-            android:name=".activities.project.ProjectsPageActivity"
-            android:exported="false"             />
-        <activity
-            android:name=".activities.project.ProjectCreateFragment"
-            android:exported="false"             />
-        <activity
-            android:name=".activities.project.ProjectUpdateActivity"
-            android:exported="false"             />
-        <activity
-            android:name=".activities.project.ProjectDetailActivity"
-            android:exported="false"             />
-        <activity
-            android:name=".activities.release.ReleasesPageActivity"
-            android:exported="false"             />
-        <activity
-            android:name=".activities.kanbanboard.KanbanBoardDetailActivity"
-            android:exported="false"  />
         <activity android:name=".activities.users.UserManagementActivity"
             android:exported="false" />
-        <activity android:name=".activities.users.UserListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.backlogpage.BacklogPageActivity"
-            android:exported="false"             />
-        <activity
-            android:name=".activities.users.UserActivity"
-            android:exported="false"             />
 
         <activity
             android:name=".MainActivity"
