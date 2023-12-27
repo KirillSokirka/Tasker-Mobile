@@ -1,5 +1,6 @@
 package com.example.taskermobile
 
+import SharedPreferencesService
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
@@ -28,9 +29,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import com.example.taskermobile.activities.backlogpage.BacklogPageFragment
 import com.example.taskermobile.activities.project.ProjectUpdateActivity
 import com.example.taskermobile.activities.project.ProjectsPageFragment
-import com.example.taskermobile.activities.release.ReleasesPageActivity
+import com.example.taskermobile.activities.release.ReleasesPageFragment
 import com.example.taskermobile.activities.users.UserFragment
 import com.example.taskermobile.ui.theme.TaskerMobileTheme
 import com.example.taskermobile.ui.theme.TextColor
@@ -38,6 +40,7 @@ import com.example.taskermobile.utils.eventlisteners.AuthStateListener
 import com.example.taskermobile.utils.TokenManager
 import com.example.taskermobile.utils.TokenRefresher
 import org.koin.android.ext.android.inject
+import org.koin.core.context.GlobalContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -59,23 +62,10 @@ class MainActivity : AppCompatActivity() {
                         bottomBar = { BottomNavigationBar { selectedTab -> navigateToTab(selectedTab) } }
                     ) { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
-                            AndroidView(
-                                factory = { context ->
-                                    FragmentContainerView(context).apply {
-                                        id = R.id.fragment_container
-                                        layoutParams = ViewGroup.LayoutParams(
-                                            ViewGroup.LayoutParams.MATCH_PARENT,
-                                            ViewGroup.LayoutParams.MATCH_PARENT
-                                        )
-                                    }
-                                },
-                                modifier = Modifier.fillMaxSize()
-                            )
                         }
                     }
                 }
             }
-        }
 
         tokenRefresher = TokenRefresher(tokenManager, authStateListener)
         tokenRefresher.startTokenRefresh()
@@ -90,6 +80,8 @@ class MainActivity : AppCompatActivity() {
         when (selectedTab) {
             "projects" -> loadFragment(ProjectsPageFragment())
             "user" -> loadFragment(UserFragment())
+            "backlog" -> loadFragment(BacklogPageFragment())
+            "release" -> loadFragment(ReleasesPageFragment())
         }
     }
 
@@ -101,8 +93,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun BottomNavigationBar(onTabSelected: (String) -> Unit) {
-    val context = LocalContext.current
+fun BottomNavigationBar() {
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface
@@ -114,10 +105,12 @@ fun BottomNavigationBar(onTabSelected: (String) -> Unit) {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ProjectsButton(onTabSelected)
-            ReleasesButton(modifier = Modifier.weight(1f))
-            BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883", modifier = Modifier.weight(1f))
-            UserButton(onTabSelected)
+            ProjectsButton(modifier = Modifier.weight(1f))
+            if (SharedPreferencesService(LocalContext.current).retrieveData("lastProjectActive") != null) {
+                ReleasesButton(modifier = Modifier.weight(1f))
+                BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883", modifier = Modifier.weight(1f))
+            }
+            UserButton(modifier = Modifier.weight(1f))
         }
     }
 }
@@ -184,17 +177,14 @@ fun UserButton(onTabSelected: (String) -> Unit) {
 
 
 @Composable
-fun ReleasesButton(modifier: Modifier = Modifier) {
+fun ReleasesButton(onTabSelected: (String) -> Unit) {
     val context = LocalContext.current
     val releaseImage = painterResource(id = R.drawable.release)
 
     Box(
         modifier = Modifier
             .width(65.dp)
-            .clickable {
-                val intent = Intent(context, ReleasesPageActivity::class.java)
-                context.startActivity(intent)
-            },
+            .clickable { onTabSelected("user") },
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -220,17 +210,13 @@ fun ReleasesButton(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun BacklogButton(projectId: String, modifier: Modifier = Modifier) {
+fun BacklogButton(onTabSelected: (String) -> Unit) {
     val context = LocalContext.current
     val backlogImage = painterResource(id = R.drawable.backlog)
     Box(
         modifier = Modifier
             .width(50.dp)
-            .clickable {
-                val intent = Intent(context, BacklogPageActivity::class.java)
-                intent.putExtra("projectId", projectId)
-                context.startActivity(intent)
-            },
+            .clickable { onTabSelected("backlog") },
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -253,23 +239,6 @@ fun BacklogButton(projectId: String, modifier: Modifier = Modifier) {
         }
     }
 }
-
-@Composable
-fun ProjectUpdateButton(projectId: String, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-
-    Button(
-        onClick = {
-            val intent = Intent(context, ProjectUpdateActivity::class.java)
-            intent.putExtra("projectId", projectId)
-            context.startActivity(intent)
-        },
-        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
-    ) {
-        Text("Navigate to update project")
-    }
-}
-
 
 
 

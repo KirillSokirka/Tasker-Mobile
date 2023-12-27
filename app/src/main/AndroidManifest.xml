@@ -53,7 +53,7 @@
         <activity android:name=".activities.users.UserListActivity"
             android:exported="false" />
         <activity
-            android:name=".BacklogPageActivity"
+            android:name=".activities.backlogpage.BacklogPageActivity"
             android:exported="false"             />
         <activity
             android:name=".activities.users.UserActivity"

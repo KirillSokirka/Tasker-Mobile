@@ -1,5 +1,6 @@
 package com.example.taskermobile
 
+import SharedPreferencesService
 import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -56,6 +57,7 @@ val myModule = module {
             .create()
     }
     single { provideTokenManager(androidContext()) }
+    single { provideSharedPreferencesService(androidContext()) }
     single { AuthInterceptor(get()) }
     single { AuthAuthenticator(get(), get()) }
     single { provideOkHttpClient(get(), get()) }
@@ -78,6 +80,7 @@ val myModule = module {
 }
 
 fun provideTokenManager(context: Context): TokenManager = TokenManager(context)
+fun provideSharedPreferencesService(context: Context): SharedPreferencesService = SharedPreferencesService(context)
 
 fun provideOkHttpClient(
     authInterceptor: AuthInterceptor,
