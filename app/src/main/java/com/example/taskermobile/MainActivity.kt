@@ -31,7 +31,7 @@ import androidx.fragment.app.FragmentContainerView
 import com.example.taskermobile.activities.project.ProjectUpdateActivity
 import com.example.taskermobile.activities.project.ProjectsPageFragment
 import com.example.taskermobile.activities.release.ReleasesPageActivity
-import com.example.taskermobile.activities.users.UserActivity
+import com.example.taskermobile.activities.users.UserFragment
 import com.example.taskermobile.ui.theme.TaskerMobileTheme
 import com.example.taskermobile.ui.theme.TextColor
 import com.example.taskermobile.utils.eventlisteners.AuthStateListener
@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
     private fun navigateToTab(selectedTab: String) {
         when (selectedTab) {
             "projects" -> loadFragment(ProjectsPageFragment())
+            "user" -> loadFragment(UserFragment())
         }
     }
 
@@ -116,7 +117,7 @@ fun BottomNavigationBar(onTabSelected: (String) -> Unit) {
             ProjectsButton(onTabSelected)
             ReleasesButton(modifier = Modifier.weight(1f))
             BacklogButton(projectId = "3bc90a0a-29bf-4d63-ac7b-3c061da50883", modifier = Modifier.weight(1f))
-            UserButton(modifier = Modifier.weight(1f))
+            UserButton(onTabSelected)
         }
     }
 }
@@ -143,6 +144,35 @@ fun ProjectsButton(onTabSelected: (String) -> Unit) {
             )
             Text(
                 "Projects",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    color = TextColor
+                )
+            )
+        }
+    }
+}
+@Composable
+fun UserButton(onTabSelected: (String) -> Unit) {
+    val context = LocalContext.current
+    val userImage = painterResource(id = R.drawable.user)
+    Box(
+        modifier = Modifier
+            .width(40.dp)
+            .clickable { onTabSelected("user") },
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Image(
+                painter = userImage,
+                contentDescription = "User",
+                modifier = Modifier.height(35.dp)
+            )
+            Text(
+                "User",
                 style = TextStyle(
                     fontSize = 14.sp,
                     color = TextColor
@@ -240,37 +270,6 @@ fun ProjectUpdateButton(projectId: String, modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun UserButton(modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-    val userImage = painterResource(id = R.drawable.user)
-    Box(
-        modifier = Modifier
-            .width(40.dp)
-            .clickable {
-                val intent = Intent(context, UserActivity::class.java)
-                context.startActivity(intent)
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Image(
-                painter = userImage,
-                contentDescription = "User",
-                modifier = Modifier.height(35.dp)
-            )
-            Text(
-                "User",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    color = TextColor
-                )
-            )
-        }
-    }
-}
+
 
 

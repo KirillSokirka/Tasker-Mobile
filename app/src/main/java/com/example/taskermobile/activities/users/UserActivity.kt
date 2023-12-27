@@ -2,12 +2,15 @@ package com.example.taskermobile.activities.users
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.taskermobile.LoginActivity
 import com.example.taskermobile.R
@@ -15,107 +18,103 @@ import com.example.taskermobile.model.auth.ChangePasswordModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getEmailFromToken
 import com.example.taskermobile.utils.getIdFromToken
+import com.example.taskermobile.utils.getUsernameFromToken
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserActivity() : AppCompatActivity() {
+class UserFragment : Fragment() {
     private val tokenViewModel: TokenViewModel by viewModel()
     private val userViewModel: UserViewModel by viewModel()
 
     private lateinit var loadingIndicator: ProgressBar
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.user_fragment, container, false)
+    }
 
-        setContentView(R.layout.user_activity)
-        loadingIndicator = findViewById(R.id.loadingIndicator)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        loadingIndicator = view.findViewById(R.id.loadingIndicator)
 
-        val logOutButton: Button = findViewById(R.id.logOut)
+        tokenViewModel.token.observe(viewLifecycleOwner, Observer { tokenValue ->
+            tokenValue?.let {
+                val username = getUsernameFromToken(it.toString())
+                val userNameLabel: TextView = view.findViewById(R.id.userName)
+                userNameLabel.text = username
+            }
+        })
 
+        val logOutButton: Button = view.findViewById(R.id.logOut)
         logOutButton.setOnClickListener {
             tokenViewModel.deleteToken()
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(activity, LoginActivity::class.java)
             startActivity(intent)
+            activity?.finish()
         }
 
+        val deleteButton: Button = view.findViewById(R.id.deleteAccount)
+        val changePasswordButton: Button = view.findViewById(R.id.changePassword)
 
-        val deleteButton: Button = findViewById(R.id.deleteAccount)
-        val changePasswordButton: Button = findViewById(R.id.changePassword)
-//        val userNameLable: TextView = findViewById(R.id.userName)
-
-        tokenViewModel.isLoading.observe(this, Observer { isLoading ->
+        tokenViewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             deleteButton.isEnabled = !isLoading
             changePasswordButton.isEnabled = !isLoading
         })
 
-
         deleteButton.setOnClickListener {
-            val idFromJwt = getIdFromToken(tokenViewModel.token.value?.token.toString())!!
-            userViewModel.delete(
-                idFromJwt
-            )
+            val idFromJwt = getIdFromToken(tokenViewModel.token.value!!.toString())!!
+            userViewModel.delete(idFromJwt)
         }
 
         changePasswordButton.setOnClickListener {
-            val emailFromJwt = getEmailFromToken(tokenViewModel.token.value?.token.toString())!!
+            val emailFromJwt = getEmailFromToken(tokenViewModel.token.value!!.toString())!!
             userViewModel.changePassword(
                 ChangePasswordModel(
                     emailFromJwt,
-                    findViewById<EditText>(R.id.oldPassword).text.toString(),
-                    findViewById<EditText>(R.id.newPassword).text.toString()
+                    view.findViewById<EditText>(R.id.oldPassword).text.toString(),
+                    view.findViewById<EditText>(R.id.newPassword).text.toString()
                 )
             )
         }
 
-        userViewModel.changePasswordResponse.observe(this) { apiResponse ->
-            when (apiResponse) {
-                is ApiResponse.Loading -> {
-                    loadingIndicator.visibility = View.VISIBLE
-                }
+        setupObservers()
+    }
 
-                is ApiResponse.Success -> {
-                    loadingIndicator.visibility = View.GONE
-                    tokenViewModel.deleteToken()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-
-                is ApiResponse.Failure -> {
-                    loadingIndicator.visibility = View.GONE
-                    Toast.makeText(
-                        this@UserActivity,
-                        "Network error: ${apiResponse.errorMessage}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+    private fun setupObservers() {
+        userViewModel.changePasswordResponse.observe(viewLifecycleOwner) { apiResponse ->
+            handleApiResponse(apiResponse)
         }
 
-        userViewModel.deleteResponse.observe(this) { apiResponse ->
-            when (apiResponse) {
-                is ApiResponse.Loading -> {
-                    loadingIndicator.visibility = View.VISIBLE
-                }
+        userViewModel.deleteResponse.observe(viewLifecycleOwner) { apiResponse ->
+            handleApiResponse(apiResponse)
+        }
+    }
 
-                is ApiResponse.Success -> {
-                    loadingIndicator.visibility = View.GONE
-                    tokenViewModel.deleteToken()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
+    private fun handleApiResponse(apiResponse: ApiResponse<Any>) {
+        when (apiResponse) {
+            is ApiResponse.Loading -> {
+                loadingIndicator.visibility = View.VISIBLE
+            }
 
-                is ApiResponse.Failure -> {
-                    loadingIndicator.visibility = View.GONE
-                    Toast.makeText(
-                        this@UserActivity,
-                        "Network error: ${apiResponse.errorMessage}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+            is ApiResponse.Success -> {
+                loadingIndicator.visibility = View.GONE
+                tokenViewModel.deleteToken()
+                val intent = Intent(activity, LoginActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+            }
+
+            is ApiResponse.Failure -> {
+                loadingIndicator.visibility = View.GONE
+                Toast.makeText(
+                    requireContext(),
+                    "Error: ${apiResponse.errorMessage}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
