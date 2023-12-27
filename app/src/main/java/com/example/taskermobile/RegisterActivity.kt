@@ -18,12 +18,14 @@ class RegisterActivity : AppCompatActivity() {
     private val viewModel: AuthViewModel by viewModel()
 
     private lateinit var loadingIndicator: ProgressBar
+    private lateinit var overlayView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_register)
         loadingIndicator = findViewById(R.id.loadingIndicator)
+        overlayView = findViewById(R.id.overlayView)
 
         val emailText: EditText = findViewById(R.id.email)
         val usernameText: EditText = findViewById(R.id.username)
@@ -40,19 +42,17 @@ class RegisterActivity : AppCompatActivity() {
 
         viewModel.registerResponse.observe(this) { apiResponse ->
             when (apiResponse) {
-                is ApiResponse.Loading -> {
-                    loadingIndicator.visibility = View.VISIBLE
-                }
+                is ApiResponse.Loading -> showLoading()
 
                 is ApiResponse.Success -> {
-                    loadingIndicator.visibility = View.GONE
+                    hideLoading()
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
 
                 is ApiResponse.Failure -> {
-                    loadingIndicator.visibility = View.GONE
+                    hideLoading()
                     Toast.makeText(
                         this@RegisterActivity,
                         "Network error: ${apiResponse.errorMessage}",
@@ -61,6 +61,16 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showLoading() {
+        loadingIndicator.visibility = View.VISIBLE
+        overlayView.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loadingIndicator.visibility = View.GONE
+        overlayView.visibility = View.GONE
     }
 }
 

@@ -1,14 +1,19 @@
 package com.example.taskermobile
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.taskermobile.model.auth.LoginModel
+import com.example.taskermobile.ui.theme.BackgroundColor
+import com.example.taskermobile.ui.theme.HighLightColor
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.eventlisteners.AuthEventListenerImplementation
 import com.example.taskermobile.utils.eventlisteners.AuthStateListener
@@ -24,12 +29,18 @@ class LoginActivity : AppCompatActivity() {
     private val authStateListener: AuthStateListener by inject()
 
     private lateinit var loadingIndicator: ProgressBar
+    private lateinit var overlayView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AuthEventListenerImplementation.context = this
 
         setContentView(R.layout.activity_login)
+
+
+        loadingIndicator = findViewById(R.id.loadingIndicator)
+        overlayView = findViewById(R.id.overlayView)
+
         loadingIndicator = findViewById(R.id.loadingIndicator)
 
         val editTextEmail: EditText = findViewById(R.id.editTextEmail)
@@ -50,12 +61,10 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.loginResponse.observe(this) { apiResponse ->
             when (apiResponse) {
-                is ApiResponse.Loading -> {
-                    loadingIndicator.visibility = View.VISIBLE
-                }
+                is ApiResponse.Loading -> showLoading()
 
                 is ApiResponse.Success -> {
-                    loadingIndicator.visibility = View.GONE
+                    hideLoading()
                     tokenViewModel.saveToken(apiResponse.data!!.token)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
@@ -63,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 is ApiResponse.Failure -> {
-                    loadingIndicator.visibility = View.GONE
+                    hideLoading()
                     Toast.makeText(
                         this@LoginActivity,
                         "Network error: ${apiResponse.errorMessage}",
@@ -72,6 +81,16 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showLoading() {
+        loadingIndicator.visibility = View.VISIBLE
+        overlayView.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loadingIndicator.visibility = View.GONE
+        overlayView.visibility = View.GONE
     }
 
     override fun onDestroy() {

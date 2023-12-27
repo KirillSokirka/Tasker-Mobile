@@ -1,42 +1,54 @@
-<!-- activity_login.xml -->
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loginPage"
+    android:background="@color/backgroundColor"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center_horizontal">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center">
 
     <EditText
         android:id="@+id/editTextEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/CustomEditText"
         android:hint="Email"
         android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/CustomEditText"
         android:hint="Password"
         android:inputType="textPassword" />
 
     <Button
         android:id="@+id/buttonLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/CustomLoginButton"
         android:text="Login" />
 
     <Button
         android:id="@+id/buttonRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/CustomLoginButton"
         android:text="Register" />
+
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/overlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AAffffff"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/loadingIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:visibility="gone" />
-</LinearLayout>
+</FrameLayout>
