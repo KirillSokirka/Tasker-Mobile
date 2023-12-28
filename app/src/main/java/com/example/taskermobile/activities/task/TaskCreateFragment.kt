@@ -50,7 +50,7 @@ class TaskCreateFragment : Fragment() {
     private lateinit var kanbanBoardId: String
     private lateinit var taskTitle: EditText
     private lateinit var taskDescription: EditText
-    private lateinit var priority: Spinner
+    private lateinit var prioritySpinner: Spinner
     private lateinit var createButton: Button
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var overlayView: View
@@ -75,7 +75,7 @@ class TaskCreateFragment : Fragment() {
 
         taskTitle = view.findViewById(R.id.createTaskTitle)
         taskDescription = view.findViewById(R.id.createTaskDescription)
-        priority = view.findViewById(R.id.createTaskPriority)
+        prioritySpinner = view.findViewById(R.id.createTaskPriority)
         statusSpinner = view.findViewById(R.id.createTaskStatus)
         assigneeSpinner = view.findViewById(R.id.createTaskAssignee)
         releaseSpinner = view.findViewById(R.id.createTaskRelease)
@@ -86,7 +86,7 @@ class TaskCreateFragment : Fragment() {
         kanbanBoardId = sharedPreferences.retrieveData("lastKanbanBoard").toString()
         projectUsers = emptyList()
 
-        setUpSpinners()
+        setUpPrioritySpinner()
         setUpObservers()
     }
 
@@ -148,8 +148,12 @@ class TaskCreateFragment : Fragment() {
         setUpListeners()
     }
 
-    private fun setUpSpinners(){
-        priority.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+    private fun setUpPrioritySpinner(){
+        val priorityList = listOf("NONE", "LOW", "MEDIUM", "HIGH", "URGENT")
+        val priorityAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, priorityList)
+        priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        prioritySpinner.adapter = priorityAdapter
+        prioritySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 selectedPriority = parent.getItemAtPosition(position).toString()
             }
