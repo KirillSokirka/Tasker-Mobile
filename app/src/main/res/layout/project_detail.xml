@@ -22,6 +22,12 @@
         android:text="Kanban boards"/>
 
     <Button
+        android:id="@+id/createKanbanBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create board" />
+
+    <Button
         android:id="@+id/releasesInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +37,7 @@
         android:id="@+id/manageUsersButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Manage users" />
+        android:text="Users" />
 
     <ProgressBar
         android:id="@+id/loadingIndicator"

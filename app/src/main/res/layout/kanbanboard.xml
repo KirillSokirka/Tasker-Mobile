@@ -9,11 +9,29 @@
         android:layout_height="wrap_content"
         android:text="Create Task"
         />
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/editBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="Edit Board"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/kanbanBoardRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal" />
+
+    <ProgressBar
+        android:id="@+id/loadingIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
 
 </RelativeLayout>
