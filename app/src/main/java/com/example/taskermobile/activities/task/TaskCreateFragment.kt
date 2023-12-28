@@ -81,7 +81,6 @@ class TaskCreateFragment : Fragment() {
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         overlayView = view.findViewById(R.id.overlayView)
 
-
         kanbanBoardId = sharedPreferences.retrieveData("lastKanbanBoard").toString()
         projectUsers = emptyList()
 

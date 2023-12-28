@@ -7,12 +7,25 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
 import com.example.taskermobile.model.release.ReleasePreviewModel
+import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 
-class ReleaseAdapter(private val items: List<ReleasePreviewModel>?) : RecyclerView.Adapter<ReleaseAdapter.ViewHolder>() {
-
+class ReleaseAdapter(private val items: List<ReleasePreviewModel>?,
+                     private val listener: OnItemClickListener
+) : RecyclerView.Adapter<ReleaseAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewTitle: TextView = itemView.findViewById(R.id.releaseName)
         val textViewStatus: TextView = itemView.findViewById(R.id.releaseStatus)
+
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    items?.get(position)?.id?.let { id ->
+                        listener.onItemClick(id)
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

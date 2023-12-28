@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
 import com.example.taskermobile.model.release.ReleaseCreateModel
 import com.example.taskermobile.utils.ApiResponse
+import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 import com.example.taskermobile.viewadapters.ReleaseAdapter
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
 import org.koin.android.ext.android.inject
@@ -63,13 +65,19 @@ class ReleasesPageFragment : Fragment() {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
                 }
-
                 is ApiResponse.Success -> {
                     setUpListeners(projectId)
                     loadingIndicator.visibility = View.GONE
-                    recyclerView.adapter = ReleaseAdapter(apiResponse.data)
+                    recyclerView.adapter = ReleaseAdapter(apiResponse.data, object :
+                        OnItemClickListener {
+                        override fun onItemClick(id: String) {
+                            findNavController().navigate(
+                                R.id.action_releasesPageFragment_to_releaseDetailFragment,
+                                bundleOf("RELEASE_ID" to id)
+                            )
+                        }
+                        })
                 }
-
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
                     Toast.makeText(
@@ -81,17 +89,15 @@ class ReleasesPageFragment : Fragment() {
             }
         }
 
-        viewModel.releaseResponse.observe(viewLifecycleOwner) { apiResponse ->
+        viewModel.releaseCreateResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
                 }
-
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
                     findNavController().navigate(R.id.releasesPageFragment)
                 }
-
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
                     Toast.makeText(

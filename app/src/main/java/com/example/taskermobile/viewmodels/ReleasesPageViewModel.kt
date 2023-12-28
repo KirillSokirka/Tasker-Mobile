@@ -11,7 +11,6 @@ import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.apiRequestFlow
 import kotlinx.coroutines.launch
 
-
 class ReleasesPageViewModel(
     private val releaseApiService: ReleaseApiService
 ) : BaseViewModel() {
@@ -19,8 +18,14 @@ class ReleasesPageViewModel(
     private val _releasesResponse = MutableLiveData<ApiResponse<List<ReleasePreviewModel>>>()
     val releasesResponse: LiveData<ApiResponse<List<ReleasePreviewModel>>> = _releasesResponse
 
-    private val _releaseResponse = MutableLiveData<ApiResponse<ReleaseModel>>()
-    val releaseResponse: LiveData<ApiResponse<ReleaseModel>> = _releaseResponse
+    private val _releaseCreateResponse = MutableLiveData<ApiResponse<ReleaseModel>>()
+    val releaseCreateResponse: LiveData<ApiResponse<ReleaseModel>> = _releaseCreateResponse
+
+    private val _releaseByIdResponse = MutableLiveData<ApiResponse<ReleaseModel>>()
+    val releaseByIdResponse: LiveData<ApiResponse<ReleaseModel>> = _releaseByIdResponse
+
+    private val _deleteReleaseResponse = MutableLiveData<ApiResponse<String>>()
+    val deleteReleaseResponse: LiveData<ApiResponse<String>> = _deleteReleaseResponse
 
     fun getAll(projectId: String) {
         viewModelScope.launch {
@@ -28,11 +33,22 @@ class ReleasesPageViewModel(
                 .collect { apiResponse -> _releasesResponse.value = apiResponse }
         }
     }
-
+    fun get(id: String) {
+        viewModelScope.launch {
+            apiRequestFlow { releaseApiService.get(id) }
+                .collect { apiResponse -> _releaseByIdResponse.value = apiResponse }
+        }
+    }
     fun create(model: ReleaseCreateModel) {
         viewModelScope.launch {
             apiRequestFlow { releaseApiService.create(model) }
-                .collect { apiResponse -> _releaseResponse.value = apiResponse }
+                .collect { apiResponse -> _releaseCreateResponse.value = apiResponse }
+        }
+    }
+    fun delete(id: String) {
+        viewModelScope.launch {
+            apiRequestFlow { releaseApiService.delete(id) }
+                .collect { apiResponse -> _deleteReleaseResponse.value = apiResponse }
         }
     }
 }
