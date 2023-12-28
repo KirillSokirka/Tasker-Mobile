@@ -15,10 +15,18 @@
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/deleteReleaseButton"
+        android:id="@+id/deleteRelease"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="Delete" />
+
+    <Button
+        android:id="@+id/updateRelease"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="Update" />
 
     <ProgressBar
         android:id="@+id/loadingIndicator"

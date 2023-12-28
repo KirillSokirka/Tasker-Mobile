@@ -26,8 +26,10 @@ class ReleaseDetailFragment : Fragment() {
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var userAdminProject: List<String>
     private lateinit var deleteButton: Button
+    private lateinit var updateButton: Button
     private lateinit var releaseName: TextView
     private lateinit var userId: String
+    private lateinit var projectId: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,8 +46,11 @@ class ReleaseDetailFragment : Fragment() {
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         releaseName = view.findViewById(R.id.releaseName)
-        deleteButton = view.findViewById(R.id.deleteReleaseButton)
+        deleteButton = view.findViewById(R.id.deleteRelease)
+        updateButton = view.findViewById(R.id.updateRelease)
+
         userAdminProject = emptyList()
+        projectId = ""
         userId = ""
 
         setUpObservers(releaseId)
@@ -69,6 +74,7 @@ class ReleaseDetailFragment : Fragment() {
                     loadingIndicator.visibility = View.VISIBLE
 
                     releaseName.text = apiResponse.data!!.title
+                    projectId = apiResponse.data.projectId!!
 
                     userModel.get(userId)
                 }
@@ -110,7 +116,7 @@ class ReleaseDetailFragment : Fragment() {
 
                     is ApiResponse.Success -> {
                         loadingIndicator.visibility = View.VISIBLE
-                        findNavController().navigate(R.id.action_releaseDetailFragment_to_releasesPageFragment)
+                        findNavController().navigate(R.id.releasesPageFragment)
                     }
 
                     is ApiResponse.Failure -> {
@@ -126,10 +132,17 @@ class ReleaseDetailFragment : Fragment() {
         }
     }
 
-    private fun setUpListeners(releaseId: String, strings: List<String>) {
-        deleteButton.setOnClickListener {
-            releaseModel.delete(releaseId)
-        }
+    private fun setUpListeners(releaseId: String, allowedProjects: List<String>) {
+        if (allowedProjects.contains(projectId)) {
+            deleteButton.visibility = View.VISIBLE
+            deleteButton.setOnClickListener {
+                releaseModel.delete(releaseId)
+            }
 
+            updateButton.visibility = View.VISIBLE
+            updateButton.setOnClickListener {
+                findNavController().navigate(R.id.action_releaseDetailFragment_to_releaseUpdateFragment)
+            }
+        }
     }
 }

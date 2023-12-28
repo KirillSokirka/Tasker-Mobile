@@ -72,22 +72,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/ReleaseDetailFragment"
-        android:name="com.example.taskermobile.activities.kanbanboard.KanbanBoardDetailFragment"
-        android:label="Board" >
-        <action
-            android:id="@+id/action_kanbanBoardDetailFragment_to_projectsPageFragment"
-            app:destination="@id/projectsPageFragment" />
-        <argument
-            android:name="KANBAN_BOARD_ID"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/action_kanbanBoardDetailFragment_to_taskCreateFragment"
-            app:destination="@id/taskCreateFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/backlogPageFragment"
         android:name="com.example.taskermobile.activities.backlogpage.BacklogPageFragment"
         android:label="Backlog" >
@@ -133,6 +117,9 @@
         <action
             android:id="@+id/action_releaseDetailFragment_to_userListFragment"
             app:destination="@id/userListFragment" />
+        <action
+            android:id="@+id/action_releaseDetailFragment_to_releaseUpdateFragment"
+            app:destination="@id/releaseUpdateFragment" />
     </fragment>
 
     <fragment
@@ -146,7 +133,33 @@
     <fragment
         android:id="@+id/taskCreateFragment"
         android:name="com.example.taskermobile.activities.users.TaskCreateFragment"
-        android:label="TaskCreateFragment" />
+        android:label="TaskCreateFragment" >
+        <action
+            android:id="@+id/action_taskCreateFragment_to_kanbanBoardDetailFragment"
+            app:destination="@id/kanbanBoardDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/releaseUpdateFragment"
+        android:name="com.example.taskermobile.activities.release.ReleaseUpdateFragment"
+        android:label="ReleaseUpdateFragment" />
+    <fragment
+        android:id="@+id/kanbanBoardDetailFragment"
+        android:name="com.example.taskermobile.activities.kanbanboard.KanbanBoardDetailFragment"
+        android:label="KanbanBoardDetailFragment" >
+        <action
+            android:id="@+id/action_kanbanBoardDetailFragment_to_projectDetailFragment"
+            app:destination="@id/projectDetailFragment" />
+        <action
+            android:id="@+id/action_kanbanBoardDetailFragment_to_projectsPageFragment"
+            app:destination="@id/projectsPageFragment" />
+        <argument
+            android:name="KANBAN_BOARD_ID"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_kanbanBoardDetailFragment_to_taskCreateFragment"
+            app:destination="@id/taskCreateFragment" />
+    </fragment>
 
 
 </navigation>

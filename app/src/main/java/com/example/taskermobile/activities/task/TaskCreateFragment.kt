@@ -12,8 +12,10 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.R
 import com.example.taskermobile.model.TaskPriority
 import com.example.taskermobile.model.kanbanboard.KanbanBoardModel
@@ -255,6 +257,8 @@ class TaskCreateFragment : Fragment() {
                         "Task ${apiResponse.data?.title} created",
                         Toast.LENGTH_LONG
                     ).show()
+                    findNavController().navigate(R.id.action_taskCreateFragment_to_kanbanBoardDetailFragment,
+                        bundleOf("KANBAN_BOARD_ID" to kanbanBoardId))
                 }
                 is ApiResponse.Failure -> {
                     hideLoading()
