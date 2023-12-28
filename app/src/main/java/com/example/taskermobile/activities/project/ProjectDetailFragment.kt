@@ -100,10 +100,7 @@ class ProjectDetailFragment : Fragment() {
                     loadingIndicator.visibility = View.VISIBLE
                 }
                 is ApiResponse.Success -> {
-                    parentFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, ProjectDetailFragment::class.java, arguments)
-                        .commit()
+                    findNavController().navigate(R.id.projectDetailFragment, bundleOf("PROJECT_ID" to projectId))
                 }
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE

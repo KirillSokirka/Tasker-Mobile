@@ -1,5 +1,6 @@
 package com.example.taskermobile.service
 
+import com.example.taskermobile.model.release.ReleaseCreateModel
 import com.example.taskermobile.model.release.ReleaseModel
 import com.example.taskermobile.model.release.ReleasePreviewModel
 import retrofit2.Response
@@ -14,5 +15,5 @@ interface ReleaseApiService {
             Response<List<ReleasePreviewModel>>
 
     @POST("api/releases")
-    suspend fun create(@Body model: ReleaseModel) : Response<ReleaseModel>
+    suspend fun create(@Body model: ReleaseCreateModel) : Response<ReleaseModel>
 }

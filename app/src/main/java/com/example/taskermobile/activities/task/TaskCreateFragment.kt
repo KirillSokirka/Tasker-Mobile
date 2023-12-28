@@ -131,8 +131,6 @@ class TaskCreateFragment : Fragment() {
                     loadingIndicator.visibility = View.GONE
                     apiResponse.data?.let { data ->
                         projectUsers = data
-
-                        val temp = 0
                     }
                 }
                 is ApiResponse.Failure -> {
