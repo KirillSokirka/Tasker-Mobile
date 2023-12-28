@@ -22,7 +22,6 @@ import com.example.taskermobile.viewmodels.ProjectsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProjectsPageFragment : Fragment() {
-
     private val viewModel: ProjectsViewModel by viewModel()
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var overlayView: View
