@@ -41,17 +41,12 @@ class KanbanBoardDetailFragment : Fragment() {
         kanbanBoardRecyclerView = view.findViewById(R.id.kanbanBoardRecyclerView)
         kanbanBoardRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        loadingIndicator = view.findViewById(R.id.loadingIndicator)
-
-        val boardId = sharedPreferences.retrieveData("lastKanbanBoard")
-            ?: arguments?.getString("KANBAN_BOARD_ID").also { id ->
-                if (id == null) {
-                    findNavController().navigate(R.id.action_kanbanBoardDetailFragment_to_projectsPageFragment)
-                } else {
-                    sharedPreferences.saveData("lastKanbanBoard", id)
-                }
-            }
-            ?: ""
+        val boardId = arguments?.getString("KANBAN_BOARD_ID")?:sharedPreferences.retrieveData("lastKanbanBoard")
+        if ( boardId == null ) {
+            findNavController().navigate(R.id.action_kanbanBoardDetailFragment_to_projectsPageFragment)
+            return
+        }
+        sharedPreferences.saveData("lastKanbanBoard", boardId)
 
         kanbanBoardViewModel.getById(boardId)
         kanbanBoardViewModel.kanbanBoardResponse.observe(viewLifecycleOwner) { apiResponse ->

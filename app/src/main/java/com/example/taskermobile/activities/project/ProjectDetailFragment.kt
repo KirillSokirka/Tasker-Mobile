@@ -64,15 +64,14 @@ class ProjectDetailFragment : Fragment() {
             sharedPreferences.saveData("lastKanbanBoard", null)
         }
 
-        val projectId = projectIdFromArgs
-            ?: lastProjectActive.also { id ->
-                if (id == null) {
-                    findNavController().navigate(R.id.action_projectDetailFragment_to_projectsPageFragment)
-                } else {
-                    sharedPreferences.saveData("lastProjectActive", id)
-                }
-            }
-            ?: ""
+        val projectId = projectIdFromArgs ?: lastProjectActive
+        
+        if (projectId == null) {
+            findNavController().navigate(R.id.action_projectDetailFragment_to_projectsPageFragment)
+            return
+        } else {
+            sharedPreferences.saveData("lastProjectActive", projectId)
+        }
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         title = view.findViewById(R.id.title)

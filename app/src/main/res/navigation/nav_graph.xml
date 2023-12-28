@@ -104,6 +104,9 @@
         <action
             android:id="@+id/action_releasesPageFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
+        <action
+            android:id="@+id/action_releasesPageFragment_to_projectsPageFragment"
+            app:destination="@id/projectsPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/userListFragment"

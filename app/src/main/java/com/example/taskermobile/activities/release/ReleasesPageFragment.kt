@@ -20,10 +20,11 @@ import com.example.taskermobile.RegisterActivity
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReleasesPageFragment : Fragment() {
     private val sharedPreferencesService: SharedPreferencesService by inject()
-    private val viewModel: ReleasesPageViewModel by viewModels()
+    private val viewModel by viewModel<ReleasesPageViewModel>()
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var recyclerView: RecyclerView
 
@@ -35,13 +36,13 @@ class ReleasesPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var projectId = sharedPreferencesService.retrieveData("lastProjectActive")
-        if ( projectId == null ) {
-//            findNavController().navigate(R.id.,
-//                bundleOf("PROJECT_ID" to id))
-        }
-
         super.onViewCreated(view, savedInstanceState)
+
+        val projectId = sharedPreferencesService.retrieveData("lastProjectActive")
+        if (projectId == null) {
+            findNavController().navigate(R.id.action_releasesPageFragment_to_projectsPageFragment)
+            return
+        }
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         recyclerView = view.findViewById(R.id.recyclerview)
