@@ -24,6 +24,7 @@ import com.example.taskermobile.viewmodels.BacklogPageViewModel
 import com.example.taskermobile.viewmodels.KanbanBoardViewModel
 import com.example.taskermobile.viewmodels.ProjectsViewModel
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
+import com.example.taskermobile.viewmodels.TaskViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
 import com.google.gson.GsonBuilder
@@ -67,7 +68,7 @@ val myModule = module {
     single { provideReleaseApiService(get()) }
     single { provideProjectApiService(get()) }
     single { provideTaskApiService(get()) }
-    single {provideUserApiServer(get())}
+    single { provideUserApiService(get())}
     single<AuthStateListener> { AuthEventListenerImplementation }
 
     viewModel { AuthViewModel(get()) }
@@ -77,6 +78,7 @@ val myModule = module {
     viewModel { BacklogPageViewModel(get()) }
     viewModel { UserViewModel(get()) }
     viewModel { KanbanBoardViewModel(get()) }
+    viewModel { TaskViewModel(get()) }
 }
 
 fun provideTokenManager(context: Context): TokenManager = TokenManager(context)
@@ -124,7 +126,7 @@ fun provideTaskApiService(retrofit: Retrofit.Builder): TaskApiService =
         .build()
         .create(TaskApiService::class.java)
 
-fun provideUserApiServer(retrofit: Retrofit.Builder): UserApiService =
+fun provideUserApiService(retrofit: Retrofit.Builder): UserApiService =
     retrofit
         .build()
         .create(UserApiService::class.java)

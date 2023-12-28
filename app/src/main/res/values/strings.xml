@@ -5,6 +5,6 @@
         <item>LOW</item>
         <item>MEDIUM</item>
         <item>HIGH</item>
-        <item>CRITICAL</item>
+        <item>URGENT</item>
     </string-array>
 </resources>

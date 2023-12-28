@@ -4,7 +4,6 @@ import com.example.taskermobile.model.TaskPriority
 import com.example.taskermobile.model.user.UserModel
 
 data class TaskCreateModel(
-    val id: String? = null,
     val title: String? = null,
     val projectId: String? = null,
     val creatorId: String? = null,
