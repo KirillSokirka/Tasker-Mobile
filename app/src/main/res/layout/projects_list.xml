@@ -1,7 +1,7 @@
 <!-- activity_login.xml -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/registerPage"
+    android:id="@+id/projectsListPage"
     android:background="@color/backgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -38,6 +39,12 @@ class KanbanBoardDetailFragment : Fragment() {
 
         kanbanBoardRecyclerView = view.findViewById(R.id.kanbanBoardRecyclerView)
         kanbanBoardRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        val createTaskButton: Button = view.findViewById(R.id.createTaskButton)
+        createTaskButton.setOnClickListener {
+            findNavController().navigate(R.id.action_kanbanBoardDetailFragment_to_taskCreateFragment)
+            // pass projectId
+        }
 
         val boardId = sharedPreferences.retrieveData("lastKanbanBoard")
             ?: arguments?.getString("KANBAN_BOARD_ID").also { id ->

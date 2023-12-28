@@ -81,6 +81,9 @@
         <argument
             android:name="KANBAN_BOARD_ID"
             app:argType="string" />
+        <action
+            android:id="@+id/action_kanbanBoardDetailFragment_to_taskCreateFragment"
+            app:destination="@id/taskCreateFragment" />
     </fragment>
 
     <fragment
@@ -113,6 +116,10 @@
             android:id="@+id/action_userListFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/taskCreateFragment"
+        android:name="com.example.taskermobile.activities.users.TaskCreateFragment"
+        android:label="TaskCreateFragment" />
 
 
 </navigation>

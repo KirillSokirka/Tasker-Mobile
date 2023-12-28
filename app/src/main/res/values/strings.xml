@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">TaskerMobile</string>
+    <string-array name="priority_array">
+        <item>NONE</item>
+        <item>LOW</item>
+        <item>MEDIUM</item>
+        <item>HIGH</item>
+        <item>CRITICAL</item>
+    </string-array>
 </resources>
