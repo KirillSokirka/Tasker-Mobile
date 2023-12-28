@@ -85,8 +85,7 @@ class TaskCreateFragment : Fragment() {
 
 
         kanbanBoardId = sharedPreferences.retrieveData("lastKanbanBoard").toString()
-
-
+        projectUsers = emptyList()
 
         setUpObservers()
     }
@@ -101,7 +100,6 @@ class TaskCreateFragment : Fragment() {
                 selectedPriority = "NONE"
             }
         }
-        val tem = 0
 
         val assigneeList = projectUsers.map { u -> u.title }.toMutableList()
         val assigneeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, assigneeList)
