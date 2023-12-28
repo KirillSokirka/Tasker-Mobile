@@ -11,15 +11,15 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.R
 import com.example.taskermobile.model.project.ProjectUpdateModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.ProjectsViewModel
-import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProjectUpdateFragment: Fragment() {
-    private val viewModel: ProjectsViewModel by viewModels()
+    private val viewModel by viewModel<ProjectsViewModel>()
 
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var projectTitleHolder: EditText
@@ -78,8 +78,10 @@ class ProjectUpdateFragment: Fragment() {
 
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-                    val bundle = bundleOf("PROJECT_ID" to projectId)
-                    findNavController().navigate(R.id.projectsPageFragment, bundle)
+
+                    findNavController()
+                        .navigate(R.id.action_projectUpdateFragment_to_projectDetailFragment,
+                            bundleOf("PROJECT_ID" to projectId))
                 }
 
                 is ApiResponse.Failure -> {

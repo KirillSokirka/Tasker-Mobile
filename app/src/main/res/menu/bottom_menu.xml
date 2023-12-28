@@ -2,15 +2,15 @@
     <item
         android:id="@+id/projectsPageFragment"
         android:icon="@drawable/project"
-        android:title="Project" />
+        android:title="Projects" />
+    <item
+        android:id="@+id/kanbanBoardDetailFragment"
+        android:icon="@drawable/backlog"
+        android:title="Board" />
     <item
         android:id="@+id/releasesPageFragment"
         android:icon="@drawable/release"
         android:title="Releases" />
-    <item
-        android:id="@+id/backlogPageFragment"
-        android:icon="@drawable/backlog"
-        android:title="Backlog" />
     <item
         android:id="@+id/userFragment"
         android:icon="@drawable/user"

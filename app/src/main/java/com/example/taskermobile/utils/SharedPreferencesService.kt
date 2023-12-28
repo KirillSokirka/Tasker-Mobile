@@ -6,7 +6,7 @@ class SharedPreferencesService(private val context: Context) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
-    fun saveData(key: String, value: String) {
+    fun saveData(key: String, value: String?) {
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putString(key, value)
         editor.apply()

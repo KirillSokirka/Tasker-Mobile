@@ -69,3 +69,4 @@ app/build.gradle.kts
 .gradle/8.2/executionHistory/executionHistory.bin
 *.bin
 *.lock
+local.properties

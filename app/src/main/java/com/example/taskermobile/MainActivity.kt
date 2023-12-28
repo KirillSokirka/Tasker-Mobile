@@ -4,6 +4,7 @@ import SharedPreferencesService
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,9 +30,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.taskermobile.activities.backlogpage.BacklogPageFragment
 import com.example.taskermobile.activities.project.ProjectsPageFragment
 import com.example.taskermobile.activities.release.ReleasesPageFragment
@@ -64,10 +67,40 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
+        bottomNavView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.projectsPageFragment -> {
+                    navigationController.navigate(R.id.projectsPageFragment)
+                    true
+                }
+                R.id.kanbanBoardDetailFragment -> {
+                    navigationController.navigate(R.id.kanbanBoardDetailFragment)
+                    true
+                }
+                R.id.releasesPageFragment -> {
+                    navigationController.navigate(R.id.releasesPageFragment)
+                    true
+                }
+                R.id.userFragment -> {
+                    navigationController.navigate(R.id.userFragment)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+        setSupportActionBar(toolbar)
+        setupActionBarWithNavController(navigationController)
         NavigationUI.setupWithNavController(bottomNavView, navigationController)
     }
 
-     override fun onDestroy() {
+    override fun onSupportNavigateUp(): Boolean {
+        return navigationController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
         super.onDestroy()
         tokenRefresher.stopTokenRefresh()
     }

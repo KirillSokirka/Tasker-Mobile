@@ -38,7 +38,7 @@ class ProjectCreateFragment : Fragment() {
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         val projectName : EditText = view.findViewById(R.id.projectName)
-        
+
         val createButton : Button = view.findViewById(R.id.createProjectButton)
 
         tokenViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->

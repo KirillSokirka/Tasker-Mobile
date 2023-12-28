@@ -99,7 +99,7 @@ fun getEmailFromToken(token: String): String? {
     }
 }
 
-suspend fun getNewToken(refreshToken: RefreshTokenModel?): retrofit2.Response<RefreshJwtResponse> {
+suspend fun getNewToken(refreshToken: RefreshTokenModel?): Response<RefreshJwtResponse> {
     val loggingInterceptor = HttpLoggingInterceptor()
 
     loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -108,6 +108,7 @@ suspend fun getNewToken(refreshToken: RefreshTokenModel?): retrofit2.Response<Re
 
     val retrofit = Retrofit.Builder()
         .baseUrl("http://77.47.130.226:8188/")
+        //.baseUrl("http://10.0.2.2:5185/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()

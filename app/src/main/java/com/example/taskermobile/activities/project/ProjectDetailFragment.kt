@@ -6,14 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.MainActivity
 import com.example.taskermobile.R
+import com.example.taskermobile.model.project.ProjectModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getIdFromToken
 import com.example.taskermobile.viewmodels.ProjectsViewModel
@@ -45,8 +50,23 @@ class ProjectDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val projectId = arguments?.getString("PROJECT_ID")
-            ?: throw IllegalArgumentException("Project ID is required")
+        val projectIdFromArgs = arguments?.getString("PROJECT_ID")
+        val lastProjectActive = sharedPreferences.retrieveData("lastProjectActive")
+
+        if (lastProjectActive != projectIdFromArgs) {
+            sharedPreferences.saveData("lastKanbanBoard", null)
+        }
+
+        val projectId = projectIdFromArgs
+            ?: lastProjectActive.also { id ->
+                if (id == null) {
+                    findNavController().navigate(R.id.action_projectDetailFragment_to_projectsPageFragment)
+                } else {
+
+                    sharedPreferences.saveData("lastProjectActive", id)
+                }
+            }
+            ?: ""
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         title = view.findViewById(R.id.title)
@@ -54,8 +74,6 @@ class ProjectDetailFragment : Fragment() {
         releasesButton = view.findViewById(R.id.releasesInfo)
         manageUsersButton = view.findViewById(R.id.manageUsersButton)
         spinner = view.findViewById(R.id.kanbanBoardsSpinner)
-
-        sharedPreferences.saveData("lastProjectActive", projectId)
 
         setupObservers(projectId)
     }
@@ -91,35 +109,39 @@ class ProjectDetailFragment : Fragment() {
                             startActivity(intent)
                         }
 
-//                        setupClickListeners(project, userId!!)
-//
-//                        title.text = project.title
-//
-//                        val defaultTitle = "Select a Kanban Board"
-//                        val kanbanBoardNames = mutableListOf(defaultTitle)
-//                        project.kanbanBoards?.map { kanbanBoardNames.add(it.title.toString()) }
-//                        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, kanbanBoardNames)
-//                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//
-//                        spinner.adapter = adapter
-//
-//                        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//                            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-//                                if (position == 0) {
-//                                    spinner.setSelection(0)
-//                                } else {
-//                                    val selectedBoardId = project.kanbanBoards?.get(position-1)?.id
-//
-//                                    findNavController().navigate(R.id.action_projectDetailFragment_to_kanbanBoardDetailFragment, Bundle().apply {
-//                                        putString("PROJECT_ID", selectedBoardId)
-//                                    })
-//                                }
-//                            }
-//
-//                            override fun onNothingSelected(parent: AdapterView<*>?) {
-//                                spinner.setSelection(0)
-//                            }
-//                        }
+                        setupClickListeners(project, userId!!)
+
+                        title.text = project.title
+
+                        val defaultTitle = "Select a Kanban Board"
+                        val kanbanBoardNames = mutableListOf(defaultTitle)
+                        project.kanbanBoards?.map { kanbanBoardNames.add(it.title.toString()) }
+                        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, kanbanBoardNames)
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                        spinner.adapter = adapter
+
+                        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                                if (view != null) {
+                                    if (position == 0) {
+                                        spinner.setSelection(0)
+                                    } else {
+                                        val selectedBoardId =
+                                            project.kanbanBoards?.get(position - 1)?.id
+
+                                        findNavController().navigate(
+                                            R.id.action_projectDetailFragment_to_kanbanBoardDetailFragment,
+                                            bundleOf("KANBAN_BOARD_ID" to selectedBoardId)
+                                        )
+                                    }
+                                }
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
+                                spinner.setSelection(0)
+                            }
+                        }
                     }
                 }
 
@@ -134,31 +156,30 @@ class ProjectDetailFragment : Fragment() {
             }
         }
     }
+
+    private fun setupClickListeners(project: ProjectModel, userId: String) {
+        editProjectButton.setOnClickListener {
+            findNavController().navigate(R.id.action_projectDetailFragment_to_projectUpdateFragment, Bundle().apply {
+                putString("PROJECT_ID", project.id)
+            })
+        }
+
+        releasesButton.setOnClickListener{
+            findNavController().navigate(R.id.action_projectDetailFragment_to_releasesPageFragment, Bundle().apply {
+                putString("PROJECT_ID", project.id)
+            })
+        }
+
+        manageUsersButton.setOnClickListener {
+            val destinationId = if (project.adminProjects?.contains(userId) == true) {
+                R.id.action_projectDetailFragment_to_userListFragment
+            } else {
+                R.id.action_projectDetailFragment_to_userListFragment
+            }
+
+            findNavController().navigate(destinationId, Bundle().apply {
+                putString("PROJECT_ID", project.id)
+            })
+        }
+    }
 }
-//
-////    private fun setupClickListeners(project: ProjectModel, userId: String) {
-//////        editProjectButton.setOnClickListener {
-//////            findNavController().navigate(R.id.projectUpdateFragment, Bundle().apply {
-//////                putString("PROJECT_ID", project.id)
-//////            })
-//////        }
-//////
-//////        releasesButton.setOnClickListener{
-//////            findNavController().navigate(R.id.action_projectDetailFragment_to_releasesPageFragment, Bundle().apply {
-//////                putString("PROJECT_ID", project.id)
-//////            })
-//////        }
-//////
-//////        manageUsersButton.setOnClickListener {
-//////            val destinationId = if (project.adminProjects?.contains(userId) == true) {
-//////                R.id.action_projectUpdateFragment_to_userListFragment
-//////            } else {
-//////                R.id.action_projectUpdateFragment_to_userListFragment
-//////            }
-//////
-//////            findNavController().navigate(destinationId, Bundle().apply {
-//////                putString("PROJECT_ID", project.id)
-//////            })
-//////        }
-////    }
-////}
