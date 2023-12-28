@@ -5,6 +5,7 @@ import com.example.taskermobile.model.release.ReleaseModel
 import com.example.taskermobile.model.release.ReleasePreviewModel
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -16,4 +17,7 @@ interface ReleaseApiService {
 
     @POST("api/releases")
     suspend fun create(@Body model: ReleaseCreateModel) : Response<ReleaseModel>
+
+    @DELETE("api/releases/{id}")
+    suspend fun delete(@Path("id") id: String) : Response<String>
 }

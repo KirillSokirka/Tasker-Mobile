@@ -13,7 +13,6 @@ class ProjectAdapter(private val items: List<ProjectPreviewModel>?,
                      private val listener: OnItemClickListener
 )
     : RecyclerView.Adapter<ProjectAdapter.ViewHolder>() {
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewTitle: TextView = itemView.findViewById(R.id.textViewTitle)
 

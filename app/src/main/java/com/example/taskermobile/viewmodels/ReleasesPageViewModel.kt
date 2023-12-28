@@ -11,7 +11,6 @@ import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.apiRequestFlow
 import kotlinx.coroutines.launch
 
-
 class ReleasesPageViewModel(
     private val releaseApiService: ReleaseApiService
 ) : BaseViewModel() {
@@ -21,6 +20,9 @@ class ReleasesPageViewModel(
 
     private val _releaseResponse = MutableLiveData<ApiResponse<ReleaseModel>>()
     val releaseResponse: LiveData<ApiResponse<ReleaseModel>> = _releaseResponse
+
+    private val _deleteReleaseResponse = MutableLiveData<ApiResponse<String>>()
+    val deleteReleaseResponse: LiveData<ApiResponse<String>> = _deleteReleaseResponse
 
     fun getAll(projectId: String) {
         viewModelScope.launch {
@@ -33,6 +35,13 @@ class ReleasesPageViewModel(
         viewModelScope.launch {
             apiRequestFlow { releaseApiService.create(model) }
                 .collect { apiResponse -> _releaseResponse.value = apiResponse }
+        }
+    }
+
+    fun delete(id: String) {
+        viewModelScope.launch {
+            apiRequestFlow { releaseApiService.delete(id) }
+                .collect { apiResponse -> _deleteReleaseResponse.value = apiResponse }
         }
     }
 }

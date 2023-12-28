@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
 import com.example.taskermobile.model.release.ReleaseCreateModel
 import com.example.taskermobile.utils.ApiResponse
+import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 import com.example.taskermobile.viewadapters.ReleaseAdapter
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
 import org.koin.android.ext.android.inject
@@ -67,7 +68,15 @@ class ReleasesPageFragment : Fragment() {
                 is ApiResponse.Success -> {
                     setUpListeners(projectId)
                     loadingIndicator.visibility = View.GONE
-                    recyclerView.adapter = ReleaseAdapter(apiResponse.data)
+                    recyclerView.adapter = ReleaseAdapter(apiResponse.data, object :
+                        OnItemClickListener {
+                        override fun onItemClick(id: String) {
+                            findNavController().navigate(
+                                R.id.action_releasesPageFragment_to_releaseDetailFragment,
+                                bundleOf("RELEASE_ID" to id)
+                            )
+                        }
+                        })
                 }
 
                 is ApiResponse.Failure -> {
