@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.taskermobile.model.kanbanboard.KanbanBoardCreateModel
 import com.example.taskermobile.model.kanbanboard.KanbanBoardModel
+import com.example.taskermobile.model.kanbanboard.KanbanBoardUpdateModel
 import com.example.taskermobile.service.KanbanBoardApiService
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.apiRequestFlow
@@ -20,6 +21,9 @@ class KanbanBoardViewModel(
     private val _kanbanCreateResponse = MutableLiveData<ApiResponse<KanbanBoardModel>>()
     val kanbanCreateResponse: LiveData<ApiResponse<KanbanBoardModel>> = _kanbanCreateResponse
 
+    private val _kanbanUpdateResponse = MutableLiveData<ApiResponse<KanbanBoardModel>>()
+    val kanbanUpdateResponse: LiveData<ApiResponse<KanbanBoardModel>> = _kanbanUpdateResponse
+
     fun getById(projectId: String){
         viewModelScope.launch {
             apiRequestFlow { kanbanBoardApiService.getById(projectId) }
@@ -31,6 +35,13 @@ class KanbanBoardViewModel(
         viewModelScope.launch {
             apiRequestFlow { kanbanBoardApiService.create(model) }
                 .collect { apiResponse -> _kanbanCreateResponse.value = apiResponse }
+        }
+    }
+
+    fun update(model: KanbanBoardUpdateModel){
+        viewModelScope.launch {
+            apiRequestFlow { kanbanBoardApiService.update(model) }
+                .collect { apiResponse -> _kanbanUpdateResponse.value = apiResponse }
         }
     }
 }
