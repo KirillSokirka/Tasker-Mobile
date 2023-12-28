@@ -33,7 +33,7 @@
 
         <Button
             android:id="@+id/buttonRegister"
-            style="@style/CustomLoginButton"
+            style="@style/CustomButton"
             android:text="Register" />
 
     </LinearLayout>

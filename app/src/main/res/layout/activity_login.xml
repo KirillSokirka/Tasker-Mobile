@@ -27,12 +27,12 @@
 
     <Button
         android:id="@+id/buttonLogin"
-        style="@style/CustomLoginButton"
+        style="@style/CustomButton"
         android:text="Login" />
 
     <Button
         android:id="@+id/buttonRegister"
-        style="@style/CustomLoginButton"
+        style="@style/CustomButton"
         android:text="Register" />
 
 

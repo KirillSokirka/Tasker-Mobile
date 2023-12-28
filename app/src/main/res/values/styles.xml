@@ -8,7 +8,7 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="CustomLoginButton" parent="Widget.AppCompat.Button">
+    <style name="CustomButton" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">120dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">4dp</item>

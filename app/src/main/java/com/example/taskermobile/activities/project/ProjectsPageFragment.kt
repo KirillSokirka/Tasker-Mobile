@@ -25,6 +25,7 @@ class ProjectsPageFragment : Fragment() {
 
     private val viewModel: ProjectsViewModel by viewModel()
     private lateinit var loadingIndicator: ProgressBar
+    private lateinit var overlayView: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +38,7 @@ class ProjectsPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
+        overlayView = view.findViewById(R.id.overlayView)
         viewModel.getAll()
 
         val createProjectButton: Button = view.findViewById(R.id.buttonCreate)
@@ -74,6 +76,16 @@ class ProjectsPageFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showLoading() {
+        loadingIndicator.visibility = View.VISIBLE
+        overlayView.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loadingIndicator.visibility = View.GONE
+        overlayView.visibility = View.GONE
     }
 }
 
