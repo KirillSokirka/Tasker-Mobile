@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,6 +25,7 @@ class KanbanBoardDetailFragment : Fragment() {
     private lateinit var kanbanBoardRecyclerView: RecyclerView
     private val kanbanBoardViewModel by viewModel<KanbanBoardViewModel>()
 
+    private lateinit var loadingIndicator: ProgressBar
     private val sharedPreferences: SharedPreferencesService by inject()
 
     override fun onCreateView(
@@ -39,6 +41,8 @@ class KanbanBoardDetailFragment : Fragment() {
         kanbanBoardRecyclerView = view.findViewById(R.id.kanbanBoardRecyclerView)
         kanbanBoardRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
+        loadingIndicator = view.findViewById(R.id.loadingIndicator)
+
         val boardId = sharedPreferences.retrieveData("lastKanbanBoard")
             ?: arguments?.getString("KANBAN_BOARD_ID").also { id ->
                 if (id == null) {
@@ -52,20 +56,24 @@ class KanbanBoardDetailFragment : Fragment() {
         kanbanBoardViewModel.getById(boardId)
         kanbanBoardViewModel.kanbanBoardResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
+                is ApiResponse.Loading -> {
+                    loadingIndicator.visibility = View.VISIBLE
+                }
                 is ApiResponse.Success -> {
+                    loadingIndicator.visibility = View.GONE
                     apiResponse.data?.let { board ->
                         boardAdapter = KanbanBoardAdapter(board.columns ?: listOf())
                         kanbanBoardRecyclerView.adapter = boardAdapter
                     }
                 }
                 is ApiResponse.Failure -> {
+                    loadingIndicator.visibility = View.GONE
                     Toast.makeText(
                         requireContext(),
                         "Failed to kanban board users: ${apiResponse.errorMessage}",
                         Toast.LENGTH_LONG
                     ).show()
                 }
-                else -> { }
             }
         }
     }

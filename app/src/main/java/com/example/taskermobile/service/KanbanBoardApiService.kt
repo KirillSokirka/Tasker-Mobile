@@ -1,5 +1,6 @@
 package com.example.taskermobile.service
 
+import com.example.taskermobile.model.kanbanboard.KanbanBoardCreateModel
 import com.example.taskermobile.model.kanbanboard.KanbanBoardModel
 import com.example.taskermobile.model.project.ProjectCreateModel
 import com.example.taskermobile.model.project.ProjectModel
@@ -15,4 +16,7 @@ import retrofit2.http.Path
 interface KanbanBoardApiService {
     @GET("api/kanbanBoards/{id}")
     suspend fun getById(@Path("id") id: String): Response<KanbanBoardModel>
+
+    @POST("api/kanbanBoards")
+    suspend fun create(@Body model: KanbanBoardCreateModel): Response<KanbanBoardModel>
 }
