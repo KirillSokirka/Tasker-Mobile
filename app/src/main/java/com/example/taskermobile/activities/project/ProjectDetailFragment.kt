@@ -61,8 +61,8 @@ class ProjectDetailFragment : Fragment() {
             ?: lastProjectActive.also { id ->
                 if (id == null) {
                     findNavController().navigate(R.id.action_projectDetailFragment_to_projectsPageFragment)
+                    return
                 } else {
-
                     sharedPreferences.saveData("lastProjectActive", id)
                 }
             }
