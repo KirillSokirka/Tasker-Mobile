@@ -56,7 +56,13 @@ class TaskCreateFragment : Fragment() {
     private lateinit var priority: Spinner
     private lateinit var createButton: Button
     private lateinit var loadingIndicator: ProgressBar
+    private lateinit var overlayView: View
     private var selectedPriority = "NONE"
+    private lateinit var selectedStatus: String
+    private var selectedAssignee: String? = null
+
+    private lateinit var statusSpiner: Spinner
+    private lateinit var assigneeSpiner: Spinner
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,11 +77,21 @@ class TaskCreateFragment : Fragment() {
         taskTitle = view.findViewById(R.id.createTaskTitle)
         taskDescription = view.findViewById(R.id.createTaskDescription)
         priority = view.findViewById(R.id.createTaskPriority)
+        statusSpiner = view.findViewById(R.id.createTaskStatus)
+        assigneeSpiner = view.findViewById(R.id.createTaskAssignee)
         createButton = view.findViewById(R.id.createTaskButton)
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
+        overlayView = view.findViewById(R.id.overlayView)
+
 
         kanbanBoardId = sharedPreferences.retrieveData("lastKanbanBoard").toString()
 
+
+
+        setUpObservers()
+    }
+
+    private fun setUpSpinners(){
         priority.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 selectedPriority = parent.getItemAtPosition(position).toString()
@@ -85,8 +101,22 @@ class TaskCreateFragment : Fragment() {
                 selectedPriority = "NONE"
             }
         }
+        val tem = 0
 
-        setUpObservers()
+        val assigneeList = projectUsers.map { u -> u.title }.toMutableList()
+        val assigneeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, assigneeList)
+        assigneeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        assigneeSpiner.adapter = assigneeAdapter
+
+        assigneeSpiner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                selectedAssignee = parent.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                selectedAssignee = null
+            }
+        }
     }
 
     private fun setUpObservers() {
@@ -99,10 +129,10 @@ class TaskCreateFragment : Fragment() {
         kanbanBoardModel.kanbanBoardResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
-                    loadingIndicator.visibility = View.VISIBLE
+                    showLoading()
                 }
                 is ApiResponse.Success -> {
-                    loadingIndicator.visibility = View.GONE
+                    hideLoading()
                     apiResponse.data?.let { board ->
                         currentKanbanBoard = board
 
@@ -112,7 +142,7 @@ class TaskCreateFragment : Fragment() {
                     }
                 }
                 is ApiResponse.Failure -> {
-                    loadingIndicator.visibility = View.GONE
+                    hideLoading()
                     Toast.makeText(
                         requireContext(),
                         "Failed to load kanban board: ${apiResponse.errorMessage}",
@@ -125,16 +155,16 @@ class TaskCreateFragment : Fragment() {
         projectModel.projectMembersResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
-                    loadingIndicator.visibility = View.VISIBLE
+                    showLoading()
                 }
                 is ApiResponse.Success -> {
-                    loadingIndicator.visibility = View.GONE
+                    hideLoading()
                     apiResponse.data?.let { data ->
                         projectUsers = data
                     }
                 }
                 is ApiResponse.Failure -> {
-                    loadingIndicator.visibility = View.GONE
+                    hideLoading()
                     Toast.makeText(
                         requireContext(),
                         "Failed to load kanban board: ${apiResponse.errorMessage}",
@@ -144,6 +174,7 @@ class TaskCreateFragment : Fragment() {
             }
         }
 
+        setUpSpinners()
     }
 
     private fun setUpListeners() {
@@ -157,5 +188,15 @@ class TaskCreateFragment : Fragment() {
                 projectId = currentKanbanBoard.projectId
             )
         }
+    }
+
+    private fun showLoading() {
+        loadingIndicator.visibility = View.VISIBLE
+        overlayView.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loadingIndicator.visibility = View.GONE
+        overlayView.visibility = View.GONE
     }
 }
