@@ -7,6 +7,7 @@ import com.example.taskermobile.model.project.ProjectCreateModel
 import com.example.taskermobile.model.project.ProjectModel
 import com.example.taskermobile.model.project.ProjectPreviewModel
 import com.example.taskermobile.model.project.ProjectUpdateModel
+import com.example.taskermobile.model.user.MemberModel
 import com.example.taskermobile.service.ProjectApiService
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.apiRequestFlow
@@ -28,6 +29,9 @@ class ProjectsViewModel(
     private val _projectGetByIdResponse = MutableLiveData<ApiResponse<ProjectModel>>()
     val projectGetByIdResponse: LiveData<ApiResponse<ProjectModel>> = _projectGetByIdResponse
 
+    private val _projectMembersResponse = MutableLiveData<ApiResponse<List<MemberModel>>>()
+    val projectMembersResponse: LiveData<ApiResponse<List<MemberModel>>> = _projectMembersResponse
+
     fun getById(projectId: String){
         viewModelScope.launch {
             apiRequestFlow { projectApiService.getById(projectId) }
@@ -39,6 +43,13 @@ class ProjectsViewModel(
         viewModelScope.launch {
             apiRequestFlow { projectApiService.getAll() }
                 .collect { apiResponse -> _projectsResponse.value = apiResponse }
+        }
+    }
+
+    fun getProjectMembers(id: String) {
+        viewModelScope.launch {
+            apiRequestFlow { projectApiService.getMembers(id) }
+                .collect { apiResponse -> _projectMembersResponse.value = apiResponse }
         }
     }
 

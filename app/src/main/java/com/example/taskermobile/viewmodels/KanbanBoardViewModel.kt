@@ -18,16 +18,26 @@ class KanbanBoardViewModel(
     private val _kanbanBoardResponse = MutableLiveData<ApiResponse<KanbanBoardModel>>()
     val kanbanBoardResponse: LiveData<ApiResponse<KanbanBoardModel>> = _kanbanBoardResponse
 
+    private val _kanbanBoardByProjectResponse = MutableLiveData<ApiResponse<List<KanbanBoardModel>>>()
+    val kanbanBoardByProjectResponse: LiveData<ApiResponse<List<KanbanBoardModel>>> = _kanbanBoardByProjectResponse
+
     private val _kanbanCreateResponse = MutableLiveData<ApiResponse<KanbanBoardModel>>()
     val kanbanCreateResponse: LiveData<ApiResponse<KanbanBoardModel>> = _kanbanCreateResponse
 
     private val _kanbanUpdateResponse = MutableLiveData<ApiResponse<KanbanBoardModel>>()
     val kanbanUpdateResponse: LiveData<ApiResponse<KanbanBoardModel>> = _kanbanUpdateResponse
 
-    fun getById(projectId: String){
+    fun getById(id: String){
         viewModelScope.launch {
-            apiRequestFlow { kanbanBoardApiService.getById(projectId) }
+            apiRequestFlow { kanbanBoardApiService.getById(id) }
                 .collect { apiResponse -> _kanbanBoardResponse.value = apiResponse }
+        }
+    }
+
+    fun getByProject(projectId: String){
+        viewModelScope.launch {
+            apiRequestFlow { kanbanBoardApiService.getByProjectId(projectId) }
+                .collect { apiResponse -> _kanbanBoardByProjectResponse.value = apiResponse }
         }
     }
 

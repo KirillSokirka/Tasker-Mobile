@@ -4,6 +4,7 @@ import com.example.taskermobile.model.project.ProjectCreateModel
 import com.example.taskermobile.model.project.ProjectModel
 import com.example.taskermobile.model.project.ProjectPreviewModel
 import com.example.taskermobile.model.project.ProjectUpdateModel
+import com.example.taskermobile.model.user.MemberModel
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,4 +21,6 @@ interface ProjectApiService {
     suspend fun create(@Body model: ProjectCreateModel): Response<ProjectModel>
     @GET("api/projects/{projectId}")
     suspend fun getById(@Path("projectId") projectId: String): Response<ProjectModel>
+    @GET("api/projects/project-members/{id}")
+    suspend fun getMembers(@Path("id") id: String): Response<List<MemberModel>>
 }

@@ -41,6 +41,7 @@ class KanbanBoardDetailFragment : Fragment() {
     private lateinit var boardAdapter: KanbanBoardAdapter
     private lateinit var kanbanBoardRecyclerView: RecyclerView
     private lateinit var loadingIndicator: ProgressBar
+    private lateinit var createTaskButton: Button
     private lateinit var title: TextView
     private lateinit var editButton: Button
     private lateinit var editTitle: EditText
@@ -60,6 +61,7 @@ class KanbanBoardDetailFragment : Fragment() {
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         title = view.findViewById(R.id.title)
         editButton = view.findViewById(R.id.editBoard)
+        createTaskButton = view.findViewById(R.id.createTaskButton)
         editTitle = EditText(requireContext())
         kanbanBoardRecyclerView = view.findViewById(R.id.kanbanBoardRecyclerView)
         kanbanBoardRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -190,6 +192,10 @@ class KanbanBoardDetailFragment : Fragment() {
                         .setNegativeButton("Cancel", null)
                         .show()
             }
+        }
+
+        createTaskButton.setOnClickListener {
+            findNavController().navigate(R.id.action_kanbanBoardDetailFragment_to_taskCreateFragment)
         }
     }
 }

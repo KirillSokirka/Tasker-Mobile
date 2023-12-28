@@ -18,10 +18,10 @@ import retrofit2.http.Path
 interface KanbanBoardApiService {
     @GET("api/kanbanBoards/{id}")
     suspend fun getById(@Path("id") id: String): Response<KanbanBoardModel>
-
+    @GET("api/kanbanBoards/available/{id}")
+    suspend fun getByProjectId(@Path("id") id: String): Response<List<KanbanBoardModel>>
     @POST("api/kanbanBoards")
     suspend fun create(@Body model: KanbanBoardCreateModel): Response<KanbanBoardModel>
-
     @PUT("api/kanbanBoards")
     suspend fun update(@Body model: KanbanBoardUpdateModel): Response<KanbanBoardModel>
 }

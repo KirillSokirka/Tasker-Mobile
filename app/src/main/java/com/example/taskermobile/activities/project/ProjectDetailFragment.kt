@@ -135,6 +135,7 @@ class ProjectDetailFragment : Fragment() {
                         val defaultTitle = "Select a Kanban Board"
                         val kanbanBoardNames = mutableListOf(defaultTitle)
                         project.kanbanBoards?.map { kanbanBoardNames.add(it.title.toString()) }
+
                         val adapter = ArrayAdapter(
                             requireContext(),
                             android.R.layout.simple_spinner_item,
