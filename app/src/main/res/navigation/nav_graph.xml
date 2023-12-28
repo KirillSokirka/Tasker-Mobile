@@ -80,7 +80,8 @@
             app:destination="@id/projectsPageFragment" />
         <argument
             android:name="KANBAN_BOARD_ID"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_kanbanBoardDetailFragment_to_taskCreateFragment"
             app:destination="@id/taskCreateFragment" />

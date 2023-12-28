@@ -151,10 +151,7 @@ class KanbanBoardDetailFragment : Fragment() {
                     loadingIndicator.visibility = View.VISIBLE
                 }
                 is ApiResponse.Success -> {
-                    parentFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, KanbanBoardDetailFragment::class.java, arguments)
-                        .commit()
+                    findNavController().navigate(R.id.kanbanBoardDetailFragment, bundleOf("KANBAN_BOARD_ID" to boardId))
                 }
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE

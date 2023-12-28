@@ -43,7 +43,8 @@ class ProjectsPageFragment : Fragment() {
         val createProjectButton: Button = view.findViewById(R.id.buttonCreate)
 
         createProjectButton.setOnClickListener {
-            findNavController().navigate(R.id.action_projectsPageFragment_to_projectCreateFragment)
+            findNavController().navigate(
+                R.id.action_projectsPageFragment_to_projectCreateFragment)
         }
 
         viewModel.projectsResponse.observe(viewLifecycleOwner) { apiResponse ->
@@ -59,7 +60,8 @@ class ProjectsPageFragment : Fragment() {
                     recyclerView.adapter = ProjectAdapter(apiResponse.data, object :
                         OnItemClickListener {
                         override fun onItemClick(id: String) {
-                            findNavController().navigate(R.id.action_projectsPageFragment_to_projectDetailFragment,
+                            findNavController().navigate(
+                                R.id.action_projectsPageFragment_to_projectDetailFragment,
                                 bundleOf("PROJECT_ID" to id))
                         }
                     })
@@ -75,16 +77,6 @@ class ProjectsPageFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun showLoading() {
-        loadingIndicator.visibility = View.VISIBLE
-        overlayView.visibility = View.VISIBLE
-    }
-
-    private fun hideLoading() {
-        loadingIndicator.visibility = View.GONE
-        overlayView.visibility = View.GONE
     }
 }
 

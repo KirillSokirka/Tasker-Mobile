@@ -3,6 +3,7 @@ package com.example.taskermobile.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.taskermobile.model.release.ReleaseCreateModel
 import com.example.taskermobile.model.release.ReleaseModel
 import com.example.taskermobile.model.release.ReleasePreviewModel
 import com.example.taskermobile.service.ReleaseApiService
@@ -28,7 +29,7 @@ class ReleasesPageViewModel(
         }
     }
 
-    fun create(model: ReleaseModel) {
+    fun create(model: ReleaseCreateModel) {
         viewModelScope.launch {
             apiRequestFlow { releaseApiService.create(model) }
                 .collect { apiResponse -> _releaseResponse.value = apiResponse }
