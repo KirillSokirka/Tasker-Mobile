@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,7 +65,6 @@ class ReleasesPageFragment : Fragment() {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
                 }
-
                 is ApiResponse.Success -> {
                     setUpListeners(projectId)
                     loadingIndicator.visibility = View.GONE
@@ -78,7 +78,6 @@ class ReleasesPageFragment : Fragment() {
                         }
                         })
                 }
-
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
                     Toast.makeText(
@@ -90,17 +89,15 @@ class ReleasesPageFragment : Fragment() {
             }
         }
 
-        viewModel.releaseResponse.observe(viewLifecycleOwner) { apiResponse ->
+        viewModel.releaseCreateResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
                 }
-
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
                     findNavController().navigate(R.id.releasesPageFragment)
                 }
-
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
                     Toast.makeText(

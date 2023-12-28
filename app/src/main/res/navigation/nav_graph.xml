@@ -120,7 +120,7 @@
         android:id="@+id/releaseDetailFragment"
         android:name="com.example.taskermobile.activities.release.ReleaseDetailFragment"
         android:label="Release detail"
-        tools:layout="@layout/release_list_item">
+        tools:layout="@layout/release_detail">
         <action
             android:id="@+id/action_releaseDetailFragment_to_releasesPageFragment"
             app:destination="@id/releasesPageFragment" />

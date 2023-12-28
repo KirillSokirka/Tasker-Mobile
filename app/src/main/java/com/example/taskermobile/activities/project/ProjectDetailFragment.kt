@@ -142,8 +142,7 @@ class ProjectDetailFragment : Fragment() {
 
                         spinner.adapter = adapter
 
-                        spinner.onItemSelectedListener =
-                            object : AdapterView.OnItemSelectedListener {
+                        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                                 override fun onItemSelected(
                                     parent: AdapterView<*>,
                                     view: View?,

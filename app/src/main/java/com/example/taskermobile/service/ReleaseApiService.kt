@@ -14,10 +14,10 @@ interface ReleaseApiService {
     @GET("api/releases/available/{projectId}")
     suspend fun getByProject(@Path("projectId") projectId: String):
             Response<List<ReleasePreviewModel>>
-
+    @GET("api/releases/{id}")
+    suspend fun get(@Path("id") id: String) : Response<ReleaseModel>
     @POST("api/releases")
     suspend fun create(@Body model: ReleaseCreateModel) : Response<ReleaseModel>
-
     @DELETE("api/releases/{id}")
     suspend fun delete(@Path("id") id: String) : Response<String>
 }
