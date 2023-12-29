@@ -151,7 +151,7 @@ class KanbanBoardDetailFragment : Fragment() {
                     loadingIndicator.visibility = View.VISIBLE
                 }
                 is ApiResponse.Success -> {
-                    findNavController().navigate(R.id.kanbanBoardDetailFragment, bundleOf("KANBAN_BOARD_ID" to boardId))
+                    kanbanBoardViewModel.getById(boardId)
                 }
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
@@ -169,6 +169,11 @@ class KanbanBoardDetailFragment : Fragment() {
         if (userAdminProject.contains(board.projectId)) {
             editButton.visibility = View.VISIBLE
             editTitle.setText(board.title)
+
+            if (editTitle.parent != null) {
+                (editTitle.parent as ViewGroup).removeView(editTitle)
+            }
+
             editButton.setOnClickListener {
                     AlertDialog.Builder(requireContext())
                         .setTitle("Update board")

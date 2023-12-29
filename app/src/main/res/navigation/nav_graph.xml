@@ -159,6 +159,11 @@
         <action
             android:id="@+id/action_kanbanBoardDetailFragment_to_taskCreateFragment"
             app:destination="@id/taskCreateFragment" />
+        <action
+            android:id="@+id/action_kanbanBoardDetailFragment_self"
+            app:destination="@id/kanbanBoardDetailFragment"
+            app:popUpTo="@id/kanbanBoardDetailFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 

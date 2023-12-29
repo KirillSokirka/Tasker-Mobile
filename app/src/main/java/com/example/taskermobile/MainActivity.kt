@@ -100,6 +100,11 @@ class MainActivity : AppCompatActivity() {
         return navigationController.navigateUp() || super.onSupportNavigateUp()
     }
 
+    override fun onBackPressed() {
+        if (!navigationController.navigateUp()) {
+            super.onBackPressed()
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         tokenRefresher.stopTokenRefresh()

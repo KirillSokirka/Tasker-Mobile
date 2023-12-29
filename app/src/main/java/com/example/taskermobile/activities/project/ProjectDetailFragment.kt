@@ -100,7 +100,8 @@ class ProjectDetailFragment : Fragment() {
                     loadingIndicator.visibility = View.VISIBLE
                 }
                 is ApiResponse.Success -> {
-                    findNavController().navigate(R.id.projectDetailFragment, bundleOf("PROJECT_ID" to projectId))
+                    viewModel.getById(projectId)
+                    boardName.text.clear()
                 }
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
@@ -137,8 +138,9 @@ class ProjectDetailFragment : Fragment() {
                             requireContext(),
                             android.R.layout.simple_spinner_item,
                             kanbanBoardNames
-                        )
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        ).also { adapter ->
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        }
 
                         spinner.adapter = adapter
 
@@ -217,6 +219,10 @@ class ProjectDetailFragment : Fragment() {
 
         if (createBoard.visibility != View.GONE) {
             createBoard.setOnClickListener {
+                if (boardName.parent != null) {
+                    (boardName.parent as ViewGroup).removeView(boardName)
+                }
+
                 AlertDialog.Builder(requireContext())
                     .setTitle("Add new board")
                     .setView(boardName)
