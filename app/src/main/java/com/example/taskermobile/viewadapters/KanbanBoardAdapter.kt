@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
-import com.example.taskermobile.model.kanbanboard.TaskStatusModel
+import com.example.taskermobile.model.taskstatus.TaskStatusModel
 
 class KanbanBoardAdapter(private val columns: List<TaskStatusModel>) : RecyclerView.Adapter<KanbanBoardAdapter.ColumnViewHolder>() {
 

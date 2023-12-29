@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
-import com.example.taskermobile.model.kanbanboard.TaskStatusModel
+import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 
 class TaskStatusAdapter(private val items: List<TaskStatusModel>,

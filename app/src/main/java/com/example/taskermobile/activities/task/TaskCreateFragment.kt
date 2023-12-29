@@ -19,9 +19,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.R
 import com.example.taskermobile.model.TaskPriority
 import com.example.taskermobile.model.kanbanboard.KanbanBoardModel
-import com.example.taskermobile.model.kanbanboard.TaskStatusModel
 import com.example.taskermobile.model.release.ReleasePreviewModel
 import com.example.taskermobile.model.task.TaskCreateModel
+import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.model.user.MemberModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getIdFromToken
