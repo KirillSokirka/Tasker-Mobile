@@ -272,8 +272,6 @@ class TaskCreateFragment : Fragment() {
                 }
             }
         }
-
-
     }
 
     private fun setUpListeners() {

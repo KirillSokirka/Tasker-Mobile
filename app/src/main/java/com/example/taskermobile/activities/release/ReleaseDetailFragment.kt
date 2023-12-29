@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.R
@@ -141,7 +142,7 @@ class ReleaseDetailFragment : Fragment() {
 
             updateButton.visibility = View.VISIBLE
             updateButton.setOnClickListener {
-                findNavController().navigate(R.id.action_releaseDetailFragment_to_releaseUpdateFragment)
+                findNavController().navigate(R.id.action_releaseDetailFragment_to_releaseUpdateFragment, bundleOf("RELEASE_ID" to releaseId, "PROJECT_ID" to projectId))
             }
         }
     }

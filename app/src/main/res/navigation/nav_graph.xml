@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/projectsPageFragment"
         android:name="com.example.taskermobile.activities.project.ProjectsPageFragment"
-        android:label="Projects" >
+        android:label="Projects">
         <action
             android:id="@+id/action_projectsPageFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment"
@@ -55,7 +55,7 @@
     <fragment
         android:id="@+id/projectCreateFragment"
         android:name="com.example.taskermobile.activities.project.ProjectCreateFragment"
-        android:label="Project Create" >
+        android:label="Project Create">
         <action
             android:id="@+id/action_projectCreateFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment"
@@ -69,7 +69,7 @@
     <fragment
         android:id="@+id/projectUpdateFragment"
         android:name="com.example.taskermobile.activities.project.ProjectUpdateFragment"
-        android:label="Project Edit" >
+        android:label="Project Edit">
         <action
             android:id="@+id/action_projectUpdateFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment"
@@ -80,7 +80,7 @@
     <fragment
         android:id="@+id/backlogPageFragment"
         android:name="com.example.taskermobile.activities.backlogpage.BacklogPageFragment"
-        android:label="Backlog" >
+        android:label="Backlog">
         <action
             android:id="@+id/action_backlogPageFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -89,7 +89,7 @@
     <fragment
         android:id="@+id/userFragment"
         android:name="com.example.taskermobile.activities.users.UserFragment"
-        android:label="Manage Account" >
+        android:label="Manage Account">
         <action
             android:id="@+id/action_userFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -98,7 +98,7 @@
     <fragment
         android:id="@+id/releasesPageFragment"
         android:name="com.example.taskermobile.activities.release.ReleasesPageFragment"
-        android:label="ReleasesPageFragment" >
+        android:label="ReleasesPageFragment">
         <action
             android:id="@+id/action_releasesPageFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -135,7 +135,7 @@
     <fragment
         android:id="@+id/userListFragment"
         android:name="com.example.taskermobile.activities.users.UserListFragment"
-        android:label="UserListFragment" >
+        android:label="UserListFragment">
         <action
             android:id="@+id/action_userListFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -143,7 +143,7 @@
     <fragment
         android:id="@+id/taskCreateFragment"
         android:name="com.example.taskermobile.activities.users.TaskCreateFragment"
-        android:label="TaskCreateFragment" >
+        android:label="TaskCreateFragment">
         <action
             android:id="@+id/action_taskCreateFragment_to_kanbanBoardDetailFragment"
             app:destination="@id/kanbanBoardDetailFragment" />
@@ -151,11 +151,15 @@
     <fragment
         android:id="@+id/releaseUpdateFragment"
         android:name="com.example.taskermobile.activities.release.ReleaseUpdateFragment"
-        android:label="ReleaseUpdateFragment" />
+        android:label="ReleaseUpdateFragment">
+        <action
+            android:id="@+id/action_releaseUpdateFragment_to_releasesPageFragment"
+            app:destination="@id/releasesPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/kanbanBoardDetailFragment"
         android:name="com.example.taskermobile.activities.kanbanboard.KanbanBoardDetailFragment"
-        android:label="KanbanBoardDetailFragment" >
+        android:label="KanbanBoardDetailFragment">
         <action
             android:id="@+id/action_kanbanBoardDetailFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -178,7 +182,7 @@
     <fragment
         android:id="@+id/userManagementFragment"
         android:name="com.example.taskermobile.activities.users.UserManagementFragment"
-        android:label="UserManagementFragment" >
+        android:label="UserManagementFragment">
         <action
             android:id="@+id/action_userManagementFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -186,4 +190,6 @@
             android:id="@+id/action_userManagementFragment_to_projectsPageFragment"
             app:destination="@id/projectsPageFragment" />
     </fragment>
+
+
 </navigation>
