@@ -1,49 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/editProject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit project" />
-
-    <Button
-        android:id="@+id/deleteProject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete project" />
-
-    <Spinner
-        android:id="@+id/kanbanBoardsSpinner"
+    <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Kanban boards"/>
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="15dp"
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="flex_start">
 
-    <Button
-        android:id="@+id/createKanbanBoard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create board" />
+        <TextView
+            android:id="@+id/title"
+            style="@style/CustomTextView"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" />
 
-    <Button
-        android:id="@+id/releasesInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Releases" />
+        <Button
+            android:id="@+id/editProject"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/pencil"
+            android:gravity="center_vertical" />
 
-    <Button
-        android:id="@+id/manageUsersButton"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/deleteProject"
+            android:layout_marginTop="15dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/delete"
+            android:gravity="center_vertical" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:alignItems="center"
+        app:justifyContent="space_between"
+        >
+        <Spinner
+            android:id="@+id/kanbanBoardsSpinner"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:theme="@style/SpinnerTextStyle"
+            android:background="@drawable/spinner_background"/>
+
+        <Button
+            android:id="@+id/createKanbanBoard"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/plus" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Users" />
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:alignItems="center"
+        app:justifyContent="space_between"
+        >
+        <Button
+            android:id="@+id/releasesInfo"
+            android:layout_width="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_height="50dp"
+            style="@style/CustomButton"
+            android:text="Releases" />
+
+        <Button
+            android:id="@+id/manageUsersButton"
+            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            style="@style/CustomButton"
+            android:text="Manage users" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+
 
     <ProgressBar
         android:id="@+id/loadingIndicator"
