@@ -186,4 +186,8 @@
             android:id="@+id/action_userManagementFragment_to_projectsPageFragment"
             app:destination="@id/projectsPageFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/taskStatusListFragment"
+        android:name="com.example.taskermobile.activities.taskstatuses.TaskStatusListFragment"
+        android:label="TaskStatusListFragment" />
 </navigation>
