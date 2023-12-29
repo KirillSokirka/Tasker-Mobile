@@ -7,6 +7,7 @@ import com.example.taskermobile.model.project.ProjectUpdateModel
 import com.example.taskermobile.model.user.MemberModel
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -23,4 +24,6 @@ interface ProjectApiService {
     suspend fun getById(@Path("projectId") projectId: String): Response<ProjectModel>
     @GET("api/projects/project-members/{id}")
     suspend fun getMembers(@Path("id") id: String): Response<List<MemberModel>>
+    @DELETE("api/projects/{id}")
+    suspend fun delete(@Path("id") id: String) : Response<String>
 }

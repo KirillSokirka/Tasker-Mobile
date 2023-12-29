@@ -32,6 +32,9 @@ class ProjectsViewModel(
     private val _projectMembersResponse = MutableLiveData<ApiResponse<List<MemberModel>>>()
     val projectMembersResponse: LiveData<ApiResponse<List<MemberModel>>> = _projectMembersResponse
 
+    private val _projectDeleteResponse = MutableLiveData<ApiResponse<String>>()
+    val projectDeleteResponse: LiveData<ApiResponse<String>> = _projectDeleteResponse
+
     fun getById(projectId: String){
         viewModelScope.launch {
             apiRequestFlow { projectApiService.getById(projectId) }
@@ -67,6 +70,10 @@ class ProjectsViewModel(
         }
     }
 
-
-
+    fun delete(id: String) {
+        viewModelScope.launch {
+            apiRequestFlow { projectApiService.delete(id) }
+                .collect { apiResponse -> _projectDeleteResponse.value = apiResponse }
+        }
+    }
 }

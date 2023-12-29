@@ -1,19 +1,19 @@
 package com.example.taskermobile.activities.users
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.taskermobile.MainActivity
 import com.example.taskermobile.R
 import com.example.taskermobile.model.user.UserModel
 import com.example.taskermobile.model.user.UserUpdateModel
@@ -25,7 +25,7 @@ import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionListener {
+class UserManagementFragment : Fragment(), UserAdapter.OnUserActionListener {
 
     private lateinit var loadingIndicator: ProgressBar
 
@@ -39,23 +39,30 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
 
     private var projectId: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.user_management_page, container, false)
+    }
 
-        setContentView(R.layout.user_management_page)
-        loadingIndicator = findViewById(R.id.loadingIndicator)
-        val addUserButton : Button = findViewById(R.id.addUserButton)
 
-        projectId = intent.getStringExtra("PROJECT_ID")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        loadingIndicator = view.findViewById(R.id.loadingIndicator)
+        val addUserButton: Button = view.findViewById(R.id.addUserButton)
+
+        projectId = arguments?.getString("PROJECT_ID")
             ?: throw IllegalArgumentException("Project ID is required")
 
-        recyclerView = findViewById(R.id.usersRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView = view.findViewById(R.id.usersRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = UserAdapter(mutableListOf(), projectId ?: "")
         adapter.listener = this
         recyclerView.adapter = adapter
 
-        tokenViewModel.token.observe(this) { tokenValue ->
+        tokenViewModel.token.observe(viewLifecycleOwner) { tokenValue ->
             if (tokenValue != null) {
                 currentUser = getIdFromToken(tokenValue.token).toString()
             }
@@ -64,8 +71,13 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
         fetchAllData()
 
         addUserButton.setOnClickListener {
-            val editText = EditText(this)
-            AlertDialog.Builder(this)
+            val editText = EditText(requireContext())
+
+            if (editText.parent != null) {
+                (editText.parent as ViewGroup).removeView(editText)
+            }
+
+            AlertDialog.Builder(requireContext())
                 .setTitle("Add New User")
                 .setView(editText)
                 .setPositiveButton("Add") { dialog, which ->
@@ -83,7 +95,7 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
 
     private fun fetchAllData() {
         projectViewModel.getById(projectId!!)
-        projectViewModel.projectGetByIdResponse.observe(this) { apiResponse ->
+        projectViewModel.projectGetByIdResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> loadingIndicator.visibility = View.VISIBLE
                 is ApiResponse.Success -> {
@@ -97,16 +109,16 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
                 }
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
-                    Toast.makeText(this, "Failed to fetch project: ${apiResponse.errorMessage}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(),
+                        "Failed to fetch project: ${apiResponse.errorMessage}", Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun setupUsers(allUsers: List<String>, adminUsers: List<String>) {
         viewModel.getAll()
-        viewModel.userResponse.observe(this) { apiResponse ->
+        viewModel.userResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
@@ -128,11 +140,10 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
                         }
 
                     adapter.setItems(projectUsers)
-                    adapter.notifyDataSetChanged()
                 }
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
-                    Toast.makeText(this,
+                    Toast.makeText(requireContext(),
                         "Failed to fetch users: ${apiResponse.errorMessage}",
                         Toast.LENGTH_LONG).show()
                 }
@@ -141,7 +152,7 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
     }
 
     override fun onUserLongClick(userModel: UserModel, view: View, projectId: String) {
-        val popup = PopupMenu(this, view)
+        val popup = PopupMenu(requireContext(), view)
         popup.menuInflater.inflate(R.menu.user_options_menu, popup.menu)
 
         popup.menu.findItem(R.id.remove_from_assign).isVisible = true
@@ -179,22 +190,20 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
     }
 
     private fun observeUserUpdateResponse(projectId: String) {
-        viewModel.userUpdateResponse.observe(this) { apiResponse ->
+        viewModel.userUpdateResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Success -> {
                     val updatedUser = apiResponse.data
                     if (updatedUser != null) {
                         if (isUserRemovedFromProject(updatedUser, projectId)) {
-                            navigateToMainActivity()
+                            findNavController().navigate(R.id.action_userManagementFragment_to_projectsPageFragment)
                         } else {
-                            finish();
-                            intent.putExtra("PROJECT_ID", projectId)
-                            startActivity(intent);
+                            projectViewModel.getById(projectId)
                         }
                     }
                 }
                 is ApiResponse.Failure -> {
-                    Toast.makeText(this,
+                    Toast.makeText(requireContext(),
                         "Failed to update user: ${apiResponse.errorMessage}",
                         Toast.LENGTH_LONG).show()
                 }
@@ -213,10 +222,5 @@ class UserManagementActivity : AppCompatActivity(), UserAdapter.OnUserActionList
         val isNotAdmin = user.underControlProjects?.none { it == projectId } ?: true
 
         return isNotAssigned && isNotAdmin
-    }
-
-    private fun navigateToMainActivity() {
-        startActivity(Intent(this@UserManagementActivity, MainActivity::class.java))
-        finish()
     }
 }

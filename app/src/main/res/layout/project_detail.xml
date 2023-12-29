@@ -15,6 +15,12 @@
         android:layout_height="wrap_content"
         android:text="Edit project" />
 
+    <Button
+        android:id="@+id/deleteProject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete project" />
+
     <Spinner
         android:id="@+id/kanbanBoardsSpinner"
         android:layout_width="match_parent"

@@ -41,6 +41,7 @@ class ProjectDetailFragment : Fragment() {
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var title: TextView
     private lateinit var editProjectButton: Button
+    private lateinit var deleteProjectButton: Button
     private lateinit var releasesButton: Button
     private lateinit var userList: Button
     private lateinit var spinner: Spinner
@@ -76,6 +77,7 @@ class ProjectDetailFragment : Fragment() {
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         title = view.findViewById(R.id.title)
         editProjectButton = view.findViewById(R.id.editProject)
+        deleteProjectButton = view.findViewById(R.id.deleteProject)
         releasesButton = view.findViewById(R.id.releasesInfo)
         userList = view.findViewById(R.id.manageUsersButton)
         spinner = view.findViewById(R.id.kanbanBoardsSpinner)
@@ -102,6 +104,27 @@ class ProjectDetailFragment : Fragment() {
                 is ApiResponse.Success -> {
                     viewModel.getById(projectId)
                     boardName.text.clear()
+                }
+                is ApiResponse.Failure -> {
+                    loadingIndicator.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        "Network error: ${apiResponse.errorMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+
+        viewModel.projectDeleteResponse.observe(viewLifecycleOwner) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Loading -> {
+                    loadingIndicator.visibility = View.VISIBLE
+                }
+                is ApiResponse.Success -> {
+                    sharedPreferences.saveData("lastKanbanBoard", null)
+                    sharedPreferences.saveData("lastProjectActive", null)
+                    findNavController().navigate(R.id.action_projectDetailFragment_to_projectsPageFragment)
                 }
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
@@ -183,8 +206,6 @@ class ProjectDetailFragment : Fragment() {
                 }
             }
         }
-
-
     }
 
     private fun checkUserRights(project: ProjectModel): String? {
@@ -203,6 +224,7 @@ class ProjectDetailFragment : Fragment() {
         if (project.adminProjects?.contains(userId) != true) {
             createBoard.visibility = View.GONE
             editProjectButton.visibility = View.GONE
+            deleteProjectButton.visibility = View.GONE
         }
 
         return userId
@@ -214,6 +236,18 @@ class ProjectDetailFragment : Fragment() {
                 findNavController().navigate(R.id.action_projectDetailFragment_to_projectUpdateFragment,
                     Bundle().apply { putString("PROJECT_ID", project.id)
                     })
+            }
+        }
+
+        if (deleteProjectButton.visibility != View.GONE) {
+            deleteProjectButton.setOnClickListener {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Confirm deletion")
+                    .setPositiveButton("Delete") { dialog, which ->
+                        viewModel.delete(project.id!!)
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
             }
         }
 
@@ -248,7 +282,7 @@ class ProjectDetailFragment : Fragment() {
 
         userList.setOnClickListener {
             val destinationId = if (project.adminProjects?.contains(userId) == true) {
-                R.id.action_projectDetailFragment_to_userListFragment
+                R.id.action_projectDetailFragment_to_userManagementFragment
             } else {
                 R.id.action_projectDetailFragment_to_userListFragment
             }
