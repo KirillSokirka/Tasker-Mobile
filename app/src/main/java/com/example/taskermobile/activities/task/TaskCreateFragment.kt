@@ -154,7 +154,7 @@ class TaskCreateFragment : Fragment() {
         priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         prioritySpinner.adapter = priorityAdapter
         prioritySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 selectedPriority = parent.getItemAtPosition(position).toString()
             }
 
@@ -162,8 +162,6 @@ class TaskCreateFragment : Fragment() {
                 selectedPriority = "NONE"
             }
         }
-
-
     }
 
     private fun setUpObservers() {
