@@ -146,7 +146,9 @@
         android:label="TaskCreateFragment">
         <action
             android:id="@+id/action_taskCreateFragment_to_kanbanBoardDetailFragment"
-            app:destination="@id/kanbanBoardDetailFragment" />
+            app:destination="@id/kanbanBoardDetailFragment"
+            app:popUpTo="@id/kanbanBoardDetailFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/releaseUpdateFragment"

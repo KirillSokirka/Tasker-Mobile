@@ -233,7 +233,6 @@ class TaskCreateFragment : Fragment() {
                         projectUsers = data
                         setUpUserSpinner()
                         releaseModel.getAll(currentKanbanBoard.projectId!!)
-
                     }
                 }
                 is ApiResponse.Failure -> {

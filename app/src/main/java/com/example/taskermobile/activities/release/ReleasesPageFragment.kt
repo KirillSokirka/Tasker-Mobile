@@ -102,7 +102,7 @@ class ReleasesPageFragment : Fragment() {
                 }
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-                    findNavController().navigate(R.id.releasesPageFragment)
+                    viewModel.getAll(projectId)
                 }
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
