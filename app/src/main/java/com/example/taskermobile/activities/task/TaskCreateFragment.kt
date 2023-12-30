@@ -281,14 +281,14 @@ class TaskCreateFragment : Fragment() {
             val selectedReleaseModel = releases.find { it.title == selectedRelease }
             val selectedAssigneeModel = projectUsers.find { it.title == selectedAssignee }
             val task = TaskCreateModel(
-                title = taskTitle.text.toString(),
-                description = taskDescription.text.toString(),
-                priority = enumValueOf<TaskPriority>(selectedPriority),
-                creatorId = idFromJwt,
-                projectId = currentKanbanBoard.projectId,
-                taskStatusId = selectedTaskStatusModel?.id,
-                releasedId = selectedReleaseModel?.id,
-                assigneeId = selectedAssigneeModel?.id
+                title = taskTitle.text.toString(), // +
+                description = taskDescription.text.toString(), // +
+                priority = enumValueOf<TaskPriority>(selectedPriority).ordinal, // +
+                creatorId = idFromJwt, // +
+                projectId = currentKanbanBoard.projectId, // +
+                taskStatusId = selectedTaskStatusModel?.id, // +
+                releaseId = selectedReleaseModel?.id, // -
+                assigneeId = selectedAssigneeModel?.id // +
             )
             taskModel.create(task)
         }

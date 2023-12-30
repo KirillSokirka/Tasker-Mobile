@@ -28,6 +28,11 @@
         android:visibility="gone"
         android:text="Update" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ProgressBar
         android:id="@+id/loadingIndicator"
         android:layout_width="wrap_content"

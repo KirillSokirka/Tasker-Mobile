@@ -11,10 +11,16 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
+import com.example.taskermobile.model.task.TaskPreviewModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getIdFromToken
+import com.example.taskermobile.viewadapters.TaskPreviewAdapter
+import com.example.taskermobile.viewadapters.TasksAdapter
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
+import com.example.taskermobile.viewmodels.TaskViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,6 +37,9 @@ class ReleaseDetailFragment : Fragment() {
     private lateinit var releaseName: TextView
     private lateinit var userId: String
     private lateinit var projectId: String
+
+    private lateinit var tasksRecyclerView: RecyclerView
+    private var tasks: List<TaskPreviewModel> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +63,8 @@ class ReleaseDetailFragment : Fragment() {
         projectId = ""
         userId = ""
 
+        tasksRecyclerView = view.findViewById(R.id.recyclerview)
+
         setUpObservers(releaseId)
     }
 
@@ -76,6 +87,9 @@ class ReleaseDetailFragment : Fragment() {
 
                     releaseName.text = apiResponse.data!!.title
                     projectId = apiResponse.data.projectId!!
+
+                    tasks = apiResponse.data.tasks
+                    setupTasksRecyclerView()
 
                     userModel.get(userId)
                 }
@@ -131,6 +145,12 @@ class ReleaseDetailFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setupTasksRecyclerView() {
+        val adapter = TaskPreviewAdapter(tasks)
+        tasksRecyclerView.adapter = adapter
+        tasksRecyclerView.layoutManager = LinearLayoutManager(context)
     }
 
     private fun setUpListeners(releaseId: String, allowedProjects: List<String>) {

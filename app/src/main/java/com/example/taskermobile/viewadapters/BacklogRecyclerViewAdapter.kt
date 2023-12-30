@@ -10,7 +10,7 @@ class BacklogRecyclerViewAdapter(private val items: List<TaskPreviewModel>?) : R
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewTitle: TextView = itemView.findViewById(R.id.textViewTitle)
-        val textViewId: TextView = itemView.findViewById(R.id.textViewId)
+//        val textViewId: TextView = itemView.findViewById(R.id.textViewId)
         val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
     }
 
@@ -29,7 +29,7 @@ class BacklogRecyclerViewAdapter(private val items: List<TaskPreviewModel>?) : R
 
         if (currentItem != null) {
             holder.textViewTitle.text = currentItem.title
-            holder.textViewId.text = currentItem.id
+//            holder.textViewId.text = currentItem.id
             holder.textViewDescription.text = currentItem.description
         }
     }
