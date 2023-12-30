@@ -15,7 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
+import com.example.taskermobile.model.task.TaskPreviewModel
 import com.example.taskermobile.model.taskstatus.TaskStatusCreateModel
+import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 import com.example.taskermobile.viewadapters.TaskStatusAdapter
@@ -76,6 +78,11 @@ class TaskStatusListFragment: Fragment() {
                                     R.id.action_taskStatusListFragment_to_taskStatusDetailFragment,
                                     bundleOf("TASK_STATUS_ID" to id))
                             }
+
+                            override fun onItemLongClick(
+                                task: TaskPreviewModel,
+                                allStatuses: List<TaskStatusModel>
+                            ) {}
                         })
 
                         addEventListener(apiResponse.data.columns?.map { it.name } ?: emptyList(), board.id)

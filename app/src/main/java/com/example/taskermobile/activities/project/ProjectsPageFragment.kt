@@ -16,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
+import com.example.taskermobile.model.task.TaskPreviewModel
+import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 import com.example.taskermobile.viewmodels.ProjectsViewModel
@@ -64,6 +66,11 @@ class ProjectsPageFragment : Fragment() {
                                 R.id.action_projectsPageFragment_to_projectDetailFragment,
                                 bundleOf("PROJECT_ID" to id))
                         }
+
+                        override fun onItemLongClick(
+                            task: TaskPreviewModel,
+                            allStatuses: List<TaskStatusModel>
+                        ) {}
                     })
                 }
 
