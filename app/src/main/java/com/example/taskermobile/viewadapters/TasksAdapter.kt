@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
+import com.example.taskermobile.model.TaskPriority
 import com.example.taskermobile.model.task.TaskBoardPreviewModel
 import com.example.taskermobile.model.task.TaskPreviewModel
 import com.example.taskermobile.model.taskstatus.TaskStatusBoardModel
@@ -30,9 +31,14 @@ class TasksAdapter(private val tasks: List<TaskBoardPreviewModel>,
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val taskNameTextView: TextView = itemView.findViewById(R.id.taskNameTextView)
+        private val taskAssigneeBoard: TextView = itemView.findViewById(R.id.taskAssigneeBoard)
+        private val taskPriorityBoard: TextView = itemView.findViewById(R.id.taskPriorityBoard)
 
         fun bind(task: TaskBoardPreviewModel) {
             taskNameTextView.text = task.title
+            taskAssigneeBoard.text = task.assignee?.title ?: "no assignee"
+            val priority = TaskPriority.fromInt(task.priority)
+            taskPriorityBoard.text = priority.name
         }
 
         init {

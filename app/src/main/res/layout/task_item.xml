@@ -23,12 +23,12 @@
         app:alignItems="center"
         app:justifyContent="flex_start">
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Assignee: "/>
         <TextView
             android:id="@+id/taskAssigneeBoard"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.google.android.flexbox.FlexboxLayout>
 
@@ -39,12 +39,12 @@
         app:alignItems="center"
         app:justifyContent="flex_start">
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Priority: "/>
         <TextView
             android:id="@+id/taskPriorityBoard"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.google.android.flexbox.FlexboxLayout>
 
