@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
+import com.example.taskermobile.model.task.TaskBoardPreviewModel
 import com.example.taskermobile.model.task.TaskPreviewModel
+import com.example.taskermobile.model.taskstatus.TaskStatusBoardModel
 import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 
-class TasksAdapter(private val tasks: List<TaskPreviewModel>,
-                   private val allStatuses: List<TaskStatusModel>,
+class TasksAdapter(private val tasks: List<TaskBoardPreviewModel>,
+                   private val allStatuses: List<TaskStatusBoardModel>,
                    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
 
@@ -29,7 +31,7 @@ class TasksAdapter(private val tasks: List<TaskPreviewModel>,
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val taskNameTextView: TextView = itemView.findViewById(R.id.taskNameTextView)
 
-        fun bind(task: TaskPreviewModel) {
+        fun bind(task: TaskBoardPreviewModel) {
             taskNameTextView.text = task.title
         }
 

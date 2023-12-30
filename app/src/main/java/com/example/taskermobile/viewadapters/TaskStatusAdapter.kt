@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
+import com.example.taskermobile.model.taskstatus.TaskStatusBoardModel
 import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 
-class TaskStatusAdapter(private val items: List<TaskStatusModel>,
+class TaskStatusAdapter(private val items: List<TaskStatusBoardModel>,
                         private val listener: OnItemClickListener)
     : RecyclerView.Adapter<TaskStatusAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

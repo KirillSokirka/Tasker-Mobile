@@ -23,8 +23,10 @@ import com.example.taskermobile.activities.project.ProjectDetailFragment
 import com.example.taskermobile.model.kanbanboard.KanbanBoardCreateModel
 import com.example.taskermobile.model.kanbanboard.KanbanBoardModel
 import com.example.taskermobile.model.kanbanboard.KanbanBoardUpdateModel
+import com.example.taskermobile.model.task.TaskBoardPreviewModel
 import com.example.taskermobile.model.task.TaskPreviewModel
 import com.example.taskermobile.model.task.TaskUpdateStatusModel
+import com.example.taskermobile.model.taskstatus.TaskStatusBoardModel
 import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.apiRequestFlow
@@ -149,7 +151,7 @@ class KanbanBoardDetailFragment : Fragment() {
                                     R.id.action_kanbanBoardDetailFragment_to_taskDetailFragment,
                                     bundleOf("TASK_ID" to id))
                             }
-                            override fun onItemLongClick(task: TaskPreviewModel, allStatuses: List<TaskStatusModel>) {
+                            override fun onItemLongClick(task: TaskBoardPreviewModel, allStatuses: List<TaskStatusBoardModel>) {
                                 val popupMenu = PopupMenu(
                                     requireContext(),
                                     view

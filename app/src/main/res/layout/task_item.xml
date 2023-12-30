@@ -1,15 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rounded_grey_highlight"
+    android:padding="10dp"
+    android:layout_marginEnd="10dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/taskNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:textSize="22dp"
+        />
+
+    <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="Task Name"
-        android:padding="16dp" />
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="flex_start">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Assignee: "/>
+        <TextView
+            android:id="@+id/taskAssigneeBoard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.flexbox.FlexboxLayout>
 
-</FrameLayout>
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="flex_start">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Priority: "/>
+        <TextView
+            android:id="@+id/taskPriorityBoard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.flexbox.FlexboxLayout>
+
+
+
+</LinearLayout>

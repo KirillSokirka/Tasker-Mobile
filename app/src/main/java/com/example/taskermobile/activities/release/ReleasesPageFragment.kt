@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
 import com.example.taskermobile.model.release.ReleaseCreateModel
+import com.example.taskermobile.model.task.TaskBoardPreviewModel
 import com.example.taskermobile.model.task.TaskPreviewModel
+import com.example.taskermobile.model.taskstatus.TaskStatusBoardModel
 import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
@@ -79,8 +81,8 @@ class ReleasesPageFragment : Fragment() {
                             )
                         }
                         override fun onItemLongClick(
-                            task: TaskPreviewModel,
-                            allStatuses: List<TaskStatusModel>
+                            task: TaskBoardPreviewModel,
+                            allStatuses: List<TaskStatusBoardModel>
                         ) {}
                         })
                 }

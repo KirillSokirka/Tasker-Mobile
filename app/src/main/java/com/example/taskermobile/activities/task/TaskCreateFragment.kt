@@ -21,6 +21,7 @@ import com.example.taskermobile.model.TaskPriority
 import com.example.taskermobile.model.kanbanboard.KanbanBoardModel
 import com.example.taskermobile.model.release.ReleasePreviewModel
 import com.example.taskermobile.model.task.TaskCreateModel
+import com.example.taskermobile.model.taskstatus.TaskStatusBoardModel
 import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.model.user.MemberModel
 import com.example.taskermobile.utils.ApiResponse
@@ -45,7 +46,7 @@ class TaskCreateFragment : Fragment() {
 
     private lateinit var currentKanbanBoard: KanbanBoardModel
     private lateinit var projectUsers: List<MemberModel>
-    private lateinit var taskStatuses: List<TaskStatusModel>
+    private lateinit var taskStatuses: List<TaskStatusBoardModel>
     private lateinit var releases: List<ReleasePreviewModel>
     private lateinit var kanbanBoardId: String
     private lateinit var taskTitle: EditText
