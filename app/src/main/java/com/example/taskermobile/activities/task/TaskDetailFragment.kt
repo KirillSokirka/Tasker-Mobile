@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.R
@@ -105,11 +107,20 @@ class TaskDetailFragment : Fragment() {
 
     private fun addEventListeners(taskId: String) {
         editButton.setOnClickListener {
-
+            findNavController().navigate(
+                R.id.action_taskDetailFragment_to_taskEditFragment,
+                bundleOf("TASK_ID" to id)
+            )
         }
 
         deleteButton.setOnClickListener {
-
+            AlertDialog.Builder(requireContext())
+                .setTitle("Confirm status deletion")
+                .setPositiveButton("Delete") { dialog, which ->
+                    taskViewModel.delete(taskId)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
     }
 }

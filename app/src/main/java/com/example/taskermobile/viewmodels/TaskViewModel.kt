@@ -24,6 +24,9 @@ class TaskViewModel(
     private val _taskUpdateResponse = MutableLiveData<ApiResponse<TaskModel>>()
     val taskUpdateResponse: LiveData<ApiResponse<TaskModel>> = _taskUpdateResponse
 
+    private val _taskDeleteResponse = MutableLiveData<ApiResponse<String>>()
+    val taskDeleteResponse: LiveData<ApiResponse<String>> = _taskDeleteResponse
+
     private val _taskGetResponse = MutableLiveData<ApiResponse<TaskModel>>()
     val taskGetResponse: LiveData<ApiResponse<TaskModel>> = _taskGetResponse
 
@@ -38,6 +41,13 @@ class TaskViewModel(
         viewModelScope.launch {
             apiRequestFlow { taskApiService.get(id) }
                 .collect { apiResponse -> _taskGetResponse.value = apiResponse }
+        }
+    }
+
+    fun delete(id: String) {
+        viewModelScope.launch {
+            apiRequestFlow { taskApiService.delete(id) }
+                .collect { apiResponse -> _taskDeleteResponse.value = apiResponse }
         }
     }
 }

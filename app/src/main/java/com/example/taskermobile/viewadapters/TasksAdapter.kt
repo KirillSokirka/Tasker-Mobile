@@ -7,9 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
 import com.example.taskermobile.model.task.TaskPreviewModel
+import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 
 class TasksAdapter(private val tasks: List<TaskPreviewModel>,
+                   private val allStatuses: List<TaskStatusModel>,
                    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
 
@@ -38,6 +40,16 @@ class TasksAdapter(private val tasks: List<TaskPreviewModel>,
                     tasks[position].id.let { id ->
                         listener.onItemClick(id)
                     }
+                }
+            }
+
+            itemView.setOnLongClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onItemLongClick(tasks[position], allStatuses)
+                    true
+                } else {
+                    false
                 }
             }
         }

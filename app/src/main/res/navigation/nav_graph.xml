@@ -232,6 +232,17 @@
         <action
             android:id="@+id/action_taskDetailFragment_to_kanbanBoardDetailFragment2"
             app:destination="@id/kanbanBoardDetailFragment" />
+        <action
+            android:id="@+id/action_taskDetailFragment_to_taskEditFragment"
+            app:destination="@id/taskEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskEditFragment"
+        android:name="com.example.taskermobile.activities.task.TaskEditFragment"
+        android:label="TaskEditFragment" >
+        <action
+            android:id="@+id/action_taskEditFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
     </fragment>
 
 

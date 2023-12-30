@@ -32,7 +32,7 @@ class KanbanBoardAdapter(private val columns: List<TaskStatusModel>,
         fun bind(column: TaskStatusModel) {
             columnNameTextView.text = column.name
             tasksRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
-            tasksRecyclerView.adapter = TasksAdapter(column.tasks ?: listOf(), listener)
+            tasksRecyclerView.adapter = TasksAdapter(column.tasks ?: listOf(), columns, listener)
         }
     }
 }

@@ -1,4 +1,6 @@
 package com.example.taskermobile.activities.task
 
-class TaskEditFragment {
+import androidx.fragment.app.Fragment
+
+class TaskEditFragment : Fragment() {
 }

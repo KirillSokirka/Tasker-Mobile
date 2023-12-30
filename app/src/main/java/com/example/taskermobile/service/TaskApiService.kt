@@ -5,6 +5,7 @@ import com.example.taskermobile.model.task.TaskModel
 import com.example.taskermobile.model.task.TaskPreviewModel
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -17,4 +18,6 @@ interface TaskApiService {
     suspend fun create(@Body task: TaskCreateModel) : Response<TaskModel>
     @GET("Task/{id}")
     suspend fun get(@Path("id") id: String) : Response<TaskModel>
+    @DELETE("TaskStatus/{id}")
+    suspend fun delete(@Path("id") id: String) : Response<String>
 }
