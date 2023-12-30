@@ -8,6 +8,8 @@ import com.example.taskermobile.model.release.ReleaseModel
 import com.example.taskermobile.model.release.ReleasePreviewModel
 import com.example.taskermobile.model.task.TaskCreateModel
 import com.example.taskermobile.model.task.TaskModel
+import com.example.taskermobile.model.task.TaskUpdateModel
+import com.example.taskermobile.model.task.TaskUpdateStatusModel
 import com.example.taskermobile.service.ReleaseApiService
 import com.example.taskermobile.service.TaskApiService
 import com.example.taskermobile.utils.ApiResponse
@@ -48,6 +50,20 @@ class TaskViewModel(
         viewModelScope.launch {
             apiRequestFlow { taskApiService.delete(id) }
                 .collect { apiResponse -> _taskDeleteResponse.value = apiResponse }
+        }
+    }
+
+    fun update(model: TaskUpdateModel) {
+        viewModelScope.launch {
+            apiRequestFlow { taskApiService.update(model) }
+                .collect { apiResponse -> _taskUpdateResponse.value = apiResponse }
+        }
+    }
+
+    fun update(model: TaskUpdateStatusModel) {
+        viewModelScope.launch {
+            apiRequestFlow { taskApiService.update(model) }
+                .collect { apiResponse -> _taskUpdateResponse.value = apiResponse }
         }
     }
 }

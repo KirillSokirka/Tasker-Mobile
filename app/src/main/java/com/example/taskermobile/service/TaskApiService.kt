@@ -1,8 +1,12 @@
 package com.example.taskermobile.service
 
+import com.example.taskermobile.model.project.ProjectModel
+import com.example.taskermobile.model.project.ProjectUpdateModel
 import com.example.taskermobile.model.task.TaskCreateModel
 import com.example.taskermobile.model.task.TaskModel
 import com.example.taskermobile.model.task.TaskPreviewModel
+import com.example.taskermobile.model.task.TaskUpdateModel
+import com.example.taskermobile.model.task.TaskUpdateStatusModel
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -20,4 +24,8 @@ interface TaskApiService {
     suspend fun get(@Path("id") id: String) : Response<TaskModel>
     @DELETE("TaskStatus/{id}")
     suspend fun delete(@Path("id") id: String) : Response<String>
+    @PUT("Task")
+    suspend fun update(@Body model: TaskUpdateStatusModel): Response<TaskModel>
+    @PUT("Task")
+    suspend fun update(@Body model: TaskUpdateModel): Response<TaskModel>
 }

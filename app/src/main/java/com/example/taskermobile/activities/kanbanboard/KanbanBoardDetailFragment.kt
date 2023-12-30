@@ -3,10 +3,12 @@ package com.example.taskermobile.activities.kanbanboard
 import SharedPreferencesService
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -21,11 +23,16 @@ import com.example.taskermobile.activities.project.ProjectDetailFragment
 import com.example.taskermobile.model.kanbanboard.KanbanBoardCreateModel
 import com.example.taskermobile.model.kanbanboard.KanbanBoardModel
 import com.example.taskermobile.model.kanbanboard.KanbanBoardUpdateModel
+import com.example.taskermobile.model.task.TaskPreviewModel
+import com.example.taskermobile.model.task.TaskUpdateStatusModel
+import com.example.taskermobile.model.taskstatus.TaskStatusModel
 import com.example.taskermobile.utils.ApiResponse
+import com.example.taskermobile.utils.apiRequestFlow
 import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 import com.example.taskermobile.utils.getIdFromToken
 import com.example.taskermobile.viewadapters.KanbanBoardAdapter
 import com.example.taskermobile.viewmodels.KanbanBoardViewModel
+import com.example.taskermobile.viewmodels.TaskViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
 import org.koin.android.ext.android.inject
@@ -34,12 +41,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class KanbanBoardDetailFragment : Fragment() {
 
     private val kanbanBoardViewModel by viewModel<KanbanBoardViewModel>()
+    private val taskViewModel by viewModel<TaskViewModel>()
     private val tokenViewModel by viewModel<TokenViewModel>()
     private val userViewModel by viewModel<UserViewModel>()
 
     private val sharedPreferences: SharedPreferencesService by inject()
 
-    private lateinit var boardAdapter: KanbanBoardAdapter
     private lateinit var kanbanBoardRecyclerView: RecyclerView
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var createTaskButton: Button
@@ -124,25 +131,48 @@ class KanbanBoardDetailFragment : Fragment() {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
                 }
-
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
                     apiResponse.data?.let { board ->
                         setUpListeners(board)
 
                         title.text = board.title
-                        boardAdapter = KanbanBoardAdapter(board.columns ?: listOf(), object : OnItemClickListener {
+
+                        kanbanBoardRecyclerView.adapter = KanbanBoardAdapter(board.columns ?: listOf(),
+                            object : OnItemClickListener {
                             override fun onItemClick(id: String) {
                                 findNavController().navigate(
                                     R.id.action_kanbanBoardDetailFragment_to_taskDetailFragment,
                                     bundleOf("TASK_ID" to id))
                             }
-                        })
+                            override fun onItemLongClick(task: TaskPreviewModel, allStatuses: List<TaskStatusModel>) {
+                                val popupMenu = PopupMenu(
+                                    requireContext(),
+                                    view
+                                )
 
-                        kanbanBoardRecyclerView.adapter = boardAdapter
+                                allStatuses.forEach { status ->
+                                    popupMenu.menu.add(
+                                        Menu.NONE,
+                                        status.id.hashCode(),
+                                        Menu.NONE,
+                                        status.name
+                                    )
+                                }
+
+                                popupMenu.setOnMenuItemClickListener { menuItem ->
+                                    val newStatus = allStatuses.find { it.id.hashCode() == menuItem.itemId }
+                                    taskViewModel.update(TaskUpdateStatusModel(task.id, newStatus?.id!!))
+                                    Toast.makeText(requireContext(),
+                                        "Status changed to: ${newStatus.name}",
+                                        Toast.LENGTH_LONG).show()
+                                    true
+                                }
+                                popupMenu.show()
+                            }
+                        })
                     }
                 }
-
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
                     Toast.makeText(
@@ -155,6 +185,25 @@ class KanbanBoardDetailFragment : Fragment() {
         }
 
         kanbanBoardViewModel.kanbanUpdateResponse.observe(viewLifecycleOwner) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Loading -> {
+                    loadingIndicator.visibility = View.VISIBLE
+                }
+                is ApiResponse.Success -> {
+                    kanbanBoardViewModel.getById(boardId)
+                }
+                is ApiResponse.Failure -> {
+                    loadingIndicator.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        "Network error: ${apiResponse.errorMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+
+        taskViewModel.taskUpdateResponse.observe(viewLifecycleOwner) {apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
