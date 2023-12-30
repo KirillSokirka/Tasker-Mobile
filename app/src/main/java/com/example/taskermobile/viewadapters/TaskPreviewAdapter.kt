@@ -22,12 +22,12 @@ class TaskPreviewAdapter(private val tasks: List<TaskPreviewModel>) : RecyclerVi
     override fun getItemCount() = tasks.size
 
     inner class TaskPreviewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val description: TextView = itemView.findViewById(R.id.textViewDescription)
+        private val status: TextView = itemView.findViewById(R.id.textViewStatus)
         private val title: TextView = itemView.findViewById(R.id.textViewTitle)
 
         fun bind(task: TaskPreviewModel) {
             title.text = task.title
-            description.text = task.description
+            status.text = task.taskStatusName
         }
     }
 }
