@@ -9,6 +9,7 @@ import com.example.taskermobile.model.project.ProjectPreviewModel
 import com.example.taskermobile.model.project.ProjectUpdateModel
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -24,4 +25,6 @@ interface KanbanBoardApiService {
     suspend fun create(@Body model: KanbanBoardCreateModel): Response<KanbanBoardModel>
     @PUT("api/kanbanBoards")
     suspend fun update(@Body model: KanbanBoardUpdateModel): Response<KanbanBoardModel>
+    @DELETE("api/kanbanBoards/{id}")
+    suspend fun delete(@Path("id") id : String): Response<String>
 }

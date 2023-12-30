@@ -52,9 +52,11 @@ class KanbanBoardDetailFragment : Fragment() {
     private lateinit var createTaskButton: Button
     private lateinit var title: TextView
     private lateinit var editButton: Button
+    private lateinit var deleteButton: Button
     private lateinit var editTitle: EditText
     private lateinit var manageTaskStatuses: Button
     private lateinit var userAdminProject: List<String>
+    private lateinit var projectId: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,11 +71,12 @@ class KanbanBoardDetailFragment : Fragment() {
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         title = view.findViewById(R.id.title)
         editButton = view.findViewById(R.id.editBoard)
+        deleteButton = view.findViewById(R.id.deleteBoard)
         manageTaskStatuses = view.findViewById(R.id.manageTaskStatuses)
         createTaskButton = view.findViewById(R.id.createTaskButton)
         editTitle = EditText(requireContext())
         kanbanBoardRecyclerView = view.findViewById(R.id.kanbanBoardRecyclerView)
-        kanbanBoardRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        kanbanBoardRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val boardId = arguments?.getString("KANBAN_BOARD_ID")
             ?: sharedPreferences.retrieveData("lastKanbanBoard")
@@ -134,6 +137,7 @@ class KanbanBoardDetailFragment : Fragment() {
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
                     apiResponse.data?.let { board ->
+                        projectId = board.projectId!!
                         setUpListeners(board)
 
                         title.text = board.title
@@ -202,6 +206,33 @@ class KanbanBoardDetailFragment : Fragment() {
                 }
             }
         }
+        kanbanBoardViewModel.kanbanDeleteResponse.observe(viewLifecycleOwner) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Loading -> {
+                    loadingIndicator.visibility = View.VISIBLE
+                }
+                is ApiResponse.Success -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Board deleted successfully",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    findNavController().navigate(R.id.action_kanbanBoardDetailFragment_to_projectDetailFragment,
+                        bundleOf("PROJECT_ID" to projectId))
+                }
+                is ApiResponse.Failure -> {
+                    loadingIndicator.visibility = View.GONE
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Error: ${apiResponse.errorMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    kanbanBoardViewModel.getById(boardId)
+                }
+            }
+        }
 
         taskViewModel.taskUpdateResponse.observe(viewLifecycleOwner) {apiResponse ->
             when (apiResponse) {
@@ -226,6 +257,7 @@ class KanbanBoardDetailFragment : Fragment() {
     private fun setUpListeners(board: KanbanBoardModel) {
         if (userAdminProject.contains(board.projectId)) {
             editButton.visibility = View.VISIBLE
+            deleteButton.visibility = View.VISIBLE
             editTitle.setText(board.title)
 
             if (editTitle.parent != null) {
@@ -251,6 +283,10 @@ class KanbanBoardDetailFragment : Fragment() {
                         }
                         .setNegativeButton("Cancel", null)
                         .show()
+            }
+
+            deleteButton.setOnClickListener {
+                kanbanBoardViewModel.delete(board.id!!)
             }
 
             manageTaskStatuses.visibility = View.VISIBLE

@@ -2,41 +2,104 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="15dp">
 
-    <Button
-        android:id="@+id/createTaskButton"
-        android:layout_width="wrap_content"
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="100dp"
-        android:text="Create Task" />
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="flex_start">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kanbanboard:"
+            android:textColor="@color/textColor"
+            android:textSize="22dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            />
 
-    <Button
-        android:id="@+id/editBoard"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="22dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@drawable/rounded_green_highlight"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            />
+
+        <Button
+            android:id="@+id/editBoard"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:visibility="gone"
+            android:background="@drawable/pencil"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <Button
+            android:id="@+id/deleteBoard"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:visibility="gone"
+            android:background="@drawable/delete"
+            android:layout_marginBottom="10dp"/>
+
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="Edit Board"/>
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="space_between"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp">
 
-    <Button
-        android:id="@+id/manageTaskStatuses"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="Manage board statuses"
-        android:layout_marginTop="50dp"/>
+        <Button
+            android:textSize="14dp"
+            android:textColor="@color/textColor"
+            android:id="@+id/createTaskButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/CustomButton"
+            android:padding="2dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:layout_marginTop="0dp"
+            android:text="Create Task"
+            />
+
+        <Button
+            android:textSize="14dp"
+            android:textColor="@color/textColor"
+            android:id="@+id/manageTaskStatuses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:padding="2dp"
+            style="@style/CustomButton"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:layout_marginTop="0dp"
+            android:text="Manage board statuses"
+            />
+    </com.google.android.flexbox.FlexboxLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/kanbanBoardRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal" />
+        android:orientation="vertical"/>
 
     <ProgressBar
         android:id="@+id/loadingIndicator"

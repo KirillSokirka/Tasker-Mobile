@@ -27,6 +27,9 @@ class KanbanBoardViewModel(
     private val _kanbanUpdateResponse = MutableLiveData<ApiResponse<KanbanBoardModel>>()
     val kanbanUpdateResponse: LiveData<ApiResponse<KanbanBoardModel>> = _kanbanUpdateResponse
 
+    private val _kanbanDeleteResponse = MutableLiveData<ApiResponse<String>>()
+    val kanbanDeleteResponse: LiveData<ApiResponse<String>> = _kanbanDeleteResponse
+
     fun getById(id: String){
         viewModelScope.launch {
             apiRequestFlow { kanbanBoardApiService.getById(id) }
@@ -52,6 +55,13 @@ class KanbanBoardViewModel(
         viewModelScope.launch {
             apiRequestFlow { kanbanBoardApiService.update(model) }
                 .collect { apiResponse -> _kanbanUpdateResponse.value = apiResponse }
+        }
+    }
+
+    fun delete(boardId: String){
+        viewModelScope.launch {
+            apiRequestFlow { kanbanBoardApiService.delete(boardId) }
+                .collect { apiResponse -> _kanbanDeleteResponse.value = apiResponse }
         }
     }
 }
