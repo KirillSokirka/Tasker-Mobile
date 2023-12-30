@@ -3,6 +3,7 @@
     <color name="backgroundColor">#FFE8F1F2</color>
     <color name="textColor">#FF001A23</color>
     <color name="highlightColor">#FFB3EFB2</color>
+    <color name="highlightRedColor">#FFF0B1B1</color>
     <color name="fieldColor">#FFD3DBDC</color>
     <color name="navColor">#FFD3DBDC</color>
 </resources>

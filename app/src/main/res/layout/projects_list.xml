@@ -4,7 +4,8 @@
     android:id="@+id/projectsListPage"
     android:background="@color/backgroundColor"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="15dp">
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -13,11 +14,11 @@
 
         <Button
             android:id="@+id/buttonCreate"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/CustomButton"
-            android:paddingEnd="15dp"
-            android:paddingStart="15dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="30dp"
             android:text="Create Project"
             android:layout_gravity="center_horizontal"/>
 

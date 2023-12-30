@@ -3,8 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="15dp"
     android:gravity="center_horizontal">
+
+    <Button
+        android:id="@+id/addReleaseButton"
+        style="@style/CustomButton"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create release" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
@@ -18,9 +27,5 @@
         android:layout_marginTop="20dp"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/addReleaseButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add a release" />
+
 </LinearLayout>

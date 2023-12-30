@@ -27,7 +27,9 @@ class TaskPreviewAdapter(private val tasks: List<TaskPreviewModel>) : RecyclerVi
 
         fun bind(task: TaskPreviewModel) {
             title.text = task.title
-            status.text = task.taskStatusName
+            title.visibility = View.VISIBLE
+            status.text = if(!task.taskStatusName.isEmpty()) task.taskStatusName else "-"
+            status.visibility = View.VISIBLE
         }
     }
 }

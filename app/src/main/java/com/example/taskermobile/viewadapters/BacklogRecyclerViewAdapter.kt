@@ -29,8 +29,10 @@ class BacklogRecyclerViewAdapter(private val items: List<TaskPreviewModel>?) : R
 
         if (currentItem != null) {
             holder.textViewTitle.text = currentItem.title
+            holder.textViewTitle.visibility = View.VISIBLE
 //            holder.textViewId.text = currentItem.id
             holder.textViewDescription.text = currentItem.description
+            holder.textViewDescription.visibility = View.VISIBLE
         }
     }
 }

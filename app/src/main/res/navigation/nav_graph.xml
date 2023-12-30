@@ -155,6 +155,9 @@
         <action
             android:id="@+id/action_releaseUpdateFragment_to_releasesPageFragment"
             app:destination="@id/releasesPageFragment" />
+        <action
+            android:id="@+id/action_releaseUpdateFragment_to_releaseDetailFragment"
+            app:destination="@id/releaseDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/kanbanBoardDetailFragment"

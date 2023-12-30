@@ -24,6 +24,9 @@ import com.example.taskermobile.viewmodels.TaskViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class ReleaseDetailFragment : Fragment() {
     private val releaseModel by viewModel<ReleasesPageViewModel>()
@@ -35,6 +38,9 @@ class ReleaseDetailFragment : Fragment() {
     private lateinit var deleteButton: Button
     private lateinit var updateButton: Button
     private lateinit var releaseName: TextView
+    private lateinit var releaseStatus: TextView
+    private lateinit var endDate: TextView
+    private lateinit var withoutTasks: TextView
     private lateinit var userId: String
     private lateinit var projectId: String
 
@@ -56,6 +62,9 @@ class ReleaseDetailFragment : Fragment() {
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         releaseName = view.findViewById(R.id.releaseName)
+        releaseStatus = view.findViewById(R.id.releaseStatus)
+        endDate = view.findViewById(R.id.endDate)
+        withoutTasks = view.findViewById(R.id.withoutTasks)
         deleteButton = view.findViewById(R.id.deleteRelease)
         updateButton = view.findViewById(R.id.updateRelease)
 
@@ -85,7 +94,27 @@ class ReleaseDetailFragment : Fragment() {
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.VISIBLE
 
+
+                    val originalDateString = apiResponse.data!!.endDate
+                    val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val targetFormat = SimpleDateFormat("dd/MMM/yyyy", Locale.getDefault())
+
+                    try {
+                        val date = originalFormat.parse(originalDateString)
+                        date?.let {
+                            val formattedDate = targetFormat.format(it)
+                            endDate.text =  formattedDate
+                        }
+                    } catch (e: ParseException) {
+                        e.printStackTrace()
+                    }
+
                     releaseName.text = apiResponse.data!!.title
+                    releaseStatus.text = if(apiResponse.data!!.isReleased) "Released" else "Unreleased"
+                    releaseStatus.setBackgroundResource(
+                        if(apiResponse.data!!.isReleased) R.drawable.rounded_green_highlight
+                        else R.drawable.rounded_red_highlight
+                    )
                     projectId = apiResponse.data.projectId!!
 
                     tasks = apiResponse.data.tasks
@@ -148,9 +177,16 @@ class ReleaseDetailFragment : Fragment() {
     }
 
     private fun setupTasksRecyclerView() {
-        val adapter = TaskPreviewAdapter(tasks)
-        tasksRecyclerView.adapter = adapter
-        tasksRecyclerView.layoutManager = LinearLayoutManager(context)
+        if(tasks.size != 0) {
+            val adapter = TaskPreviewAdapter(tasks)
+            tasksRecyclerView.adapter = adapter
+            tasksRecyclerView.layoutManager = LinearLayoutManager(context)
+        }
+        else {
+            withoutTasks.visibility = View.VISIBLE
+            withoutTasks.text = "Tasks have not been added yet"
+        }
+
     }
 
     private fun setUpListeners(releaseId: String, allowedProjects: List<String>) {

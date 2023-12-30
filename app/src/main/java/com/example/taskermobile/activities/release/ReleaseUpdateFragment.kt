@@ -17,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.findNavController
@@ -123,7 +124,10 @@ class ReleaseUpdateFragment : Fragment() {
                 }
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-                    view.findNavController().navigate(R.id.action_releaseUpdateFragment_to_releasesPageFragment)
+                    view.findNavController().navigate(
+                        R.id.action_releaseUpdateFragment_to_releaseDetailFragment,
+                        bundleOf("RELEASE_ID" to releaseId)
+                    )
                 }
                 is ApiResponse.Failure -> {
                     loadingIndicator.visibility = View.GONE
@@ -132,14 +136,12 @@ class ReleaseUpdateFragment : Fragment() {
                         "Release update error: ${apiResponse.errorMessage}",
                         Toast.LENGTH_LONG
                     ).show()
-                    view.findNavController().navigate(R.id.action_releaseUpdateFragment_to_releasesPageFragment)
+                    view.findNavController().navigate(
+                        R.id.action_releaseUpdateFragment_to_releasesPageFragment)
                 }
             }
         }
 
-        fun setUpListeneres() {
-
-        }
     }
 
     private fun setUpReleaseSpinner(statusSelector: Spinner) {

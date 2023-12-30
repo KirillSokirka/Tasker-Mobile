@@ -1,32 +1,89 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="15dp">
 
-    <TextView
-        android:id="@+id/releaseName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/releaseStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/deleteRelease"
+    <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="Delete" />
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="flex_start">
 
-    <Button
-        android:id="@+id/updateRelease"
-        android:layout_width="match_parent"
+
+
+        <TextView
+            android:id="@+id/releaseName"
+            android:layout_width="wrap_content"
+            android:textColor="@color/textColor"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:layout_marginEnd="10dp"
+            />
+
+        <TextView
+            android:id="@+id/releaseStatus"
+            android:textColor="@color/textColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="6dp"
+            android:textSize="14dp"
+            android:layout_marginEnd="15dp"
+            />
+        <Button
+            android:id="@+id/updateRelease"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/pencil"
+            android:layout_marginEnd="15dp"
+            android:visibility="gone"
+            />
+        <Button
+            android:id="@+id/deleteRelease"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/delete"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/endDate"
+            android:layout_width="wrap_content"
+            android:textColor="@color/textColor"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+
+            />
+
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textColor="@color/textColor"
         android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
+        android:text="Tasks:"
+        />
+
+    <TextView
+        android:id="@+id/withoutTasks"
+        android:layout_width="wrap_content"
+        android:textColor="@color/textColor"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
         android:visibility="gone"
-        android:text="Update" />
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"

@@ -43,6 +43,12 @@ class ReleaseAdapter(private val items: List<ReleasePreviewModel>?,
         if (currentItem != null) {
             holder.textViewTitle.text = currentItem.title
             holder.textViewStatus.text = if (currentItem.isReleased) "Released" else "Unreleased"
+            holder.textViewStatus.setBackgroundResource(
+                if (currentItem.isReleased) R.drawable.rounded_green_highlight
+                else R.drawable.rounded_red_highlight
+            )
+
+
         }
     }
 }

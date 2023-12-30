@@ -14,7 +14,7 @@
         <item name="android:padding">4dp</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:background">@drawable/rounded_green_highlight</item>
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:stateListAnimator">@null</item>
     </style>
@@ -25,7 +25,7 @@
         <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:background">@drawable/rounded_green_highlight</item>
         <item name="android:layout_marginTop">20dp</item>
     </style>
     <style name="SpinnerTextStyle">
