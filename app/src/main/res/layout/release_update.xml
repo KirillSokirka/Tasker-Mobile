@@ -3,28 +3,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <EditText
         android:id="@+id/newReleaseName"
         android:hint="new release name"
+        android:textColor="@color/textColor"
+        android:textSize="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"/>
 
     <Spinner
         android:id="@+id/newReleaseStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:paddingStart="15dp"
+
+        android:theme="@style/SpinnerTextStyle"
+        android:background="@drawable/spinner_background"/>
 
     <CalendarView
         android:id="@+id/newReleaseEndDate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+
+        />
 
     <Button
         android:id="@+id/updateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/CustomButton"
+        android:layout_marginTop="15dp"
         android:text="Update" />
 
     <ProgressBar
