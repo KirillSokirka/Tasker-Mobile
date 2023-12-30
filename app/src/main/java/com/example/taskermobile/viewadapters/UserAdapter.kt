@@ -36,6 +36,12 @@ class UserAdapter(private var items: MutableList<UserModel>, private val project
         if (currentItem != null) {
             holder.textViewTitle.text = currentItem.title
             holder.textViewStatus.text = if (currentItem.isAdmin) "Admin" else "Assignee"
+            holder.textViewStatus.setBackgroundResource(
+                if (currentItem.isAdmin)
+                    R.drawable.rounded_green_highlight
+                else R.drawable.rounded_grey_highlight
+            )
+
 
             holder.itemView.setOnLongClickListener { view ->
                 listener?.onUserLongClick(currentItem, view, projectId)
