@@ -11,10 +11,11 @@ data class TaskModel(
     val projectId: String,
     val creator: UserModel?,
     val description: String?,
-    val taskStatusId: String?,
-    val releasedId: String?,
-    val priority: TaskPriority = TaskPriority.NONE,
+    val taskStatus: BaseDto?,
+    val release: BaseDto?,
+    val priority: Int,
     val creationDate: String,
     val assignee: UserModel?
 )
 
+data class BaseDto(val id: String, val title: String)

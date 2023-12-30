@@ -21,6 +21,11 @@ class TaskViewModel(
     private val _taskCreateResponse = MutableLiveData<ApiResponse<TaskModel>>()
     val taskCreateResponse: LiveData<ApiResponse<TaskModel>> = _taskCreateResponse
 
+    private val _taskUpdateResponse = MutableLiveData<ApiResponse<TaskModel>>()
+    val taskUpdateResponse: LiveData<ApiResponse<TaskModel>> = _taskUpdateResponse
+
+    private val _taskGetResponse = MutableLiveData<ApiResponse<TaskModel>>()
+    val taskGetResponse: LiveData<ApiResponse<TaskModel>> = _taskGetResponse
 
     fun create(task: TaskCreateModel) {
         viewModelScope.launch {
@@ -29,4 +34,10 @@ class TaskViewModel(
         }
     }
 
+    fun get(id: String) {
+        viewModelScope.launch {
+            apiRequestFlow { taskApiService.get(id) }
+                .collect { apiResponse -> _taskGetResponse.value = apiResponse }
+        }
+    }
 }

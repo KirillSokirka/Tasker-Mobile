@@ -7,8 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
 import com.example.taskermobile.model.task.TaskPreviewModel
+import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 
-class TasksAdapter(private val tasks: List<TaskPreviewModel>) : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
+class TasksAdapter(private val tasks: List<TaskPreviewModel>,
+                   private val listener: OnItemClickListener
+) : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
@@ -26,6 +29,17 @@ class TasksAdapter(private val tasks: List<TaskPreviewModel>) : RecyclerView.Ada
 
         fun bind(task: TaskPreviewModel) {
             taskNameTextView.text = task.title
+        }
+
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    tasks[position].id.let { id ->
+                        listener.onItemClick(id)
+                    }
+                }
+            }
         }
     }
 }

@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
 import com.example.taskermobile.model.taskstatus.TaskStatusModel
+import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 
-class KanbanBoardAdapter(private val columns: List<TaskStatusModel>) : RecyclerView.Adapter<KanbanBoardAdapter.ColumnViewHolder>() {
+class KanbanBoardAdapter(private val columns: List<TaskStatusModel>,
+                         private val listener: OnItemClickListener
+) : RecyclerView.Adapter<KanbanBoardAdapter.ColumnViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColumnViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.column_item, parent, false)
@@ -29,7 +32,7 @@ class KanbanBoardAdapter(private val columns: List<TaskStatusModel>) : RecyclerV
         fun bind(column: TaskStatusModel) {
             columnNameTextView.text = column.name
             tasksRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
-            tasksRecyclerView.adapter = TasksAdapter(column.tasks ?: listOf())
+            tasksRecyclerView.adapter = TasksAdapter(column.tasks ?: listOf(), listener)
         }
     }
 }

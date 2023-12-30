@@ -13,7 +13,8 @@ import retrofit2.http.Path
 interface TaskApiService {
     @GET("task/backlog/{projectId}")
     suspend fun getAll(@Path("projectId") projectId: String): Response<List<TaskPreviewModel>>
-
     @POST("Task/")
     suspend fun create(@Body task: TaskCreateModel) : Response<TaskModel>
+    @GET("Task/{id}")
+    suspend fun get(@Path("id") id: String) : Response<TaskModel>
 }

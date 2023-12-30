@@ -184,6 +184,9 @@
         <action
             android:id="@+id/action_kanbanBoardDetailFragment_to_taskStatusListFragment"
             app:destination="@id/taskStatusListFragment" />
+        <action
+            android:id="@+id/action_kanbanBoardDetailFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/userManagementFragment"
@@ -217,6 +220,17 @@
             app:destination="@id/taskStatusDetailFragment" />
         <action
             android:id="@+id/action_taskStatusListFragment_to_kanbanBoardDetailFragment"
+            app:destination="@id/kanbanBoardDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="com.example.taskermobile.activities.task.TaskDetailFragment"
+        android:label="TaskDetailFragment" >
+        <action
+            android:id="@+id/action_taskDetailFragment_to_kanbanBoardDetailFragment"
+            app:destination="@id/kanbanBoardDetailFragment" />
+        <action
+            android:id="@+id/action_taskDetailFragment_to_kanbanBoardDetailFragment2"
             app:destination="@id/kanbanBoardDetailFragment" />
     </fragment>
 

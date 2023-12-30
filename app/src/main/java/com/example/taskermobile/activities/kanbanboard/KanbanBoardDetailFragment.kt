@@ -22,6 +22,7 @@ import com.example.taskermobile.model.kanbanboard.KanbanBoardCreateModel
 import com.example.taskermobile.model.kanbanboard.KanbanBoardModel
 import com.example.taskermobile.model.kanbanboard.KanbanBoardUpdateModel
 import com.example.taskermobile.utils.ApiResponse
+import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 import com.example.taskermobile.utils.getIdFromToken
 import com.example.taskermobile.viewadapters.KanbanBoardAdapter
 import com.example.taskermobile.viewmodels.KanbanBoardViewModel
@@ -130,7 +131,14 @@ class KanbanBoardDetailFragment : Fragment() {
                         setUpListeners(board)
 
                         title.text = board.title
-                        boardAdapter = KanbanBoardAdapter(board.columns ?: listOf())
+                        boardAdapter = KanbanBoardAdapter(board.columns ?: listOf(), object : OnItemClickListener {
+                            override fun onItemClick(id: String) {
+                                findNavController().navigate(
+                                    R.id.action_kanbanBoardDetailFragment_to_taskDetailFragment,
+                                    bundleOf("TASK_ID" to id))
+                            }
+                        })
+
                         kanbanBoardRecyclerView.adapter = boardAdapter
                     }
                 }
