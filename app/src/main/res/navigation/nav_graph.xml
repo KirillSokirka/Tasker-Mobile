@@ -178,6 +178,9 @@
             app:destination="@id/kanbanBoardDetailFragment"
             app:popUpTo="@id/kanbanBoardDetailFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_kanbanBoardDetailFragment_to_taskStatusListFragment"
+            app:destination="@id/taskStatusListFragment" />
     </fragment>
     <fragment
         android:id="@+id/userManagementFragment"
@@ -189,6 +192,29 @@
         <action
             android:id="@+id/action_userManagementFragment_to_projectsPageFragment"
             app:destination="@id/projectsPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskStatusDetailFragment"
+        android:name="com.example.taskermobile.activities.taskstatuses.TaskStatusDetailFragment"
+        android:label="TaskStatusDetailFragment" >
+        <action
+            android:id="@+id/action_taskStatusDetailFragment_to_taskStatusListFragment"
+            app:destination="@id/taskStatusListFragment" />
+        <argument
+            android:name="TASK_STATUS_ID"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskStatusListFragment"
+        android:name="com.example.taskermobile.activities.taskstatuses.TaskStatusListFragment"
+        android:label="TaskStatusListFragment" >
+        <action
+            android:id="@+id/action_taskStatusListFragment_to_taskStatusDetailFragment"
+            app:destination="@id/taskStatusDetailFragment" />
+        <action
+            android:id="@+id/action_taskStatusListFragment_to_kanbanBoardDetailFragment"
+            app:destination="@id/kanbanBoardDetailFragment" />
     </fragment>
 
 

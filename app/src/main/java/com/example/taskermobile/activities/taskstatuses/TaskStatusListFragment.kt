@@ -43,7 +43,8 @@ class TaskStatusListFragment: Fragment() {
         val boardId = arguments?.getString("KANBAN_BOARD_ID")
 
         if (boardId == null) {
-            findNavController().navigate(R.id.action_kanbanBoardDetailFragment_to_projectsPageFragment)
+            findNavController().navigate(R.id.action_taskStatusListFragment_to_kanbanBoardDetailFragment,
+                bundleOf("KANBAN_BOARD_ID" to boardId))
             return
         }
 
@@ -72,8 +73,8 @@ class TaskStatusListFragment: Fragment() {
                             ?: emptyList(), object : OnItemClickListener {
                             override fun onItemClick(id: String) {
                                 findNavController().navigate(
-                                    R.id.action_projectsPageFragment_to_projectDetailFragment,
-                                    bundleOf("PROJECT_ID" to id))
+                                    R.id.action_taskStatusListFragment_to_taskStatusDetailFragment,
+                                    bundleOf("TASK_STATUS_ID" to id))
                             }
                         })
 
@@ -121,20 +122,18 @@ class TaskStatusListFragment: Fragment() {
     }
 
     private fun addEventListener(map: List<String?>, id: String?) {
-
-
         createStatus.setOnClickListener {
             if (statusName.parent != null) {
                 (statusName.parent as ViewGroup).removeView(statusName)
             }
 
             AlertDialog.Builder(requireContext())
-                .setTitle("Add new board")
+                .setTitle("Add new task status")
                 .setView(statusName)
                 .setPositiveButton("Add") { dialog, which ->
                     val name = statusName.text.toString()
                     if (name.isEmpty()) {
-                        Toast.makeText(requireContext(), "The board name cannot be empty",
+                        Toast.makeText(requireContext(), "The name cannot be empty",
                             Toast.LENGTH_SHORT).show()
                     } else if (map.contains(name)) {
                         Toast.makeText(requireContext(), "The status with same name already exist",

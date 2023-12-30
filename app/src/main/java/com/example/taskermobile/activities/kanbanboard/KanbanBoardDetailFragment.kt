@@ -45,7 +45,7 @@ class KanbanBoardDetailFragment : Fragment() {
     private lateinit var title: TextView
     private lateinit var editButton: Button
     private lateinit var editTitle: EditText
-
+    private lateinit var manageTaskStatuses: Button
     private lateinit var userAdminProject: List<String>
 
     override fun onCreateView(
@@ -61,6 +61,7 @@ class KanbanBoardDetailFragment : Fragment() {
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         title = view.findViewById(R.id.title)
         editButton = view.findViewById(R.id.editBoard)
+        manageTaskStatuses = view.findViewById(R.id.manageTaskStatuses)
         createTaskButton = view.findViewById(R.id.createTaskButton)
         editTitle = EditText(requireContext())
         kanbanBoardRecyclerView = view.findViewById(R.id.kanbanBoardRecyclerView)
@@ -193,6 +194,13 @@ class KanbanBoardDetailFragment : Fragment() {
                         }
                         .setNegativeButton("Cancel", null)
                         .show()
+            }
+
+            manageTaskStatuses.visibility = View.VISIBLE
+
+            manageTaskStatuses.setOnClickListener {
+                findNavController().navigate(R.id.action_kanbanBoardDetailFragment_to_taskStatusListFragment,
+                    bundleOf("KANBAN_BOARD_ID" to board.id))
             }
         }
 

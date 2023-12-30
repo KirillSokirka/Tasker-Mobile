@@ -12,6 +12,7 @@ import com.example.taskermobile.service.KanbanBoardApiService
 import com.example.taskermobile.service.ProjectApiService
 import com.example.taskermobile.service.ReleaseApiService
 import com.example.taskermobile.service.TaskApiService
+import com.example.taskermobile.service.TaskStatusService
 import com.example.taskermobile.service.UserApiService
 import com.example.taskermobile.utils.AuthAuthenticator
 import com.example.taskermobile.utils.eventlisteners.AuthEventListenerImplementation
@@ -24,6 +25,7 @@ import com.example.taskermobile.viewmodels.BacklogPageViewModel
 import com.example.taskermobile.viewmodels.KanbanBoardViewModel
 import com.example.taskermobile.viewmodels.ProjectsViewModel
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
+import com.example.taskermobile.viewmodels.TaskStatusViewModel
 import com.example.taskermobile.viewmodels.TaskViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
@@ -69,6 +71,7 @@ val myModule = module {
     single { provideProjectApiService(get()) }
     single { provideTaskApiService(get()) }
     single { provideUserApiService(get())}
+    single { provideTaskStatusApiService(get())}
     single<AuthStateListener> { AuthEventListenerImplementation }
 
     viewModel { AuthViewModel(get()) }
@@ -79,6 +82,7 @@ val myModule = module {
     viewModel { UserViewModel(get()) }
     viewModel { KanbanBoardViewModel(get()) }
     viewModel { TaskViewModel(get()) }
+    viewModel { TaskStatusViewModel(get()) }
 }
 
 fun provideTokenManager(context: Context): TokenManager = TokenManager(context)
@@ -101,7 +105,7 @@ fun provideOkHttpClient(
 
 fun provideRetrofitBuilder(httpClient: OkHttpClient): Retrofit.Builder =
     Retrofit.Builder()
-//        .baseUrl("http://77.47.130.226:8188/")
+        //.baseUrl("http://77.47.130.226:8188/")
         .baseUrl("http://10.0.2.2:5185/")
         .client(httpClient)
         .addConverterFactory(GsonConverterFactory.create())
@@ -135,3 +139,8 @@ fun provideKanbanBoardAPIService(retrofit: Retrofit.Builder): KanbanBoardApiServ
     retrofit
         .build()
         .create(KanbanBoardApiService::class.java)
+
+fun provideTaskStatusApiService(retrofit: Retrofit.Builder): TaskStatusService =
+    retrofit
+        .build()
+        .create(TaskStatusService::class.java)
