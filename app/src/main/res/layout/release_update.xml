@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="15dp">
 
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="flex_start">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title:"
         android:textColor="@color/textColor"
+        android:layout_marginEnd="20dp"
         android:textSize="22dp"
         />
 
@@ -20,13 +28,21 @@
         android:textColor="@color/textColor"
         android:textSize="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"/>
+        android:layout_height="wrap_content" />
+    </com.google.android.flexbox.FlexboxLayout>
 
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="flex_start">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:text="Released:"
         android:textColor="@color/textColor"
         android:textSize="22dp"
@@ -40,6 +56,7 @@
 
         android:theme="@style/SpinnerTextStyle"
         android:background="@drawable/spinner_background"/>
+    </com.google.android.flexbox.FlexboxLayout>
 
     <CalendarView
         android:id="@+id/newReleaseEndDate"
@@ -48,13 +65,23 @@
 
         />
 
-    <Button
-        android:id="@+id/updateButton"
+    <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="center">
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/CustomButton"
-        android:layout_marginTop="15dp"
-        android:text="Update" />
+        android:layout_marginTop="0dp"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp"
+        android:text="Update"
+        android:gravity="center_vertical"/>
+    </com.google.android.flexbox.FlexboxLayout>
 
     <ProgressBar
         android:id="@+id/loadingIndicator"
