@@ -81,15 +81,17 @@ class TaskDetailFragment : Fragment() {
                     loadingIndicator.visibility = View.GONE
                     val priorityMap = listOf("None", "Low", "Medium", "High", "Urgent")
 
-                    title.text = apiResponse.data!!.title
-                    description.text = apiResponse.data.description
-                    assigne.text = apiResponse.data.assignee?.title ?: ""
-                    creator.text = apiResponse.data.creator?.title ?: ""
+                    title.text = if(apiResponse.data!!.title.isNullOrEmpty())
+                        "without title"
+                    else apiResponse.data.title
+                    description.text = if(apiResponse.data.description.isNullOrEmpty())
+                        "without description"
+                    else apiResponse.data.description
+                    assigne.text = apiResponse.data.assignee?.title ?: "not assigned"
+                    creator.text = apiResponse.data.creator?.title ?: "without a creator"
                     priority.text = priorityMap[apiResponse.data.priority]
-
-                    release.text = apiResponse.data.title
-                    taskStatus.text = apiResponse.data.taskStatus?.title ?: ""
-                    release.text = apiResponse.data.release?.title ?: ""
+                    taskStatus.text = apiResponse.data.taskStatus?.title ?: "without a status"
+                    release.text = apiResponse.data.release?.title ?: "without a release"
 
                     addEventListeners(taskId)
                 }
