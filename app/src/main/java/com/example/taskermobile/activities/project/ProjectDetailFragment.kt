@@ -22,7 +22,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.MainActivity
 import com.example.taskermobile.R
 import com.example.taskermobile.model.kanbanboard.KanbanBoardCreateModel
+import com.example.taskermobile.model.project.ProjectCreateModel
 import com.example.taskermobile.model.project.ProjectModel
+import com.example.taskermobile.model.project.ProjectUpdateModel
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.utils.getIdFromToken
 import com.example.taskermobile.viewmodels.KanbanBoardViewModel
@@ -48,6 +50,7 @@ class ProjectDetailFragment : Fragment() {
     private lateinit var spinner: Spinner
     private lateinit var backlogButton: Button
     private lateinit var createBoard: Button
+    private lateinit var titleEdit : EditText
 
     private lateinit var boardName: EditText
 
@@ -60,6 +63,8 @@ class ProjectDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        titleEdit = EditText(requireContext())
 
         val projectIdFromArgs = arguments?.getString("PROJECT_ID")
         val lastProjectActive = sharedPreferences.retrieveData("lastProjectActive")
@@ -92,6 +97,27 @@ class ProjectDetailFragment : Fragment() {
     }
 
     private fun setupObservers(projectId: String) {
+        viewModel.projectUpdateResponse.observe(viewLifecycleOwner) { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Loading -> {
+                    loadingIndicator.visibility = View.VISIBLE
+                }
+
+                is ApiResponse.Success -> {
+                    loadingIndicator.visibility = View.GONE
+                    viewModel.getById(projectId)
+                }
+
+                is ApiResponse.Failure -> {
+                    loadingIndicator.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        "Network error: ${apiResponse.errorMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
         tokenModel.token.observe(viewLifecycleOwner) { tokenValue ->
             if (tokenValue != null) {
                 viewModel.getById(projectId)
@@ -236,10 +262,30 @@ class ProjectDetailFragment : Fragment() {
 
     private fun setupClickListeners(project: ProjectModel, userId: String) {
         if (editProjectButton.visibility != View.GONE) {
+            titleEdit = EditText(requireContext())
             editProjectButton.setOnClickListener {
-                findNavController().navigate(R.id.action_projectDetailFragment_to_projectUpdateFragment,
-                    Bundle().apply { putString("PROJECT_ID", project.id)
-                    })
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Edit project")
+                    .setView(titleEdit)
+                    .setPositiveButton("Update") { dialog, which ->
+                        val title = titleEdit.text.toString()
+                        if (title.isEmpty()) {
+                            Toast.makeText(
+                                requireContext(),
+                                "The project name cannot be empty",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            viewModel.update(ProjectUpdateModel(project.id!!, titleEdit.text.toString()))
+                            Toast.makeText(
+                                requireContext(),
+                                "Project ${titleEdit.text} updated",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
             }
         }
 

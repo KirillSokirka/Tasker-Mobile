@@ -57,10 +57,6 @@ class ProjectsPageFragment : Fragment() {
             createProjectButton.isEnabled = !isLoading
         }
 
-//        createProjectButton.setOnClickListener {
-//            findNavController().navigate(
-//                R.id.action_projectsPageFragment_to_projectCreateFragment)
-//        }
         titleEdit = EditText(requireContext())
         createProjectButton.setOnClickListener {
             AlertDialog.Builder(requireContext())
@@ -77,6 +73,11 @@ class ProjectsPageFragment : Fragment() {
                     } else {
                         val userId = getIdFromToken(tokenViewModel.token.value?.token.toString())
                         viewModel.create(ProjectCreateModel(title, userId!!))
+                        Toast.makeText(
+                            requireContext(),
+                            "Project ${titleEdit.text} created",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
                 .setNegativeButton("Cancel", null)
@@ -91,11 +92,6 @@ class ProjectsPageFragment : Fragment() {
 
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-                    Toast.makeText(
-                        requireContext(),
-                        "Project ${titleEdit.text} created",
-                        Toast.LENGTH_LONG
-                    ).show()
                     viewModel.getAll()
                 }
 
