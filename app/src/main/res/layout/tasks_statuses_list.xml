@@ -2,7 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <Button
+        android:id="@+id/buttonCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/CustomButton"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="50dp"
+        android:text="Create Status"
+        android:layout_gravity="center_horizontal"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tasksStatusRecyclerView"
@@ -10,15 +23,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <Button
-        android:id="@+id/buttonCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/CustomButton"
-        android:paddingEnd="15dp"
-        android:paddingStart="15dp"
-        android:text="Create Status"
-        android:layout_gravity="center_horizontal"/>
+
 
     <ProgressBar
         android:id="@+id/loadingIndicator"

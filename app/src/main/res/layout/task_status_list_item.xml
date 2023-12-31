@@ -3,11 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp">
 
     <TextView
         android:id="@+id/statusName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:textSize="20dp"
+        android:background="@drawable/rounded_grey_highlight"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+
+        />
 
 </LinearLayout>
