@@ -1,79 +1,178 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/createTaskPage"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/backgroundColor"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="15dp">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center">
-        <EditText
-            android:id="@+id/newTaskTitle"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:layout_gravity="center_vertical"
+        >
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="New task title" />
-        <EditText
-            android:id="@+id/newTaskDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="New task description" />
+            android:orientation="vertical"
+            android:background="@drawable/rounded_grey_highlight"
+            android:padding="15dp">
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:flexWrap="wrap"
+                app:alignItems="center"
+                app:justifyContent="flex_start">
+                <TextView
+                    android:textSize="18dp"
+                    android:textColor="@color/textColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Title:"
+                    android:layout_marginEnd="10dp"/>
+                <EditText
+                    android:id="@+id/newTaskTitle"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Task title" />
+            </com.google.android.flexbox.FlexboxLayout>
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:flexWrap="wrap"
+                app:alignItems="center"
+                app:justifyContent="flex_start">
+                <TextView
+                    android:textSize="18dp"
+                    android:textColor="@color/textColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description:"
+                    android:layout_marginEnd="10dp"/>
+                <EditText
+                    android:id="@+id/newTaskDescription"
+                    android:layout_width="223dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Task description" />
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:alignItems="center"
+                app:justifyContent="flex_start"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:textSize="18dp"
+                    android:textColor="@color/textColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Priority:"
+                    android:layout_marginEnd="27dp"/>
+
+                <Spinner
+                    android:paddingEnd="26dp"
+                    android:id="@+id/newTaskPriority"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:background="@drawable/spinner_background"/>
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:flexWrap="wrap"
+                app:alignItems="center"
+                app:justifyContent="flex_start">
+                <TextView
+                    android:textSize="18dp"
+                    android:textColor="@color/textColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status:"
+                    android:layout_marginEnd="32dp"/>
+
+                <Spinner
+                    android:paddingEnd="26dp"
+                    android:id="@+id/newTaskStatus"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:background="@drawable/spinner_background"/>
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:flexWrap="wrap"
+                app:alignItems="center"
+                app:justifyContent="flex_start">
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Priority:"/>
+                <TextView
+                    android:textSize="18dp"
+                    android:textColor="@color/textColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Assignee:"
+                    android:layout_marginEnd="10dp"/>
 
-        <Spinner
-            android:id="@+id/newTaskPriority"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                <Spinner
+                    android:paddingEnd="26dp"
+                    android:id="@+id/newTaskAssignee"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:background="@drawable/spinner_background"/>
+            </com.google.android.flexbox.FlexboxLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Task Status:"/>
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:flexWrap="wrap"
+                app:alignItems="center"
+                app:justifyContent="flex_start">
 
-        <Spinner
-            android:id="@+id/newTaskStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="18dp"
+                    android:textColor="@color/textColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Release:"
+                    android:layout_marginEnd="21dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Assignee:"/>
+                <Spinner
+                    android:paddingEnd="26dp"
+                    android:id="@+id/newTaskRelease"
+                    android:layout_width="236dp"
+                    android:paddingStart="15dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_background"/>
+            </com.google.android.flexbox.FlexboxLayout>
 
-        <Spinner
-            android:id="@+id/newTaskAssignee"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/updateTaskButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomButton"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:layout_marginTop="0dp"
+                android:text="Update"
+                android:layout_gravity="center_horizontal"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Release:"/>
-
-        <Spinner
-            android:id="@+id/newTaskRelease"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-
-        <Button
-            android:id="@+id/updateTaskButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update"
-            />
-
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <View
         android:id="@+id/overlayView"
