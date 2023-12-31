@@ -40,9 +40,9 @@ class TaskPreviewAdapter(private val tasks: List<TaskPreviewModel>,
         }
 
         fun bind(task: TaskPreviewModel) {
-            title.text = task.title
+            title.text = if(!task.title.isEmpty()) task.title else "no title"
             title.visibility = View.VISIBLE
-            status.text = if(!task.taskStatusName.isEmpty()) task.taskStatusName else "-"
+            status.text = if(!task.taskStatusName.isEmpty()) task.taskStatusName else "no status"
             status.visibility = View.VISIBLE
         }
     }

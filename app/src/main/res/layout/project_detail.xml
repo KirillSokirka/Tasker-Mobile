@@ -66,17 +66,6 @@
             android:background="@drawable/plus" />
     </com.google.android.flexbox.FlexboxLayout>
 
-    <Button
-        android:id="@+id/backlogButton"
-        android:layout_height="50dp"
-        android:layout_width="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        style="@style/CustomButton"
-        android:text="Backlog" />
-
     <com.google.android.flexbox.FlexboxLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -87,6 +76,14 @@
         app:justifyContent="space_between"
         >
         <Button
+            android:id="@+id/backlogButton"
+            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            style="@style/CustomButton"
+            android:text="Backlog" />
+        <Button
             android:id="@+id/releasesInfo"
             android:layout_width="wrap_content"
             android:paddingStart="16dp"
@@ -95,15 +92,18 @@
             style="@style/CustomButton"
             android:text="Releases" />
 
-        <Button
-            android:id="@+id/manageUsersButton"
-            android:layout_height="50dp"
-            android:layout_width="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            style="@style/CustomButton"
-            android:text="Manage users" />
+
     </com.google.android.flexbox.FlexboxLayout>
+
+    <Button
+        android:id="@+id/manageUsersButton"
+        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        style="@style/CustomButton"
+        android:text="Manage users"
+        android:layout_marginStart="15dp"/>
 
 
 
