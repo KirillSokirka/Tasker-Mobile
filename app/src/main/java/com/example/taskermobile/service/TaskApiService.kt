@@ -24,6 +24,9 @@ interface TaskApiService {
     suspend fun get(@Path("id") id: String) : Response<TaskModel>
     @DELETE("TaskStatus/{id}")
     suspend fun delete(@Path("id") id: String) : Response<String>
+
+    @DELETE("Task/{id}")
+    suspend fun deleteTask(@Path("id") id: String) : Response<String>
     @PUT("Task")
     suspend fun update(@Body model: TaskUpdateStatusModel): Response<TaskModel>
     @PUT("Task")

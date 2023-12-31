@@ -1,5 +1,6 @@
 package com.example.taskermobile.activities.task
 
+import SharedPreferencesService
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,12 @@ import com.example.taskermobile.R
 import com.example.taskermobile.model.TaskPriority
 import com.example.taskermobile.utils.ApiResponse
 import com.example.taskermobile.viewmodels.TaskViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskDetailFragment : Fragment() {
     private val taskViewModel by viewModel<TaskViewModel>()
-
+    private val sharedPreferences: SharedPreferencesService by inject()
     private lateinit var loadingIndicator: ProgressBar
 
     private lateinit var editButton: Button
@@ -117,9 +119,11 @@ class TaskDetailFragment : Fragment() {
 
         deleteButton.setOnClickListener {
             AlertDialog.Builder(requireContext())
-                .setTitle("Confirm status deletion")
+                .setTitle("Confirm task deletion")
                 .setPositiveButton("Delete") { dialog, which ->
-                    taskViewModel.delete(taskId)
+                    taskViewModel.deleteTask(taskId)
+                    findNavController().navigate(R.id.action_taskDetailFragment_to_kanbanBoardDetailFragment,
+                        bundleOf("KANBAN_BOARD_ID" to sharedPreferences.retrieveData("lastKanbanBoard").toString()))
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
