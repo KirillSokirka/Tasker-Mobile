@@ -257,6 +257,9 @@
         <action
             android:id="@+id/action_taskEditFragment_to_taskDetailFragment"
             app:destination="@id/taskDetailFragment" />
+        <action
+            android:id="@+id/action_taskEditFragment_to_kanbanBoardDetailFragment"
+            app:destination="@id/kanbanBoardDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskBacklogEditFragment"

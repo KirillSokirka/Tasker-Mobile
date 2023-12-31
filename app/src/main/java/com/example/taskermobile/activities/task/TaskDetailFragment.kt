@@ -111,7 +111,7 @@ class TaskDetailFragment : Fragment() {
         editButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_taskDetailFragment_to_taskEditFragment,
-                bundleOf("TASK_ID" to id)
+                bundleOf("TASK_ID" to taskId)
             )
         }
 

@@ -89,6 +89,7 @@ class TaskCreateFragment : Fragment() {
 
         setUpPrioritySpinner()
         setUpObservers()
+
     }
 
     private fun setUpUserSpinner() {
@@ -170,7 +171,6 @@ class TaskCreateFragment : Fragment() {
             createButton.isEnabled = !isLoading
 
             kanbanBoardModel.getById(kanbanBoardId)
-
         })
 
         kanbanBoardModel.kanbanBoardResponse.observe(viewLifecycleOwner) { apiResponse ->
