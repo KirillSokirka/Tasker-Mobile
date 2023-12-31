@@ -1,6 +1,6 @@
 package com.example.taskermobile.activities.backlogpage
 
-import BacklogRecyclerViewAdapter
+import BacklogAdapter
 import SharedPreferencesService
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,19 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
+import com.example.taskermobile.model.task.TaskBoardPreviewModel
+import com.example.taskermobile.model.taskstatus.TaskStatusBoardModel
 import com.example.taskermobile.utils.ApiResponse
-import com.example.taskermobile.viewmodels.BacklogPageViewModel
+import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
+import com.example.taskermobile.viewmodels.TaskViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class BacklogPageFragment : Fragment() {
     private val sharedPreferencesService: SharedPreferencesService by inject()
-    private val viewModel: BacklogPageViewModel by viewModels()
+    private val viewModel by viewModel<TaskViewModel>()
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var recyclerView: RecyclerView
 
@@ -32,10 +37,10 @@ class BacklogPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var projectId = sharedPreferencesService.retrieveData("lastProjectActive")
+        val projectId = sharedPreferencesService.retrieveData("lastProjectActive")
+
         if ( projectId == null ) {
-//            findNavController().navigate(R.id.,
-//                bundleOf("PROJECT_ID" to id))
+            findNavController().navigate(R.id.action_backlogPageFragment_to_projectsPageFragment)
         }
 
         super.onViewCreated(view, savedInstanceState)
@@ -44,9 +49,12 @@ class BacklogPageFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.getAll(projectId!!)
+        viewModel.getBacklog(projectId!!)
+        setUpObservers()
+    }
 
-        viewModel.tasksResponse.observe(viewLifecycleOwner) { apiResponse ->
+    private fun setUpObservers() {
+        viewModel.backlogResponse.observe(viewLifecycleOwner) { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Loading -> {
                     loadingIndicator.visibility = View.VISIBLE
@@ -54,7 +62,20 @@ class BacklogPageFragment : Fragment() {
 
                 is ApiResponse.Success -> {
                     loadingIndicator.visibility = View.GONE
-                    recyclerView.adapter = BacklogRecyclerViewAdapter(apiResponse.data)
+                    recyclerView.adapter = BacklogAdapter(apiResponse.data ?: emptyList(), object :
+                        OnItemClickListener {
+                        override fun onItemClick(id: String) {
+                            findNavController().navigate(
+                                R.id.action_backlogPageFragment_to_taskBacklogEditFragment,
+                                bundleOf("TASK_ID" to id)
+                            )
+                        }
+
+                        override fun onItemLongClick(
+                            task: TaskBoardPreviewModel,
+                            allStatuses: List<TaskStatusBoardModel>,
+                            view: View?) {}}
+                    )
                 }
 
                 is ApiResponse.Failure -> {

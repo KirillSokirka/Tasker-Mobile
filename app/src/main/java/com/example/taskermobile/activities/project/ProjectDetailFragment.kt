@@ -46,7 +46,9 @@ class ProjectDetailFragment : Fragment() {
     private lateinit var releasesButton: Button
     private lateinit var userList: Button
     private lateinit var spinner: Spinner
+    private lateinit var backlogButton: Button
     private lateinit var createBoard: Button
+
     private lateinit var boardName: EditText
 
     override fun onCreateView(
@@ -83,6 +85,7 @@ class ProjectDetailFragment : Fragment() {
         userList = view.findViewById(R.id.manageUsersButton)
         spinner = view.findViewById(R.id.kanbanBoardsSpinner)
         createBoard = view.findViewById(R.id.createKanbanBoard)
+        backlogButton = view.findViewById(R.id.backlogButton)
         boardName = EditText(requireContext())
 
         setupObservers(projectId)
@@ -279,6 +282,10 @@ class ProjectDetailFragment : Fragment() {
             findNavController().navigate(R.id.action_projectDetailFragment_to_releasesPageFragment,
                 Bundle().apply { putString("PROJECT_ID", project.id)
             })
+        }
+
+        backlogButton.setOnClickListener {
+            findNavController().navigate(R.id.action_projectDetailFragment_to_backlogPageFragment)
         }
 
         userList.setOnClickListener {

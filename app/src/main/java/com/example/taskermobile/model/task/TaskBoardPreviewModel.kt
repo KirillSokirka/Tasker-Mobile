@@ -8,7 +8,7 @@ data class TaskBoardPreviewModel(
     val description: String,
     val taskStatusName: String,
     val id: String,
-    val assignee: UserModel?,
+    val assignee: String?,
     val priority: Int,
 )
 

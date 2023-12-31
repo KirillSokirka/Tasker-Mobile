@@ -36,7 +36,7 @@ class TasksAdapter(private val tasks: List<TaskBoardPreviewModel>,
 
         fun bind(task: TaskBoardPreviewModel) {
             taskNameTextView.text = task.title
-            taskAssigneeBoard.text = task.assignee?.title ?: "no assignee"
+            taskAssigneeBoard.text = task.assignee
             val priority = TaskPriority.fromInt(task.priority)
             taskPriorityBoard.text = priority.name
         }
@@ -54,7 +54,7 @@ class TasksAdapter(private val tasks: List<TaskBoardPreviewModel>,
             itemView.setOnLongClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    listener.onItemLongClick(tasks[position], allStatuses)
+                    listener.onItemLongClick(tasks[position], allStatuses, itemView)
                     true
                 } else {
                     false

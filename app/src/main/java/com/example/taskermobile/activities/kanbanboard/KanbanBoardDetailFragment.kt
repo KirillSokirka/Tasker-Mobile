@@ -151,7 +151,7 @@ class KanbanBoardDetailFragment : Fragment() {
                                     R.id.action_kanbanBoardDetailFragment_to_taskDetailFragment,
                                     bundleOf("TASK_ID" to id))
                             }
-                            override fun onItemLongClick(task: TaskBoardPreviewModel, allStatuses: List<TaskStatusBoardModel>) {
+                            override fun onItemLongClick(task: TaskBoardPreviewModel, allStatuses: List<TaskStatusBoardModel>, view: View?) {
                                 val popupMenu = PopupMenu(
                                     requireContext(),
                                     view
@@ -214,6 +214,7 @@ class KanbanBoardDetailFragment : Fragment() {
                     loadingIndicator.visibility = View.VISIBLE
                 }
                 is ApiResponse.Success -> {
+                    sharedPreferences.saveData("lastKanbanBoard", null)
                     Toast.makeText(
                         requireContext(),
                         "Board deleted successfully",
@@ -288,7 +289,13 @@ class KanbanBoardDetailFragment : Fragment() {
             }
 
             deleteButton.setOnClickListener {
-                kanbanBoardViewModel.delete(board.id!!)
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Confirm deletion")
+                    .setPositiveButton("Delete") { dialog, which ->
+                        kanbanBoardViewModel.delete(board.id!!)
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
             }
 
             manageTaskStatuses.visibility = View.VISIBLE

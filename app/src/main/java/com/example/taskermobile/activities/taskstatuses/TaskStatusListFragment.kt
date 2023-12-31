@@ -83,7 +83,8 @@ class TaskStatusListFragment: Fragment() {
 
                             override fun onItemLongClick(
                                 task: TaskBoardPreviewModel,
-                                allStatuses: List<TaskStatusBoardModel>
+                                allStatuses: List<TaskStatusBoardModel>,
+                                view: View?
                             ) {}
                         })
 

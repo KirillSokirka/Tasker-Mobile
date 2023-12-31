@@ -8,14 +8,18 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskermobile.R
+import com.example.taskermobile.model.task.TaskBoardPreviewModel
 import com.example.taskermobile.model.task.TaskPreviewModel
+import com.example.taskermobile.model.taskstatus.TaskStatusBoardModel
 import com.example.taskermobile.utils.ApiResponse
+import com.example.taskermobile.utils.eventlisteners.OnItemClickListener
 import com.example.taskermobile.utils.getIdFromToken
 import com.example.taskermobile.viewadapters.TaskPreviewAdapter
 import com.example.taskermobile.viewadapters.TasksAdapter
@@ -177,8 +181,20 @@ class ReleaseDetailFragment : Fragment() {
     }
 
     private fun setupTasksRecyclerView() {
-        if(tasks.size != 0) {
-            val adapter = TaskPreviewAdapter(tasks)
+        if(tasks.isNotEmpty()) {
+            val adapter = TaskPreviewAdapter(tasks, object : OnItemClickListener {
+                override fun onItemClick(id: String) {
+                    findNavController().navigate(
+                        R.id.action_releaseDetailFragment_to_taskDetailFragment,
+                        bundleOf("TASK_ID" to id)
+                    )
+                }
+
+                override fun onItemLongClick(
+                    task: TaskBoardPreviewModel,
+                    allStatuses: List<TaskStatusBoardModel>,
+                    view: View?) {}
+            })
             tasksRecyclerView.adapter = adapter
             tasksRecyclerView.layoutManager = LinearLayoutManager(context)
         }
@@ -193,8 +209,14 @@ class ReleaseDetailFragment : Fragment() {
         if (allowedProjects.contains(projectId)) {
             deleteButton.visibility = View.VISIBLE
             deleteButton.setOnClickListener {
-                releaseModel.delete(releaseId)
-            }
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Confirm deletion")
+                    .setPositiveButton("Delete") { dialog, which ->
+                        releaseModel.delete(releaseId)
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+                }
 
             updateButton.visibility = View.VISIBLE
             updateButton.setOnClickListener {

@@ -21,7 +21,6 @@ import com.example.taskermobile.utils.eventlisteners.AuthStateListener
 import com.example.taskermobile.utils.ErrorResponseDeserializer
 import com.example.taskermobile.utils.TokenManager
 import com.example.taskermobile.viewmodels.AuthViewModel
-import com.example.taskermobile.viewmodels.BacklogPageViewModel
 import com.example.taskermobile.viewmodels.KanbanBoardViewModel
 import com.example.taskermobile.viewmodels.ProjectsViewModel
 import com.example.taskermobile.viewmodels.ReleasesPageViewModel
@@ -78,7 +77,6 @@ val myModule = module {
     viewModel { TokenViewModel(get()) }
     viewModel { ProjectsViewModel(get()) }
     viewModel { ReleasesPageViewModel(get()) }
-    viewModel { BacklogPageViewModel(get()) }
     viewModel { UserViewModel(get()) }
     viewModel { KanbanBoardViewModel(get()) }
     viewModel { TaskViewModel(get()) }

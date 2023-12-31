@@ -44,7 +44,9 @@
             app:destination="@id/projectsPageFragment" />
         <action
             android:id="@+id/action_projectDetailFragment_to_kanbanBoardDetailFragment"
-            app:destination="@id/kanbanBoardDetailFragment" />
+            app:destination="@id/kanbanBoardDetailFragment"
+            app:popUpTo="@id/projectDetailFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_projectDetailFragment_to_userFragment"
             app:destination="@id/userFragment" />
@@ -84,6 +86,15 @@
         <action
             android:id="@+id/action_backlogPageFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
+        <action
+            android:id="@+id/action_backlogPageFragment_to_kanbanBoardDetailFragment"
+            app:destination="@id/kanbanBoardDetailFragment" />
+        <action
+            android:id="@+id/action_backlogPageFragment_to_projectsPageFragment"
+            app:destination="@id/projectsPageFragment" />
+        <action
+            android:id="@+id/action_backlogPageFragment_to_taskBacklogEditFragment"
+            app:destination="@id/taskBacklogEditFragment" />
     </fragment>
 
     <fragment
@@ -122,14 +133,14 @@
             android:id="@+id/action_releaseDetailFragment_to_projectsPageFragment"
             app:destination="@id/projectsPageFragment" />
         <action
-            android:id="@+id/action_releaseDetailFragment_to_backlogPageFragment"
-            app:destination="@id/backlogPageFragment" />
-        <action
             android:id="@+id/action_releaseDetailFragment_to_userListFragment"
             app:destination="@id/userListFragment" />
         <action
             android:id="@+id/action_releaseDetailFragment_to_releaseUpdateFragment"
             app:destination="@id/releaseUpdateFragment" />
+        <action
+            android:id="@+id/action_releaseDetailFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
     </fragment>
 
     <fragment
@@ -178,11 +189,6 @@
         <action
             android:id="@+id/action_kanbanBoardDetailFragment_to_taskCreateFragment"
             app:destination="@id/taskCreateFragment" />
-        <action
-            android:id="@+id/action_kanbanBoardDetailFragment_self"
-            app:destination="@id/kanbanBoardDetailFragment"
-            app:popUpTo="@id/kanbanBoardDetailFragment"
-            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_kanbanBoardDetailFragment_to_taskStatusListFragment"
             app:destination="@id/taskStatusListFragment" />
@@ -237,6 +243,9 @@
         <action
             android:id="@+id/action_taskDetailFragment_to_taskEditFragment"
             app:destination="@id/taskEditFragment" />
+        <action
+            android:id="@+id/action_taskDetailFragment_to_releaseDetailFragment"
+            app:destination="@id/releaseDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskEditFragment"
@@ -245,6 +254,22 @@
         <action
             android:id="@+id/action_taskEditFragment_to_taskDetailFragment"
             app:destination="@id/taskDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskBacklogEditFragment"
+        android:name="com.example.taskermobile.activities.task.TaskBacklogEditFragment"
+        android:label="TaskBacklogEditFragment" >
+        <action
+            android:id="@+id/action_taskBacklogEditFragment_to_kanbanBoardDetailFragment"
+            app:destination="@id/kanbanBoardDetailFragment"
+            app:popUpTo="@id/projectsPageFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="TASK_ID"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_taskBacklogEditFragment_to_projectsPageFragment"
+            app:destination="@id/projectsPageFragment" />
     </fragment>
 
 
