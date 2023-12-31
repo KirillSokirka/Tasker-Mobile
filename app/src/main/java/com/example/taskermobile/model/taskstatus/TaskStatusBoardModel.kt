@@ -10,6 +10,7 @@ import kotlinx.parcelize.RawValue
 data class TaskStatusBoardModel(
     val id: String?,
     val name: String?,
+    val order: Int,
     val kanbanBoardId: String?,
     val tasks: @RawValue List<TaskBoardPreviewModel>?
 ) : Parcelable

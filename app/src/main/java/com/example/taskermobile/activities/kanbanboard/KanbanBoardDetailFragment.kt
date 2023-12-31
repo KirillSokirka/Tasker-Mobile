@@ -144,7 +144,9 @@ class KanbanBoardDetailFragment : Fragment() {
 
                         title.text = board.title
 
-                        kanbanBoardRecyclerView.adapter = KanbanBoardAdapter(board.columns ?: listOf(),
+                        val columns = board.columns?.sortedBy { it.order } ?: listOf()
+
+                        kanbanBoardRecyclerView.adapter = KanbanBoardAdapter(columns,
                             object : OnItemClickListener {
                             override fun onItemClick(id: String) {
                                 findNavController().navigate(

@@ -116,7 +116,8 @@ class TaskStatusListFragment: Fragment() {
                         "New task status was created",
                         Toast.LENGTH_LONG
                     ).show()
-                    kanbanBoardViewModel.getById(boardId)
+                    findNavController().navigate(R.id.action_taskStatusListFragment_to_kanbanBoardDetailFragment,
+                        bundleOf("KANBAN_BOARD_ID" to apiResponse.data?.kanbanBoardId))
                 }
 
                 is ApiResponse.Failure -> {
