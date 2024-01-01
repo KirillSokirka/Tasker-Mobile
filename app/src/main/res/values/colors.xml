@@ -6,4 +6,5 @@
     <color name="highlightRedColor">#FFF0B1B1</color>
     <color name="fieldColor">#FFD3DBDC</color>
     <color name="navColor">#FFD3DBDC</color>
+    <color name="red">#FFFC2D2D</color>
 </resources>

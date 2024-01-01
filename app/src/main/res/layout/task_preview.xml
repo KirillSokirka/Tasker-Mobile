@@ -24,7 +24,9 @@
         android:layout_width="match_parent"
         android:textColor="@color/textColor"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:background="@drawable/rounded_grey_highlight"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
         android:textSize="14dp"
         android:visibility="gone"/>
     <TextView

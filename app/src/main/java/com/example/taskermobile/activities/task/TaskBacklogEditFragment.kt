@@ -39,6 +39,8 @@ class TaskBacklogEditFragment : Fragment() {
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var statusSpinner: Spinner
     private lateinit var boardSpinner: Spinner
+    private lateinit var sSelect: TextView
+    private lateinit var bSelect: TextView
     private lateinit var task: TaskModel
     private lateinit var boardId: String
 
@@ -63,6 +65,8 @@ class TaskBacklogEditFragment : Fragment() {
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         boardSpinner = view.findViewById(R.id.boardSelector)
         statusSpinner = view.findViewById(R.id.taskStatusSelector)
+        bSelect = view.findViewById(R.id.bSelect)
+        sSelect = view.findViewById(R.id.sSelect)
 
         taskViewModel.get(taskId!!)
 
@@ -161,6 +165,9 @@ class TaskBacklogEditFragment : Fragment() {
             hint.visibility = View.VISIBLE
             hint.text = "There is no available boards in project. Add them and comeback here"
             return
+        } else {
+            bSelect.visibility = View.VISIBLE
+            boardSpinner.visibility = View.VISIBLE
         }
 
         val statusList = kanbanBoards.map { u -> u.title }.toMutableList().apply {
@@ -189,6 +196,8 @@ class TaskBacklogEditFragment : Fragment() {
             return
         } else {
             hint.visibility = View.GONE
+            sSelect.visibility = View.VISIBLE
+            statusSpinner.visibility = View.VISIBLE
         }
 
         val statusList = columns.map { u -> u.name }.toMutableList().apply {

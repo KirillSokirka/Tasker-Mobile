@@ -42,6 +42,7 @@ class BacklogAdapter(private val items: List<TaskPreviewModel>,
         if (currentItem != null) {
             holder.textViewTitle.text = currentItem.title
             holder.textViewTitle.visibility = View.VISIBLE
+            holder.textViewDescription.text = currentItem.description
             holder.textViewDescription.visibility = View.VISIBLE
         }
 

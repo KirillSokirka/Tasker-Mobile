@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="15dp"
     android:gravity="center_horizontal">
 
     <ProgressBar
@@ -17,12 +17,5 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="481dp" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Backlog"
-        android:textSize="25sp" />
+        android:layout_height="match_parent" />
 </LinearLayout>

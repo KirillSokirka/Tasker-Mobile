@@ -78,32 +78,31 @@
         <Button
             android:id="@+id/backlogButton"
             android:layout_height="50dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             android:layout_width="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
             style="@style/CustomButton"
             android:text="Backlog" />
         <Button
             android:id="@+id/releasesInfo"
             android:layout_width="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             android:layout_height="50dp"
             style="@style/CustomButton"
             android:text="Releases" />
 
+        <Button
+            android:id="@+id/manageUsersButton"
+            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            style="@style/CustomButton"
+            android:text="Users" />
+
 
     </com.google.android.flexbox.FlexboxLayout>
 
-    <Button
-        android:id="@+id/manageUsersButton"
-        android:layout_height="50dp"
-        android:layout_width="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        style="@style/CustomButton"
-        android:text="Manage users"
-        android:layout_marginStart="15dp"/>
+
 
 
 

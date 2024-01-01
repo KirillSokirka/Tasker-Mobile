@@ -1,34 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="15dp">
 
     <TextView
         android:id="@+id/hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textFontWeight="700"
+        android:textColor="@color/red"
+        android:layout_marginBottom="20dp"
+        android:textAlignment="center"
         android:visibility="gone" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Board:"/>
-
-    <Spinner
-        android:id="@+id/boardSelector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="space_between"
+        android:layout_marginBottom="20dp">
 
     <TextView
+        android:id="@+id/bSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Status:"/>
+        android:textColor="@color/textColor"
+        android:textSize="18dp"
+        android:text="Select Board:"
+        android:visibility="gone"/>
 
-    <Spinner
-        android:id="@+id/taskStatusSelector"
+        <Spinner
+            android:paddingEnd="26dp"
+            android:id="@+id/boardSelector"
+            android:layout_width="236dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:background="@drawable/spinner_background"
+            android:visibility="gone"/>
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="space_between">
+
+    <TextView
+        android:id="@+id/sSelect"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:textSize="18dp"
+        android:text="Select Status:"
+        android:visibility="gone"/>
+
+        <Spinner
+            android:paddingEnd="26dp"
+            android:id="@+id/taskStatusSelector"
+            android:layout_width="236dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:background="@drawable/spinner_background"
+            android:visibility="gone"/>
+    </com.google.android.flexbox.FlexboxLayout>
 
     <ProgressBar
         android:id="@+id/loadingIndicator"
