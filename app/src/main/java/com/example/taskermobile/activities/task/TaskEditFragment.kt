@@ -140,6 +140,8 @@ class TaskEditFragment : Fragment() {
                 selectedStatus = null
             }
         }
+
+        statusSpinner.setSelection(statusList.indexOf(currentTask?.taskStatus?.title))
     }
 
     private fun setUpReleaseSpinner() {
@@ -250,7 +252,6 @@ class TaskEditFragment : Fragment() {
                         releaseModel.getAll(currentKanbanBoard.projectId!!)
 
                         assigneeSpinner.setSelection(assigneeList.indexOf(currentTask?.assignee?.title))
-                        statusSpinner.setSelection(statusList.indexOf(currentTask?.taskStatus?.title))
                     }
                 }
                 is ApiResponse.Failure -> {
@@ -317,7 +318,7 @@ class TaskEditFragment : Fragment() {
     private fun setUpListeners() {
         updateButton.setOnClickListener{
             //val idFromJwt = getIdFromToken(tokenViewModel.token.value!!.toString())!!
-            //val selectedTaskStatusModel = taskStatuses.find { it.name == selectedStatus }
+            val selectedTaskStatusModel = taskStatuses.find { it.name == selectedStatus }
             val selectedReleaseModel = releases.find { it.title == selectedRelease }
             val selectedAssigneeModel = projectUsers.find { it.title == selectedAssignee }
             val task = TaskUpdateModel(
@@ -328,8 +329,10 @@ class TaskEditFragment : Fragment() {
                 //creatorId = idFromJwt, // +
                 //projectId = currentKanbanBoard.projectId, // +
                 //taskStatusId = selectedTaskStatusModel?.id, // +
+                statusId = selectedTaskStatusModel?.id,
                 releaseId = selectedReleaseModel?.id, // -
                 assigneeId = selectedAssigneeModel?.id // +
+
             )
             taskModel.update(task)
         }
