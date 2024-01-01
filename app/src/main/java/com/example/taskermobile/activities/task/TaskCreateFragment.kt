@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.R
 import com.example.taskermobile.model.TaskPriority
@@ -260,7 +261,10 @@ class TaskCreateFragment : Fragment() {
                         Toast.LENGTH_LONG
                     ).show()
                     findNavController().navigate(R.id.action_taskCreateFragment_to_kanbanBoardDetailFragment,
-                        bundleOf("KANBAN_BOARD_ID" to kanbanBoardId))
+                        bundleOf("KANBAN_BOARD_ID" to kanbanBoardId),
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.kanbanBoardDetailFragment, true)
+                            .build())
                 }
                 is ApiResponse.Failure -> {
                     hideLoading()

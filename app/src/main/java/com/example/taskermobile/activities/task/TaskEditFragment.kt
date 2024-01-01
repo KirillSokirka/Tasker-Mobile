@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.R
 import com.example.taskermobile.model.TaskPriority
@@ -277,8 +278,13 @@ class TaskEditFragment : Fragment() {
                         "Task ${apiResponse.data?.title} updated",
                         Toast.LENGTH_LONG
                     ).show()
+
+
                     findNavController().navigate(R.id.action_taskEditFragment_to_kanbanBoardDetailFragment,
-                        bundleOf("KANBAN_BOARD_ID" to kanbanBoardId))
+                        bundleOf("KANBAN_BOARD_ID" to kanbanBoardId),
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.kanbanBoardDetailFragment, true)
+                            .build())
                 }
                 is ApiResponse.Failure -> {
                     hideLoading()
@@ -317,7 +323,6 @@ class TaskEditFragment : Fragment() {
 
     private fun setUpListeners() {
         updateButton.setOnClickListener{
-            //val idFromJwt = getIdFromToken(tokenViewModel.token.value!!.toString())!!
             val selectedTaskStatusModel = taskStatuses.find { it.name == selectedStatus }
             val selectedReleaseModel = releases.find { it.title == selectedRelease }
             val selectedAssigneeModel = projectUsers.find { it.title == selectedAssignee }
@@ -326,9 +331,6 @@ class TaskEditFragment : Fragment() {
                 title = taskTitle.text.toString(), // +
                 description = taskDescription.text.toString(), // +
                 priority = enumValueOf<TaskPriority>(selectedPriority).ordinal, // +
-                //creatorId = idFromJwt, // +
-                //projectId = currentKanbanBoard.projectId, // +
-                //taskStatusId = selectedTaskStatusModel?.id, // +
                 statusId = selectedTaskStatusModel?.id,
                 releaseId = selectedReleaseModel?.id, // -
                 assigneeId = selectedAssigneeModel?.id // +

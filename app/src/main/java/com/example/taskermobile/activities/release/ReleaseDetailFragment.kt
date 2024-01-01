@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -186,8 +187,10 @@ class ReleaseDetailFragment : Fragment() {
                 override fun onItemClick(id: String) {
                     findNavController().navigate(
                         R.id.action_releaseDetailFragment_to_taskDetailFragment,
-                        bundleOf("TASK_ID" to id)
-                    )
+                        bundleOf("TASK_ID" to id),
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.kanbanBoardDetailFragment, true)
+                            .build())
                 }
 
                 override fun onItemLongClick(

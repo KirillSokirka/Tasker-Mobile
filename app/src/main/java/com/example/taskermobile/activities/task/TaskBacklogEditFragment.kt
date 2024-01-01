@@ -16,8 +16,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.taskermobile.R
+import com.example.taskermobile.model.TaskPriority
 import com.example.taskermobile.model.kanbanboard.KanbanBoardModel
 import com.example.taskermobile.model.task.TaskModel
+import com.example.taskermobile.model.task.TaskUpdateModel
 import com.example.taskermobile.model.task.TaskUpdateStatusModel
 import com.example.taskermobile.model.taskstatus.TaskStatusBoardModel
 import com.example.taskermobile.utils.ApiResponse
@@ -210,7 +212,15 @@ class TaskBacklogEditFragment : Fragment() {
         statusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if (position > 0) {
-                    taskViewModel.update(TaskUpdateStatusModel(task.id, columns[position - 1].id!!))
+                    taskViewModel.update(TaskUpdateModel(
+                        id = task.id,
+                        title = task.title,
+                        description = task.description,
+                        priority = task.priority,
+                        statusId = columns[position - 1].id!!,
+                        releaseId = task.release?.id,
+                        assigneeId = task.assignee?.id
+                    ))
                     Toast.makeText(requireContext(),
                         "Status changed to: ${columns[position - 1].name!!}",
                         Toast.LENGTH_LONG).show()
