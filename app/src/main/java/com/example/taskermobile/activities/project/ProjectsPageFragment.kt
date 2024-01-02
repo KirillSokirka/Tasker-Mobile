@@ -58,7 +58,11 @@ class ProjectsPageFragment : Fragment() {
         }
 
         titleEdit = EditText(requireContext())
+
         createProjectButton.setOnClickListener {
+            if(titleEdit.parent != null) {
+                (titleEdit.parent as ViewGroup).removeView(titleEdit)
+            }
             AlertDialog.Builder(requireContext())
                 .setTitle("Create project")
                 .setView(titleEdit)
