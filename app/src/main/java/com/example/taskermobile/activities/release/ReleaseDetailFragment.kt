@@ -1,5 +1,6 @@
 package com.example.taskermobile.activities.release
 
+import SharedPreferencesService
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,7 @@ import com.example.taskermobile.viewmodels.ReleasesPageViewModel
 import com.example.taskermobile.viewmodels.TaskViewModel
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -37,6 +39,8 @@ class ReleaseDetailFragment : Fragment() {
     private val releaseModel by viewModel<ReleasesPageViewModel>()
     private val tokenModel by viewModel<TokenViewModel>()
     private val userModel by viewModel<UserViewModel>()
+
+    private val sharedPreferences: SharedPreferencesService by inject()
 
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var userAdminProject: List<String>
@@ -62,8 +66,16 @@ class ReleaseDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val releaseId = arguments?.getString("RELEASE_ID")
-            ?: throw Exception("Missing release id")
+            ?: sharedPreferences.retrieveData("lastDetailRelease")
+
+        if (releaseId == null) {
+            findNavController().navigate(R.id.action_kanbanBoardDetailFragment_to_projectsPageFragment)
+            return
+        }
+
+        sharedPreferences.saveData("lastDetailRelease", releaseId)
 
         loadingIndicator = view.findViewById(R.id.loadingIndicator)
         releaseName = view.findViewById(R.id.releaseName)
@@ -189,7 +201,7 @@ class ReleaseDetailFragment : Fragment() {
                         R.id.action_releaseDetailFragment_to_taskDetailFragment,
                         bundleOf("TASK_ID" to id),
                         NavOptions.Builder()
-                            .setPopUpTo(R.id.kanbanBoardDetailFragment, true)
+                            .setPopUpTo(R.id.taskDetailFragment, false)
                             .build())
                 }
 

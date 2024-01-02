@@ -109,7 +109,7 @@
     <fragment
         android:id="@+id/releasesPageFragment"
         android:name="com.example.taskermobile.activities.release.ReleasesPageFragment"
-        android:label="ReleasesPageFragment">
+        android:label="Releases">
         <action
             android:id="@+id/action_releasesPageFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -146,7 +146,7 @@
     <fragment
         android:id="@+id/userListFragment"
         android:name="com.example.taskermobile.activities.users.UserListFragment"
-        android:label="UserListFragment">
+        android:label="Users">
         <action
             android:id="@+id/action_userListFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -154,7 +154,7 @@
     <fragment
         android:id="@+id/taskCreateFragment"
         android:name="com.example.taskermobile.activities.users.TaskCreateFragment"
-        android:label="TaskCreateFragment">
+        android:label="Create Task">
         <action
             android:id="@+id/action_taskCreateFragment_to_kanbanBoardDetailFragment"
             app:destination="@id/kanbanBoardDetailFragment"
@@ -164,7 +164,7 @@
     <fragment
         android:id="@+id/releaseUpdateFragment"
         android:name="com.example.taskermobile.activities.release.ReleaseUpdateFragment"
-        android:label="ReleaseUpdateFragment">
+        android:label="Edit Release">
         <action
             android:id="@+id/action_releaseUpdateFragment_to_releasesPageFragment"
             app:destination="@id/releasesPageFragment" />
@@ -175,7 +175,7 @@
     <fragment
         android:id="@+id/kanbanBoardDetailFragment"
         android:name="com.example.taskermobile.activities.kanbanboard.KanbanBoardDetailFragment"
-        android:label="KanbanBoardDetailFragment">
+        android:label="KanbanBoard">
         <action
             android:id="@+id/action_kanbanBoardDetailFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -199,7 +199,7 @@
     <fragment
         android:id="@+id/userManagementFragment"
         android:name="com.example.taskermobile.activities.users.UserManagementFragment"
-        android:label="UserManagementFragment">
+        android:label="User Management">
         <action
             android:id="@+id/action_userManagementFragment_to_projectDetailFragment"
             app:destination="@id/projectDetailFragment" />
@@ -210,7 +210,7 @@
     <fragment
         android:id="@+id/taskStatusDetailFragment"
         android:name="com.example.taskermobile.activities.taskstatuses.TaskStatusDetailFragment"
-        android:label="TaskStatusDetailFragment" >
+        android:label="Task Status" >
         <action
             android:id="@+id/action_taskStatusDetailFragment_to_taskStatusListFragment"
             app:destination="@id/taskStatusListFragment" />
@@ -225,7 +225,7 @@
     <fragment
         android:id="@+id/taskStatusListFragment"
         android:name="com.example.taskermobile.activities.taskstatuses.TaskStatusListFragment"
-        android:label="TaskStatusListFragment" >
+        android:label="Statuses List" >
         <action
             android:id="@+id/action_taskStatusListFragment_to_taskStatusDetailFragment"
             app:destination="@id/taskStatusDetailFragment" />
@@ -236,7 +236,7 @@
     <fragment
         android:id="@+id/taskDetailFragment"
         android:name="com.example.taskermobile.activities.task.TaskDetailFragment"
-        android:label="TaskDetailFragment" >
+        android:label="Task" >
         <action
             android:id="@+id/action_taskDetailFragment_to_kanbanBoardDetailFragment"
             app:destination="@id/kanbanBoardDetailFragment" />
@@ -253,18 +253,21 @@
     <fragment
         android:id="@+id/taskEditFragment"
         android:name="com.example.taskermobile.activities.task.TaskEditFragment"
-        android:label="TaskEditFragment" >
+        android:label="Edit Task" >
         <action
             android:id="@+id/action_taskEditFragment_to_taskDetailFragment"
             app:destination="@id/taskDetailFragment" />
         <action
             android:id="@+id/action_taskEditFragment_to_kanbanBoardDetailFragment"
             app:destination="@id/kanbanBoardDetailFragment" />
+        <action
+            android:id="@+id/action_taskEditFragment_to_releaseDetailFragment"
+            app:destination="@id/releaseDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskBacklogEditFragment"
         android:name="com.example.taskermobile.activities.task.TaskBacklogEditFragment"
-        android:label="TaskBacklogEditFragment" >
+        android:label="Edit backlog" >
         <action
             android:id="@+id/action_taskBacklogEditFragment_to_kanbanBoardDetailFragment"
             app:destination="@id/kanbanBoardDetailFragment"

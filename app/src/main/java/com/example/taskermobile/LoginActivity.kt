@@ -1,5 +1,6 @@
 package com.example.taskermobile
 
+import SharedPreferencesService
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -28,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
     private val tokenViewModel: TokenViewModel by viewModel()
     private val authStateListener: AuthStateListener by inject()
 
+    private val sharedPreferences: SharedPreferencesService by inject()
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var overlayView: View
 
@@ -66,6 +68,9 @@ class LoginActivity : AppCompatActivity() {
                 is ApiResponse.Success -> {
                     hideLoading()
                     tokenViewModel.saveToken(apiResponse.data!!.token)
+                    sharedPreferences.saveData("lastDetailRelease", null)
+                    sharedPreferences.saveData("lastKanbanBoard", null)
+                    sharedPreferences.saveData("lastProjectActive", null)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()

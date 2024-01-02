@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -117,7 +118,10 @@ class TaskStatusListFragment: Fragment() {
                         Toast.LENGTH_LONG
                     ).show()
                     findNavController().navigate(R.id.action_taskStatusListFragment_to_kanbanBoardDetailFragment,
-                        bundleOf("KANBAN_BOARD_ID" to apiResponse.data?.kanbanBoardId))
+                        bundleOf("KANBAN_BOARD_ID" to apiResponse.data?.kanbanBoardId),
+                            NavOptions.Builder()
+                                .setPopUpTo(R.id.kanbanBoardDetailFragment, false)
+                                .build())
                 }
 
                 is ApiResponse.Failure -> {

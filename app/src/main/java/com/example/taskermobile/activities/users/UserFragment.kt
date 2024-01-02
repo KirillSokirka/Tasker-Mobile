@@ -1,5 +1,6 @@
 package com.example.taskermobile.activities.users
 
+import SharedPreferencesService
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,12 +22,14 @@ import com.example.taskermobile.utils.getIdFromToken
 import com.example.taskermobile.utils.getUsernameFromToken
 import com.example.taskermobile.viewmodels.TokenViewModel
 import com.example.taskermobile.viewmodels.UserViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserFragment : Fragment() {
     private val tokenViewModel: TokenViewModel by viewModel()
     private val userViewModel: UserViewModel by viewModel()
 
+    private val sharedPreferences: SharedPreferencesService by inject()
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var overlayView: View
 
@@ -102,6 +105,9 @@ class UserFragment : Fragment() {
 
             is ApiResponse.Success -> {
                 hideLoading()
+                sharedPreferences.saveData("lastDetailRelease", null)
+                sharedPreferences.saveData("lastKanbanBoard", null)
+                sharedPreferences.saveData("lastProjectActive", null)
                 tokenViewModel.deleteToken()
                 val intent = Intent(activity, LoginActivity::class.java)
                 startActivity(intent)

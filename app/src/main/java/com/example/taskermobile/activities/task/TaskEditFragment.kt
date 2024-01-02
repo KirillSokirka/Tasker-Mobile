@@ -279,11 +279,10 @@ class TaskEditFragment : Fragment() {
                         Toast.LENGTH_LONG
                     ).show()
 
-
-                    findNavController().navigate(R.id.action_taskEditFragment_to_kanbanBoardDetailFragment,
-                        bundleOf("KANBAN_BOARD_ID" to kanbanBoardId),
+                    findNavController().navigate(R.id.action_taskEditFragment_to_taskDetailFragment,
+                        bundleOf("TASK_ID" to apiResponse.data!!.id),
                         NavOptions.Builder()
-                            .setPopUpTo(R.id.kanbanBoardDetailFragment, true)
+                            .setPopUpTo(R.id.taskEditFragment, true)
                             .build())
                 }
                 is ApiResponse.Failure -> {
