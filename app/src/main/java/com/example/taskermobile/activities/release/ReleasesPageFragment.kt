@@ -120,6 +120,9 @@ class ReleasesPageFragment : Fragment() {
     }
 
     private fun setUpListeners(projectId: String) {
+        if (titleEdit.parent != null) {
+            (titleEdit.parent as ViewGroup).removeView(titleEdit)
+        }
         createRelease.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setTitle("Create release")
