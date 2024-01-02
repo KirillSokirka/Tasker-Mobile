@@ -270,6 +270,9 @@ class KanbanBoardDetailFragment : Fragment() {
             }
 
             editButton.setOnClickListener {
+                if (editTitle.parent != null) {
+                    (editTitle.parent as ViewGroup).removeView(editTitle)
+                }
                     AlertDialog.Builder(requireContext())
                         .setTitle("Update board")
                         .setView(editTitle)

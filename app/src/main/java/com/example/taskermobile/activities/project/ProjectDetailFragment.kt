@@ -263,6 +263,9 @@ class ProjectDetailFragment : Fragment() {
     private fun setupClickListeners(project: ProjectModel, userId: String) {
         if (editProjectButton.visibility != View.GONE) {
             titleEdit = EditText(requireContext())
+            if (titleEdit.parent != null) {
+                (titleEdit.parent as ViewGroup).removeView(titleEdit)
+            }
             editProjectButton.setOnClickListener {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Edit project")

@@ -138,6 +138,10 @@ class TaskStatusDetailFragment : Fragment() {
             editDialogTitle.setText(title.text)
             editDialogOrder.setText(taskStatus.order.toString())
 
+            if (dialogView.parent != null) {
+                (dialogView.parent as ViewGroup).removeView(dialogView)
+            }
+
             AlertDialog.Builder(requireContext())
                 .setTitle("Update task status")
                 .setView(dialogView)
