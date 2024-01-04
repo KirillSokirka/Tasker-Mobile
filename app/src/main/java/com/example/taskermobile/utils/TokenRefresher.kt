@@ -24,7 +24,7 @@ class TokenRefresher(
         refreshTokenJob = CoroutineScope(Dispatchers.IO).launch {
             while (isActive) {
                 try {
-                    delay(55 * 60 * 1000)
+                    delay(21300000) // 5 hours 55 minutes
 
                     val tokenSettings = tokenManager.getToken().firstOrNull()
                     if (tokenSettings != null) {

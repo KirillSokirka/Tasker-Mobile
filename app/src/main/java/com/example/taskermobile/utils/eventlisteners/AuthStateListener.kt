@@ -15,7 +15,6 @@ interface AuthStateListener {
 @SuppressLint("StaticFieldLeak")
 object AuthEventListenerImplementation : AuthStateListener {
 
-    // You need to set this context from an Activity or Application
     var context: Context? = null
 
     override fun onTokenExpired() {
